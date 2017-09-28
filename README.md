@@ -2,9 +2,9 @@
 ![Platform](https://img.shields.io/badge/language-Swift%203.0-green.svg)
 
 # Gifer
-Application for logging your current location and checking weather. 
+Small application for grabbing gif's from GIPHY. 
 
-Map page             |  History page
+Main page             |  Search page
 :-------------------------:|:-------------------------:
 <img src="https://github.com/Sinity0/Gifer/blob/master/Gifer%20screenshots/01.png" width="300">  |  <img src="https://github.com/Sinity0/Gifer/blob/master/Gifer%20screenshots/02.png" width="300"> 
 
