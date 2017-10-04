@@ -106,7 +106,7 @@ class FeedController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     // MARK: Feeds
     
-    func refreshFeed() {
+    @objc func refreshFeed() {
         gifFeed.clearFeed()
         collectionView.reloadData()
         refreshControl.endRefreshing()
