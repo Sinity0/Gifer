@@ -17,14 +17,14 @@ struct Constants {
     static let screenWidth: CGFloat = UIScreen.main.bounds.width
     
     static let noInternetOverlayTag: Int = 2000789
-    static let dateTimeFormat = "yyyy-MM-dd HH:mm:ss"
-    static let nonTrendedDateTimeFormat = "0000-00-00 00:00:00"
+    static let dateTimeFormat: String = "yyyy-MM-dd HH:mm:ss"
+    static let nonTrendedDateTimeFormat: String = "0000-00-00 00:00:00"
     
     static let searchResultsLimit: Int = 400
-    static let preferredSearchRating = "pg"
-    static let preferredImageType = "fixed_width_downsampled"
-    static let trendedIconName = "trendedIcon"
+    static let preferredSearchRating: String = "pg"
+    static let preferredImageType: String = "fixed_width_downsampled"
+    static let trendedIconName: String = "trendedIcon"
     static let trendedIconSize: CGFloat = 25
-    static let gifsOnPage = 20
+    static let gifsOnPage: Int = 20
     
 }

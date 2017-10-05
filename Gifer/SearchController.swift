@@ -13,9 +13,9 @@ class SearchController: UIViewController{
 
     @IBOutlet var collectionView: UICollectionView!
     var searchTerms: String!
-    private var gifFeed = FeedModel(type: .search)
-    private let rating = Constants.preferredSearchRating
-    private let gifsOnPage = Constants.gifsOnPage
+    private var gifFeed: FeedModel = FeedModel(type: .search)
+    private let rating: String  = Constants.preferredSearchRating
+    private let gifsOnPage: Int = Constants.gifsOnPage
     
     // MARK: View
     override func viewDidLoad() {
@@ -29,7 +29,7 @@ class SearchController: UIViewController{
         }
         
         if searchTerms.characters.count > 15 {
-            self.title = searchTerms.substring(with: Range<String.Index>(searchTerms.index(searchTerms.startIndex, offsetBy: 0)..<searchTerms.index(searchTerms.startIndex, offsetBy: 14))) + "..."
+            self.title = String(searchTerms.characters.prefix(15)) + "..."
         } else {
             self.title = searchTerms
         }
@@ -48,7 +48,8 @@ class SearchController: UIViewController{
         }
 
         collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "MyCell")
-        collectionView.contentInset = UIEdgeInsetsMake(Constants.cellPadding, Constants.cellPadding, Constants.cellPadding, Constants.cellPadding)
+        collectionView.contentInset = UIEdgeInsetsMake(Constants.cellPadding, Constants.cellPadding,
+                                                       Constants.cellPadding, Constants.cellPadding)
         self.view.addSubview(collectionView)
 
         loadFeed()
@@ -80,7 +81,8 @@ class SearchController: UIViewController{
     
     // MARK: Feeds
     func loadFeed() {
-        gifFeed.requestFeed(gifsOnPage, offset: 0, rating: rating, terms: searchTerms, comletionHandler: { (succeed, _, error) -> Void in
+        gifFeed.requestFeed(gifsOnPage, offset: 0, rating: rating, terms: searchTerms,
+                            comletionHandler: { (succeed, _, error) -> Void in
             if succeed {
                 //self.loaded = true
                 self.collectionView.reloadData()
@@ -93,7 +95,8 @@ class SearchController: UIViewController{
     }
     
     func loadMoreFeed() {
-        gifFeed.requestFeed(gifsOnPage, offset: gifFeed.currentOffset, rating: rating, terms: searchTerms, comletionHandler: { (succeed, total, error) -> Void in
+        gifFeed.requestFeed(gifsOnPage, offset: gifFeed.currentOffset, rating: rating, terms: searchTerms,
+                            comletionHandler: { (succeed, total, error) -> Void in
             if succeed, let total = total {
                 self.collectionView.performBatchUpdates({
                     
@@ -126,7 +129,11 @@ extension SearchController: UICollectionViewDelegate {
 extension SearchController: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if collectionView.bounds.intersects(CGRect(x: 0, y: collectionView.contentSize.height - Constants.screenHeight / 2, width: collectionView.frame.width, height: Constants.screenHeight / 2)) && collectionView.contentSize.height > 0 {
+        if collectionView.bounds.intersects(CGRect(x: 0,
+                                                   y: collectionView.contentSize.height - Constants.screenHeight / 2,
+                                                   width: collectionView.frame.width,
+                                                   height: Constants.screenHeight / 2)) &&
+            collectionView.contentSize.height > 0 {
             loadMoreFeed()
         }
     }

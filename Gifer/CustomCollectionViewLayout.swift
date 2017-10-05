@@ -13,8 +13,6 @@ protocol CustomCollectionViewLayoutDelegate {
     func collectionView(_ collectionView:UICollectionView, heightForGifAtIndexPath indexPath:IndexPath, fixedWidth:CGFloat) -> CGFloat
 }
 
-
-
 class CustomCollectionViewLayout: UICollectionViewLayout {
     
     var delegate: CustomCollectionViewLayoutDelegate!
@@ -39,9 +37,9 @@ class CustomCollectionViewLayout: UICollectionViewLayout {
         for item in 0..<collectionView!.numberOfItems(inSection: 0) {
             
             let indexPath = IndexPath(item: item, section: 0)
-            let gifWidth = itemWidth - 2 * Constants.cellPadding
-            let gifHeight = delegate.collectionView(collectionView!, heightForGifAtIndexPath: indexPath, fixedWidth: gifWidth)
-            let itemHeight = gifHeight + 2 * Constants.cellPadding
+            let gifWidth: CGFloat = itemWidth - 2 * Constants.cellPadding
+            let gifHeight: CGFloat = delegate.collectionView(collectionView!, heightForGifAtIndexPath: indexPath, fixedWidth: gifWidth)
+            let itemHeight: CGFloat = gifHeight + 2 * Constants.cellPadding
             
             if yOffset[0] > yOffset[1] {
                 column = 1

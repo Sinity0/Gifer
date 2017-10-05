@@ -14,9 +14,8 @@ class FeedController: UIViewController{
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet var collectionView: UICollectionView!
 
-    private var gifFeed = FeedModel(type: .trending)
+    private var gifFeed: FeedModel = FeedModel(type: .trending)
     private var refreshControl: UIRefreshControl!
-    private var loaded: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,7 +57,8 @@ class FeedController: UIViewController{
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         self.willRotate(to: UIApplication.shared.statusBarOrientation, duration: 0)
-        collectionView.contentInset = UIEdgeInsetsMake(44 + Constants.cellPadding, Constants.cellPadding, Constants.cellPadding, Constants.cellPadding)
+        collectionView.contentInset = UIEdgeInsetsMake(44 + Constants.cellPadding,
+                                                       Constants.cellPadding, Constants.cellPadding, Constants.cellPadding)
         collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(44, 0, 0, 0)
     }
 
@@ -68,9 +68,15 @@ class FeedController: UIViewController{
     
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
         if toInterfaceOrientation == .portrait || UIApplication.shared.statusBarOrientation == .portraitUpsideDown {
-            searchBar.frame = CGRect(x: 0, y: 20, width: ((Constants.screenHeight < Constants.screenWidth) ? Constants.screenHeight : Constants.screenWidth), height: 44)
+            searchBar.frame = CGRect(x: 0,
+                                     y: 20,
+                                     width: ((Constants.screenHeight < Constants.screenWidth) ? Constants.screenHeight : Constants.screenWidth),
+                                     height: 44)
         } else {
-            searchBar.frame = CGRect(x: 0, y: (UIDevice.current.userInterfaceIdiom == .pad) ? 20 : 0, width: ((Constants.screenHeight > Constants.screenWidth) ? Constants.screenHeight : Constants.screenWidth), height: 44)
+            searchBar.frame = CGRect(x: 0,
+                                     y: (UIDevice.current.userInterfaceIdiom == .pad) ? 20 : 0,
+                                     width: ((Constants.screenHeight > Constants.screenWidth) ? Constants.screenHeight : Constants.screenWidth),
+                                     height: 44)
         }
         collectionView.collectionViewLayout.invalidateLayout()
     }
@@ -84,9 +90,9 @@ class FeedController: UIViewController{
     }
     
     func loadFeed() {
-        gifFeed.requestFeed(20, offset: 0, rating: nil, terms: nil, comletionHandler: { (succeed, _, error) -> Void in
+        gifFeed.requestFeed(20, offset: 0, rating: nil, terms: nil,
+                            comletionHandler: { (succeed, _, error) -> Void in
             if succeed {
-                self.loaded = true
                 self.collectionView.reloadData()
                 self.loadMoreFeed()
             } else if let error = error {
@@ -97,7 +103,8 @@ class FeedController: UIViewController{
     }
     
     func loadMoreFeed() {
-        gifFeed.requestFeed(20, offset: gifFeed.currentOffset, rating: nil, terms: nil, comletionHandler: { (succeed, total, error) -> Void in
+        gifFeed.requestFeed(20, offset: gifFeed.currentOffset, rating: nil, terms: nil,
+                            comletionHandler: { (succeed, total, error) -> Void in
             if succeed, let total = total {
                 self.collectionView.performBatchUpdates({
                     var indexPaths = [IndexPath]()
@@ -120,7 +127,8 @@ class FeedController: UIViewController{
 // MARK: CustomCollectionViewLayout Delegate
 extension FeedController: CustomCollectionViewLayoutDelegate {
 
-    func collectionView(_ collectionView: UICollectionView, heightForGifAtIndexPath indexPath: IndexPath, fixedWidth: CGFloat) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, heightForGifAtIndexPath indexPath: IndexPath,
+                        fixedWidth: CGFloat) -> CGFloat {
         let gif = gifFeed.gifsArray[indexPath.item]
         let gifHeight = gif.height * fixedWidth / gif.width
         return gifHeight
@@ -134,7 +142,8 @@ extension FeedController: UICollectionViewDataSource {
         return gifFeed.gifsArray.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CustomCollectionViewCell
         cell.gif = gifFeed.gifsArray[indexPath.item]
         return cell
@@ -155,7 +164,10 @@ extension FeedController: UICollectionViewDelegate {
 extension FeedController: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if collectionView.bounds.intersects(CGRect(x: 0, y: collectionView.contentSize.height - Constants.screenHeight / 2, width: collectionView.frame.width, height: Constants.screenHeight / 2)) && collectionView.contentSize.height > 0  {
+        if collectionView.bounds.intersects(
+            CGRect(x: 0, y: collectionView.contentSize.height - Constants.screenHeight / 2,
+                   width: collectionView.frame.width, height: Constants.screenHeight / 2)) &&
+            collectionView.contentSize.height > 0  {
             loadMoreFeed()
         }
     }
@@ -166,7 +178,8 @@ extension FeedController: UISearchBarDelegate {
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let searchTerms = searchBar.text, searchTerms != "" {
-            if let searchResultController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchResultController") as? SearchController
+            if let searchResultController = UIStoryboard(name: "Main", bundle: nil)
+                .instantiateViewController(withIdentifier: "SearchResultController") as? SearchController
             {
                 searchResultController.searchTerms = searchTerms
                 self.navigationController?.pushViewController(searchResultController, animated: true)
