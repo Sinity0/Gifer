@@ -15,10 +15,10 @@ class CustomCollectionViewCell: UICollectionViewCell {
     var gif: GifsModel? {
         didSet {
             if let gif = gif, let url = gif.url {
-                imageView.sd_setImage(with: URL.init(string: url))
+                imageView.sd_setImage(with: URL(string: url))
             }
             if let gif = gif, let trended = gif.trended, trended == true {
-                trendedImageView = UIImageView.init(image: UIImage.init(named: Constants.trendedIconName))
+                trendedImageView = UIImageView(image: UIImage(named: Constants.trendedIconName))
             }
         }
     }
@@ -38,7 +38,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
         if let attributes = layoutAttributes as? CustomLayoutAttributes {
             if imageView == nil {
                 imageView = FLAnimatedImageView()
-                imageView.backgroundColor = UIColor.init(white: 0.9, alpha: 1.0)
+                imageView.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
                 
                 self.addSubview(imageView)
             }

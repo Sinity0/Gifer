@@ -17,9 +17,8 @@ enum Result<Value> {
 extension UIViewController {
 
     func alertControllerWithMessage(_ message: String) -> UIAlertController {
-        
-        let alertController = UIAlertController.init(title: "GifSearcher", message: message, preferredStyle: .alert)
-        let confirm = UIAlertAction.init(title: "OK", style: .cancel, handler: nil)
+        let alertController = UIAlertController(title: "GifSearcher", message: message, preferredStyle: .alert)
+        let confirm = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         alertController.addAction(confirm)
         return alertController
     }

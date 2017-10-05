@@ -38,7 +38,7 @@ class CustomCollectionViewLayout: UICollectionViewLayout {
         
         for item in 0..<collectionView!.numberOfItems(inSection: 0) {
             
-            let indexPath = IndexPath.init(item: item, section: 0)
+            let indexPath = IndexPath(item: item, section: 0)
             let gifWidth = itemWidth - 2 * Constants.cellPadding
             let gifHeight = delegate.collectionView(collectionView!, heightForGifAtIndexPath: indexPath, fixedWidth: gifWidth)
             let itemHeight = gifHeight + 2 * Constants.cellPadding
@@ -50,7 +50,7 @@ class CustomCollectionViewLayout: UICollectionViewLayout {
             }
             
             let itemFrame = CGRect(x: xOffset[column], y: yOffset[column], width: itemWidth, height: itemHeight)
-            let attribute = CustomLayoutAttributes.init(forCellWith: indexPath)
+            let attribute = CustomLayoutAttributes(forCellWith: indexPath)
             attribute.frame = itemFrame
             attribute.gifHeight = gifHeight
             attribute.gifWidth = gifWidth

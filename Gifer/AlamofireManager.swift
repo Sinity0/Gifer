@@ -38,7 +38,7 @@ class AlamofireManager {
                 if let gifData = gifJson["data"].array {
                     var gifs = [GifsModel]()
                     for gif in gifData {
-                        let gf = GifsModel.init(data: gif)
+                        let gf = GifsModel(data: gif)
                         gifs.append(gf)
                     }
                     completion(.success(gifs))
@@ -65,7 +65,7 @@ class AlamofireManager {
     
                 switch response.result {
                 case .success(let result):
-                    let resultJSON = JSON.init(result)
+                    let resultJSON = JSON(result)
                     var total: Int?
                     if let pagination = resultJSON["pagination"].dictionary {
                         if let totalcount = pagination["total_count"]?.int {
@@ -75,7 +75,7 @@ class AlamofireManager {
                     if let gifdata = resultJSON["data"].array {
                         var gifs = [GifsModel]()
                         for gifJSON in gifdata {
-                            let gif = GifsModel.init(data: gifJSON)
+                            let gif = GifsModel(data: gifJSON)
                             gifs.append(gif)
                         }
                         completionHandler(gifs, total, nil)

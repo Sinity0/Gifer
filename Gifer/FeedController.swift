@@ -9,11 +9,12 @@
 import UIKit
 import Alamofire
 
-class FeedController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UISearchBarDelegate, CustomCollectionViewLayoutDelegate {
+class FeedController: UIViewController{
     
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet var collectionView: UICollectionView!
     private var gifFeed = FeedModel(type: .trending)
-    private var searchBar: UISearchBar!
+    //private var searchBar: UISearchBar!
     private var refreshControl: UIRefreshControl!
     private var loaded: Bool = false
 
@@ -25,11 +26,8 @@ class FeedController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }
 
         // search bar
-        searchBar = UISearchBar()
-        searchBar.placeholder = "Search"
         searchBar.delegate = self
-        searchBar.barTintColor = UIColor.clear
-        searchBar.tintColor = UIColor.white
+        searchBar.tintColor = .white
         searchBar.backgroundImage = UIImage()
         self.view.addSubview(searchBar)
         
@@ -39,11 +37,11 @@ class FeedController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = UIColor.clear
+        collectionView.backgroundColor = .clear
         
         // refresh control
         refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(FeedController.refreshFeed), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(refreshFeed), for: .valueChanged)
         collectionView.addSubview(refreshControl)
         
         (self.loaded == false) ? self.loadFeed() : self.loadMoreFeed()
@@ -81,31 +79,7 @@ class FeedController: UIViewController, UICollectionViewDelegate, UICollectionVi
         collectionView.collectionViewLayout.invalidateLayout()
     }
     
-    
-    // MARK: UISearchBar Delegate
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-
-        if let searchTerms = searchBar.text, searchTerms != "" {
-            let result = SearchController()
-            result.searchTerms = searchTerms
-            self.navigationController?.pushViewController(result, animated: true)
-        }
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.text = ""
-        view.endEditing(true)
-        searchBar.showsCancelButton = false
-    }
-    
-    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        searchBar.showsCancelButton = true
-        return true
-    }
-    
     // MARK: Feeds
-    
     @objc func refreshFeed() {
         gifFeed.clearFeed()
         collectionView.reloadData()
@@ -133,7 +107,7 @@ class FeedController: UIViewController, UICollectionViewDelegate, UICollectionVi
                     
                     var indexPaths = [IndexPath]()
                     for i in (self.gifFeed.currentOffset - total)..<self.gifFeed.currentOffset {
-                        let indexPath = IndexPath.init(item: i, section: 0)
+                        let indexPath = IndexPath(item: i, section: 0)
                         indexPaths.append(indexPath)
                     }
                     self.collectionView.insertItems(at: indexPaths)
@@ -147,43 +121,75 @@ class FeedController: UIViewController, UICollectionViewDelegate, UICollectionVi
             }
         })
     }
-    
-    // MARK: UIScrollView Delegate
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if collectionView.bounds.intersects(CGRect(x: 0, y: collectionView.contentSize.height - Constants.screenHeight / 2, width: collectionView.frame.width, height: Constants.screenHeight / 2)) && collectionView.contentSize.height > 0  {
-            loadMoreFeed()
-        }
-    }
-    
-    // MARK: UICollectionView Data Source
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return gifFeed.gifsArray.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CustomCollectionViewCell
-        cell.gif = gifFeed.gifsArray[indexPath.item]
-        return cell
-    }
-    
-    // MARK: UICollectionView Delegate
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        searchBar.text = ""
-        view.endEditing(true)
-        searchBar.showsCancelButton = false
-    }
+}
 
-    // MARK: CustomCollectionViewLayout Delegate
-    
+// MARK: -
+// MARK: CustomCollectionViewLayout Delegate
+extension FeedController: CustomCollectionViewLayoutDelegate {
+
     func collectionView(_ collectionView: UICollectionView, heightForGifAtIndexPath indexPath: IndexPath, fixedWidth: CGFloat) -> CGFloat {
         let gif = gifFeed.gifsArray[indexPath.item]
         let gifHeight = gif.height * fixedWidth / gif.width
         return gifHeight
     }
+}
 
+// MARK: UICollectionView Data Source
+extension FeedController: UICollectionViewDataSource {
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return gifFeed.gifsArray.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CustomCollectionViewCell
+        cell.gif = gifFeed.gifsArray[indexPath.item]
+        return cell
+    }
+}
+
+// MARK: UICollectionView Delegate
+extension FeedController: UICollectionViewDelegate {
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        searchBar.text = ""
+        view.endEditing(true)
+        searchBar.showsCancelButton = false
+    }
+}
+
+// MARK: UIScrollView Delegate
+extension FeedController: UIScrollViewDelegate {
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if collectionView.bounds.intersects(CGRect(x: 0, y: collectionView.contentSize.height - Constants.screenHeight / 2, width: collectionView.frame.width, height: Constants.screenHeight / 2)) && collectionView.contentSize.height > 0  {
+            loadMoreFeed()
+        }
+    }
+}
+
+// MARK: UISearchBar Delegate
+extension FeedController: UISearchBarDelegate {
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+
+        if let searchTerms = searchBar.text, searchTerms != "" {
+            let result = SearchController()
+            result.searchTerms = searchTerms
+            self.navigationController?.pushViewController(result, animated: true)
+        }
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        view.endEditing(true)
+        searchBar.showsCancelButton = false
+    }
+
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        searchBar.showsCancelButton = true
+        return true
+    }
 }
 
 

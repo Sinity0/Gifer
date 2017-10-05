@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 
-class SearchController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, CustomCollectionViewLayoutDelegate {
+class SearchController: UIViewController, UICollectionViewDelegate {
 
     var searchTerms: String!
     private var gifFeed = FeedModel(type: .search)
@@ -22,8 +22,8 @@ class SearchController: UIViewController, UICollectionViewDelegate, UICollection
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationController?.navigationBar.barTintColor = UIColor.darkGray
-        navigationController?.navigationBar.tintColor = UIColor.white
+        navigationController?.navigationBar.barTintColor = .darkGray
+        navigationController?.navigationBar.tintColor = .white
         
         if searchTerms == nil {
             searchTerms = ""
@@ -34,16 +34,13 @@ class SearchController: UIViewController, UICollectionViewDelegate, UICollection
         } else {
             self.title = searchTerms
         }
-        self.view.backgroundColor = UIColor.white
-        
-        // collection view
+        self.view.backgroundColor = .white
+
         let layout = CustomCollectionViewLayout()
         layout.delegate = self
-        
-        collectionView = UICollectionView.init(frame: self.view.bounds, collectionViewLayout: layout)
+        collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = UIColor.clear
         if let patternImage = UIImage(named: "Pattern") {
             collectionView.backgroundColor = UIColor(patternImage: patternImage)
         }
@@ -102,7 +99,7 @@ class SearchController: UIViewController, UICollectionViewDelegate, UICollection
                     
                     var indexPaths = [IndexPath]()
                     for i in (self.gifFeed.currentOffset - total)..<self.gifFeed.currentOffset {
-                        let indexPath = IndexPath.init(item: i, section: 0)
+                        let indexPath = IndexPath(item: i, section: 0)
                         indexPaths.append(indexPath)
                     }
                     self.collectionView.insertItems(at: indexPaths)
@@ -116,29 +113,37 @@ class SearchController: UIViewController, UICollectionViewDelegate, UICollection
             }
         })
     }
-    
-    // MARK: UIScrollView Delegate
-    
+
+
+}
+
+// MARK: UIScrollView Delegate
+extension SearchController: UIScrollViewDelegate {
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if collectionView.bounds.intersects(CGRect(x: 0, y: collectionView.contentSize.height - Constants.screenHeight / 2, width: collectionView.frame.width, height: Constants.screenHeight / 2)) && collectionView.contentSize.height > 0 { 
+        if collectionView.bounds.intersects(CGRect(x: 0, y: collectionView.contentSize.height - Constants.screenHeight / 2, width: collectionView.frame.width, height: Constants.screenHeight / 2)) && collectionView.contentSize.height > 0 {
             loadMoreFeed()
         }
     }
-    
-    // MARK: UICollectionView Data Source
-    
+}
+
+// MARK: UICollectionView Data Source
+extension SearchController: UICollectionViewDataSource {
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return gifFeed.gifsArray.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CustomCollectionViewCell
         cell.gif = gifFeed.gifsArray[indexPath.item]
         return cell
     }
-    
-    // MARK: GifCollectionViewLayout Delegate
-    
+}
+
+// MARK: CustomCollectionViewLayout Delegate
+extension SearchController: CustomCollectionViewLayoutDelegate {
+
     func collectionView(_ collectionView: UICollectionView, heightForGifAtIndexPath indexPath: IndexPath, fixedWidth: CGFloat) -> CGFloat {
         let gif = gifFeed.gifsArray[indexPath.item]
         let gifHeight = gif.height * fixedWidth / gif.width
