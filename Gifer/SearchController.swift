@@ -9,16 +9,13 @@
 import UIKit
 import Alamofire
 
-class SearchController: UIViewController, UICollectionViewDelegate {
+class SearchController: UIViewController{
 
-    
     @IBOutlet var collectionView: UICollectionView!
     var searchTerms: String!
     private var gifFeed = FeedModel(type: .search)
-    //private var collectionView: UICollectionView!
     private let rating = Constants.preferredSearchRating
     private let gifsOnPage = Constants.gifsOnPage
-    //private var loaded: Bool = false
     
     // MARK: View
     override func viewDidLoad() {
@@ -54,12 +51,10 @@ class SearchController: UIViewController, UICollectionViewDelegate {
         collectionView.contentInset = UIEdgeInsetsMake(Constants.cellPadding, Constants.cellPadding, Constants.cellPadding, Constants.cellPadding)
         self.view.addSubview(collectionView)
 
-        //(self.loaded == false) ? self.loadFeed() : self.loadMoreFeed()
         loadFeed()
     }
     
     // MARK: Subview & Orientation
-    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         self.willRotate(to: UIApplication.shared.statusBarOrientation, duration: 0)
@@ -84,7 +79,6 @@ class SearchController: UIViewController, UICollectionViewDelegate {
     }
     
     // MARK: Feeds
-    
     func loadFeed() {
         gifFeed.requestFeed(gifsOnPage, offset: 0, rating: rating, terms: searchTerms, comletionHandler: { (succeed, _, error) -> Void in
             if succeed {
@@ -119,8 +113,13 @@ class SearchController: UIViewController, UICollectionViewDelegate {
             }
         })
     }
+}
 
+// MARK: UICollectionView Delegate
+extension SearchController: UICollectionViewDelegate {
 
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    }
 }
 
 // MARK: UIScrollView Delegate

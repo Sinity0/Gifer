@@ -25,27 +25,23 @@ class FeedController: UIViewController{
             view.backgroundColor = UIColor(patternImage: patternImage)
         }
 
-        // search bar
         searchBar.delegate = self
         searchBar.tintColor = .white
         searchBar.backgroundImage = UIImage()
         self.view.addSubview(searchBar)
-        
-        // collection view
+
         if let layout = collectionView.collectionViewLayout as? CustomCollectionViewLayout {
             layout.delegate = self
         }
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .clear
-        
-        // refresh control
+
         refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshFeed), for: .valueChanged)
         collectionView.addSubview(refreshControl)
-        
-        (self.loaded == false) ? self.loadFeed() : self.loadMoreFeed()
 
+        loadFeed()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -104,7 +100,6 @@ class FeedController: UIViewController{
         gifFeed.requestFeed(20, offset: gifFeed.currentOffset, rating: nil, terms: nil, comletionHandler: { (succeed, total, error) -> Void in
             if succeed, let total = total {
                 self.collectionView.performBatchUpdates({
-                    
                     var indexPaths = [IndexPath]()
                     for i in (self.gifFeed.currentOffset - total)..<self.gifFeed.currentOffset {
                         let indexPath = IndexPath(item: i, section: 0)
@@ -112,9 +107,7 @@ class FeedController: UIViewController{
                     }
                     self.collectionView.insertItems(at: indexPaths)
                     
-                }, completion: { done -> Void in
-                    
-                })
+                }, completion: nil)
             } else if let error = error {
                 let alert = self.alertControllerWithMessage(error)
                 self.present(alert, animated: true, completion: nil)
@@ -172,18 +165,11 @@ extension FeedController: UIScrollViewDelegate {
 extension FeedController: UISearchBarDelegate {
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-
-//        if let searchTerms = searchBar.text, searchTerms != "" {
-//            let result = SearchController()
-//            result.searchTerms = searchTerms
-//            self.navigationController?.pushViewController(result, animated: true)
-//        }
         if let searchTerms = searchBar.text, searchTerms != "" {
             if let searchResultController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchResultController") as? SearchController
             {
                 searchResultController.searchTerms = searchTerms
                 self.navigationController?.pushViewController(searchResultController, animated: true)
-                //present(searchResultController, animated: true, completion: nil)
             }
         }
     }
