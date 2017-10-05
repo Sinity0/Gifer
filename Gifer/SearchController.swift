@@ -12,13 +12,13 @@ import Alamofire
 class SearchController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, CustomCollectionViewLayoutDelegate {
 
     var searchTerms: String!
-    fileprivate var gifFeed = FeedModel(type: .search)
-    fileprivate var collectionView: UICollectionView!
-    fileprivate let rating = Constants.preferredSearchRating
-    fileprivate var loaded: Bool = false
+    private var gifFeed = FeedModel(type: .search)
+    private var collectionView: UICollectionView!
+    private let rating = Constants.preferredSearchRating
+    private let gifsOnPage = Constants.gifsOnPage
+    private var loaded: Bool = false
     
     // MARK: View
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -83,7 +83,7 @@ class SearchController: UIViewController, UICollectionViewDelegate, UICollection
     // MARK: Feeds
     
     func loadFeed() {
-        gifFeed.requestFeed(20, offset: 0, rating: rating, terms: searchTerms, comletionHandler: { (succeed, _, error) -> Void in
+        gifFeed.requestFeed(gifsOnPage, offset: 0, rating: rating, terms: searchTerms, comletionHandler: { (succeed, _, error) -> Void in
             if succeed {
                 self.loaded = true
                 self.collectionView.reloadData()
@@ -96,7 +96,7 @@ class SearchController: UIViewController, UICollectionViewDelegate, UICollection
     }
     
     func loadMoreFeed() {
-        gifFeed.requestFeed(20, offset: gifFeed.currentOffset, rating: rating, terms: searchTerms, comletionHandler: { (succeed, total, error) -> Void in
+        gifFeed.requestFeed(gifsOnPage, offset: gifFeed.currentOffset, rating: rating, terms: searchTerms, comletionHandler: { (succeed, total, error) -> Void in
             if succeed, let total = total {
                 self.collectionView.performBatchUpdates({
                     

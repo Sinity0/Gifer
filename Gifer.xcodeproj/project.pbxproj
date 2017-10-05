@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		22AA07F47A61B6F325256E7C /* Pods_Gifer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 953141CE848BFC1D6B0F6CB9 /* Pods_Gifer.framework */; };
+		8356BB301F861587007A3315 /* CustomLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8356BB2F1F861587007A3315 /* CustomLayoutAttributes.swift */; };
 		844B97D61F7A8EC0005DA644 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B97D51F7A8EC0005DA644 /* AppDelegate.swift */; };
 		844B97DB1F7A8EC0005DA644 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 844B97D91F7A8EC0005DA644 /* Main.storyboard */; };
 		844B97DD1F7A8EC0005DA644 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 844B97DC1F7A8EC0005DA644 /* Assets.xcassets */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8356BB2F1F861587007A3315 /* CustomLayoutAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLayoutAttributes.swift; sourceTree = "<group>"; };
 		844B97D21F7A8EC0005DA644 /* Gifer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gifer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		844B97D51F7A8EC0005DA644 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		844B97DA1F7A8EC0005DA644 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 			children = (
 				844B97FC1F7C49B8005DA644 /* CustomCollectionViewCell.swift */,
 				844B97FE1F7C5409005DA644 /* CustomCollectionViewLayout.swift */,
+				8356BB2F1F861587007A3315 /* CustomLayoutAttributes.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8356BB301F861587007A3315 /* CustomLayoutAttributes.swift in Sources */,
 				844B97F01F7ADFDE005DA644 /* GifsModel.swift in Sources */,
 				844B97FD1F7C49B8005DA644 /* CustomCollectionViewCell.swift in Sources */,
 				844B97EB1F7AC23E005DA644 /* SearchController.swift in Sources */,

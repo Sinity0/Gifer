@@ -15,15 +15,12 @@ enum Result<Value> {
 }
 
 extension UIViewController {
-    
-    // MARK: AlertController
+
     func alertControllerWithMessage(_ message: String) -> UIAlertController {
         
         let alertController = UIAlertController.init(title: "GifSearcher", message: message, preferredStyle: .alert)
         let confirm = UIAlertAction.init(title: "OK", style: .cancel, handler: nil)
         alertController.addAction(confirm)
         return alertController
-        
     }
-    
 }

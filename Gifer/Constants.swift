@@ -25,5 +25,6 @@ struct Constants {
     static let preferredImageType = "fixed_width_downsampled"
     static let trendedIconName = "trendedIcon"
     static let trendedIconSize: CGFloat = 25
+    static let gifsOnPage = 20
     
 }
