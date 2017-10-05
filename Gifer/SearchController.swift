@@ -11,12 +11,14 @@ import Alamofire
 
 class SearchController: UIViewController, UICollectionViewDelegate {
 
+    
+    @IBOutlet var collectionView: UICollectionView!
     var searchTerms: String!
     private var gifFeed = FeedModel(type: .search)
-    private var collectionView: UICollectionView!
+    //private var collectionView: UICollectionView!
     private let rating = Constants.preferredSearchRating
     private let gifsOnPage = Constants.gifsOnPage
-    private var loaded: Bool = false
+    //private var loaded: Bool = false
     
     // MARK: View
     override func viewDidLoad() {
@@ -36,20 +38,24 @@ class SearchController: UIViewController, UICollectionViewDelegate {
         }
         self.view.backgroundColor = .white
 
-        let layout = CustomCollectionViewLayout()
-        layout.delegate = self
-        collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.backgroundColor = .clear
+
+        if let layout = collectionView.collectionViewLayout as? CustomCollectionViewLayout {
+            layout.delegate = self
+        }
+
         if let patternImage = UIImage(named: "Pattern") {
             collectionView.backgroundColor = UIColor(patternImage: patternImage)
         }
 
+        collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "MyCell")
         collectionView.contentInset = UIEdgeInsetsMake(Constants.cellPadding, Constants.cellPadding, Constants.cellPadding, Constants.cellPadding)
-        collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         self.view.addSubview(collectionView)
-        
-        (self.loaded == false) ? self.loadFeed() : self.loadMoreFeed()
+
+        //(self.loaded == false) ? self.loadFeed() : self.loadMoreFeed()
+        loadFeed()
     }
     
     // MARK: Subview & Orientation
@@ -82,7 +88,7 @@ class SearchController: UIViewController, UICollectionViewDelegate {
     func loadFeed() {
         gifFeed.requestFeed(gifsOnPage, offset: 0, rating: rating, terms: searchTerms, comletionHandler: { (succeed, _, error) -> Void in
             if succeed {
-                self.loaded = true
+                //self.loaded = true
                 self.collectionView.reloadData()
                 self.loadMoreFeed()
             } else if let error = error {
@@ -135,7 +141,7 @@ extension SearchController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CustomCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyCell", for: indexPath) as! CustomCollectionViewCell
         cell.gif = gifFeed.gifsArray[indexPath.item]
         return cell
     }

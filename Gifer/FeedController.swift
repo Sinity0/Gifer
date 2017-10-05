@@ -13,8 +13,8 @@ class FeedController: UIViewController{
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet var collectionView: UICollectionView!
+
     private var gifFeed = FeedModel(type: .trending)
-    //private var searchBar: UISearchBar!
     private var refreshControl: UIRefreshControl!
     private var loaded: Bool = false
 
@@ -173,10 +173,18 @@ extension FeedController: UISearchBarDelegate {
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 
+//        if let searchTerms = searchBar.text, searchTerms != "" {
+//            let result = SearchController()
+//            result.searchTerms = searchTerms
+//            self.navigationController?.pushViewController(result, animated: true)
+//        }
         if let searchTerms = searchBar.text, searchTerms != "" {
-            let result = SearchController()
-            result.searchTerms = searchTerms
-            self.navigationController?.pushViewController(result, animated: true)
+            if let searchResultController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchResultController") as? SearchController
+            {
+                searchResultController.searchTerms = searchTerms
+                self.navigationController?.pushViewController(searchResultController, animated: true)
+                //present(searchResultController, animated: true, completion: nil)
+            }
         }
     }
 
