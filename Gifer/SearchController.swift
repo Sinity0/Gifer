@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 
-class SearchController: UIViewController{
+class SearchResultController: UIViewController{
 
     @IBOutlet var collectionView: UICollectionView!
     var searchTerms: String!
@@ -85,14 +85,14 @@ class SearchController: UIViewController{
 
 // MARK: -
 // MARK: UICollectionView Delegate
-extension SearchController: UICollectionViewDelegate {
+extension SearchResultController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     }
 }
 
 // MARK: UIScrollView Delegate
-extension SearchController: UIScrollViewDelegate {
+extension SearchResultController: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if collectionView.bounds.intersects(CGRect(x: 0,
@@ -106,7 +106,7 @@ extension SearchController: UIScrollViewDelegate {
 }
 
 // MARK: UICollectionView Data Source
-extension SearchController: UICollectionViewDataSource {
+extension SearchResultController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return gifFeed.gifsArray.count
@@ -120,7 +120,7 @@ extension SearchController: UICollectionViewDataSource {
 }
 
 // MARK: CustomCollectionViewLayout Delegate
-extension SearchController: CustomCollectionViewLayoutDelegate {
+extension SearchResultController: CustomCollectionViewLayoutDelegate {
 
     func collectionView(_ collectionView: UICollectionView, heightForGifAtIndexPath indexPath: IndexPath, fixedWidth: Double) -> Double {
         let gif = gifFeed.gifsArray[indexPath.item]

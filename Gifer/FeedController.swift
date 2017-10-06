@@ -164,7 +164,7 @@ extension FeedController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let searchTerms = searchBar.text, searchTerms != "" {
             if let searchResultController = UIStoryboard(name: "Main", bundle: nil)
-                .instantiateViewController(withIdentifier: "SearchResultController") as? SearchController
+                .instantiateViewController(withIdentifier: "SearchResultController") as? SearchResultController
             {
                 searchResultController.searchTerms = searchTerms
                 self.navigationController?.pushViewController(searchResultController, animated: true)
