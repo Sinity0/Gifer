@@ -48,8 +48,7 @@ class SearchController: UIViewController{
         }
 
         collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "MyCell")
-        collectionView.contentInset = UIEdgeInsetsMake(Constants.cellPadding, Constants.cellPadding,
-                                                       Constants.cellPadding, Constants.cellPadding)
+
         self.view.addSubview(collectionView)
 
         loadFeed()
@@ -63,19 +62,10 @@ class SearchController: UIViewController{
     
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
 
-        var rect = collectionView.frame
-        if toInterfaceOrientation == .portrait || UIApplication.shared.statusBarOrientation == .portraitUpsideDown {
-            if collectionView.frame.height < collectionView.frame.width {
-                rect.size.width = collectionView.frame.height
-                rect.size.height = collectionView.frame.width
-            }
-        } else {
-            if collectionView.frame.height > collectionView.frame.width {
-                rect.size.width = collectionView.frame.height
-                rect.size.height = collectionView.frame.width
-            }
-        }
-        collectionView.frame = rect
+        collectionView.contentInset = UIEdgeInsetsMake(Constants.cellPaddingTop,
+                                                       Constants.cellPaddingLeft,
+                                                       Constants.cellPaddingBottom,
+                                                       Constants.cellPaddingRight)
         collectionView.collectionViewLayout.invalidateLayout()
     }
     
@@ -88,7 +78,7 @@ class SearchController: UIViewController{
                 self.collectionView.reloadData()
                 self.loadMoreFeed()
             } else if let error = error {
-                let alert = self.alertControllerWithMessage(error)
+                let alert = self.showAlert(error)
                 self.present(alert, animated: true, completion: nil)
             }
         })
@@ -111,7 +101,7 @@ class SearchController: UIViewController{
                     
                 })
             } else if let error = error {
-                let alert = self.alertControllerWithMessage(error)
+                let alert = self.showAlert(error)
                 self.present(alert, animated: true, completion: nil)
             }
         })

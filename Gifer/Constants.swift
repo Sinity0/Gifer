@@ -12,11 +12,13 @@ import Alamofire
 
 struct Constants {
     
-    static let cellPadding: CGFloat = 5.0
+    static let cellPaddingLeft: CGFloat = 5.0
+    static let cellPaddingRight: CGFloat = 5.0
+    static let cellPaddingTop: CGFloat = 5.0
+    static let cellPaddingBottom: CGFloat = 5.0
     static let screenHeight: CGFloat = UIScreen.main.bounds.height
     static let screenWidth: CGFloat = UIScreen.main.bounds.width
-    
-    static let noInternetOverlayTag: Int = 2000789
+
     static let dateTimeFormat: String = "yyyy-MM-dd HH:mm:ss"
     static let nonTrendedDateTimeFormat: String = "0000-00-00 00:00:00"
     

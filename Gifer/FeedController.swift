@@ -57,9 +57,6 @@ class FeedController: UIViewController{
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         self.willRotate(to: UIApplication.shared.statusBarOrientation, duration: 0)
-        collectionView.contentInset = UIEdgeInsetsMake(44 + Constants.cellPadding,
-                                                       Constants.cellPadding, Constants.cellPadding, Constants.cellPadding)
-        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(44, 0, 0, 0)
     }
 
     override func didReceiveMemoryWarning() {
@@ -68,16 +65,17 @@ class FeedController: UIViewController{
     
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
         if toInterfaceOrientation == .portrait || UIApplication.shared.statusBarOrientation == .portraitUpsideDown {
-            searchBar.frame = CGRect(x: 0,
-                                     y: 20,
-                                     width: ((Constants.screenHeight < Constants.screenWidth) ? Constants.screenHeight : Constants.screenWidth),
-                                     height: 44)
+            collectionView.contentInset = UIEdgeInsetsMake(searchBar.frame.height - Constants.cellPaddingTop,
+                                                           Constants.cellPaddingLeft,
+                                                           Constants.cellPaddingBottom,
+                                                           Constants.cellPaddingRight)
         } else {
-            searchBar.frame = CGRect(x: 0,
-                                     y: (UIDevice.current.userInterfaceIdiom == .pad) ? 20 : 0,
-                                     width: ((Constants.screenHeight > Constants.screenWidth) ? Constants.screenHeight : Constants.screenWidth),
-                                     height: 44)
+            collectionView.contentInset = UIEdgeInsetsMake(searchBar.frame.height + Constants.cellPaddingTop,
+                                                           Constants.cellPaddingLeft,
+                                                           Constants.cellPaddingBottom,
+                                                           Constants.cellPaddingRight)
         }
+
         collectionView.collectionViewLayout.invalidateLayout()
     }
     
@@ -96,7 +94,7 @@ class FeedController: UIViewController{
                 self.collectionView.reloadData()
                 self.loadMoreFeed()
             } else if let error = error {
-                let alert = self.alertControllerWithMessage(error)
+                let alert = self.showAlert(error)
                 self.present(alert, animated: true, completion: nil)
             }
         })
@@ -116,7 +114,7 @@ class FeedController: UIViewController{
                     
                 }, completion: nil)
             } else if let error = error {
-                let alert = self.alertControllerWithMessage(error)
+                let alert = self.showAlert(error)
                 self.present(alert, animated: true, completion: nil)
             }
         })

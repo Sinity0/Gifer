@@ -16,9 +16,9 @@ protocol CustomCollectionViewLayoutDelegate {
 class CustomCollectionViewLayout: UICollectionViewLayout {
     
     var delegate: CustomCollectionViewLayoutDelegate!
-    fileprivate var attributes = [CustomLayoutAttributes]()
-    fileprivate var contentHeight: CGFloat = 0.0
-    fileprivate var contentWidth: CGFloat = 0.0
+    private var attributes = [CustomLayoutAttributes]()
+    private var contentHeight: CGFloat = 0.0
+    private var contentWidth: CGFloat = 0.0
     
     override class var layoutAttributesClass : AnyClass {
         return CustomLayoutAttributes.self
@@ -37,9 +37,9 @@ class CustomCollectionViewLayout: UICollectionViewLayout {
         for item in 0..<collectionView!.numberOfItems(inSection: 0) {
             
             let indexPath = IndexPath(item: item, section: 0)
-            let gifWidth: CGFloat = itemWidth - 2 * Constants.cellPadding
+            let gifWidth: CGFloat = itemWidth - 2 * Constants.cellPaddingTop
             let gifHeight: CGFloat = delegate.collectionView(collectionView!, heightForGifAtIndexPath: indexPath, fixedWidth: gifWidth)
-            let itemHeight: CGFloat = gifHeight + 2 * Constants.cellPadding
+            let itemHeight: CGFloat = gifHeight + 2 * Constants.cellPaddingTop
             
             if yOffset[0] > yOffset[1] {
                 column = 1

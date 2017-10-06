@@ -27,7 +27,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
     var trendedImageView: UIImageView? {
         didSet {
             if let trendedImageView = trendedImageView {
-                trendedImageView.frame = CGRect(x: Constants.cellPadding * 2, y: Constants.cellPadding * 2, width: Constants.trendedIconSize, height: Constants.trendedIconSize)
+                trendedImageView.frame = CGRect(x: Constants.cellPaddingTop * 2, y: Constants.cellPaddingRight * 2, width: Constants.trendedIconSize, height: Constants.trendedIconSize)
                 self.addSubview(trendedImageView)
             }
         }
@@ -42,7 +42,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
                 
                 self.addSubview(imageView)
             }
-            imageView.frame = CGRect(x: Constants.cellPadding, y: Constants.cellPadding, width: attributes.gifWidth, height: attributes.gifHeight)
+            imageView.frame = CGRect(x: Constants.cellPaddingTop, y: Constants.cellPaddingRight, width: attributes.gifWidth, height: attributes.gifHeight)
             imageView.layer.cornerRadius = 16
             imageView.layer.masksToBounds = true
         }
