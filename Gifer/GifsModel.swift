@@ -12,8 +12,8 @@ import SwiftyJSON
 
 class GifsModel {
     
-    var width: CGFloat = 0
-    var height: CGFloat = 0
+    var width: Double = 0
+    var height: Double = 0
     var url: String?
     var id: String?
     var rating: String?
@@ -35,19 +35,21 @@ class GifsModel {
         }
         
         if let gifWidth = data["images"][Constants.preferredImageType]["width"].string {
-            if let w = Double(gifWidth) {
-                width = CGFloat(w)
-            }
+            guard let n = Double(gifWidth) else { return }
+            width = n
         }
         
         if let gifHeight = data["images"][Constants.preferredImageType]["height"].string {
-            if let h = Double(gifHeight) {
-                height = CGFloat(h)
-            }
+            guard let n = Double(gifHeight) else { return }
+            height = n
         }
         
         if let trendingDateTime = data["trending_datetime"].string {
-            (trendingDateTime == Constants.nonTrendedDateTimeFormat) ? (trended = false) : (trended = true)
+            if trendingDateTime == Constants.nonTrendedDateTimeFormat {
+                trended = false
+            } else {
+                trended = true
+            }
         }
     }
 }

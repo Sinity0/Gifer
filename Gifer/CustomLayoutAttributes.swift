@@ -6,13 +6,12 @@
 //  Copyright © 2017 Niar. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 class CustomLayoutAttributes: UICollectionViewLayoutAttributes {
 
-    var gifHeight: CGFloat = 0.0
-    var gifWidth: CGFloat = 0.0
+    var gifHeight: Double = 0.0
+    var gifWidth: Double = 0.0
 
     override func copy(with zone: NSZone?) -> Any {
         let copy = super.copy(with: zone) as! CustomLayoutAttributes

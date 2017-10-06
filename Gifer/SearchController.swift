@@ -15,7 +15,7 @@ class SearchController: UIViewController{
     var searchTerms: String!
     private var gifFeed: FeedModel = FeedModel(type: .search)
     private let rating: String  = Constants.preferredSearchRating
-    private let gifsOnPage: Int = Constants.gifsOnPage
+    private let gifsRequestLimit: Int = Constants.gifsRequestLimit
     
     // MARK: View
     override func viewDidLoad() {
@@ -27,13 +27,8 @@ class SearchController: UIViewController{
         if searchTerms == nil {
             searchTerms = ""
         }
-        
-        if searchTerms.characters.count > 15 {
-            self.title = String(searchTerms.characters.prefix(15)) + "..."
-        } else {
-            self.title = searchTerms
-        }
-        self.view.backgroundColor = .white
+
+        (searchTerms.characters.count > 15) ? (self.title = String(searchTerms.characters.prefix(15)) + "...") : (self.title = searchTerms)
 
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -42,11 +37,9 @@ class SearchController: UIViewController{
         if let layout = collectionView.collectionViewLayout as? CustomCollectionViewLayout {
             layout.delegate = self
         }
-
         if let patternImage = UIImage(named: "Pattern") {
             collectionView.backgroundColor = UIColor(patternImage: patternImage)
         }
-
         collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "MyCell")
 
         self.view.addSubview(collectionView)
@@ -71,35 +64,17 @@ class SearchController: UIViewController{
     
     // MARK: Feeds
     func loadFeed() {
-        gifFeed.requestFeed(gifsOnPage, offset: 0, rating: rating, terms: searchTerms,
-                            comletionHandler: { (succeed, _, error) -> Void in
-            if succeed {
-                //self.loaded = true
-                self.collectionView.reloadData()
-                self.loadMoreFeed()
-            } else if let error = error {
-                let alert = self.showAlert(error)
-                self.present(alert, animated: true, completion: nil)
-            }
-        })
-    }
-    
-    func loadMoreFeed() {
-        gifFeed.requestFeed(gifsOnPage, offset: gifFeed.currentOffset, rating: rating, terms: searchTerms,
+        gifFeed.requestFeed(gifsRequestLimit, offset: gifFeed.currentOffset, rating: rating, terms: searchTerms,
                             comletionHandler: { (succeed, total, error) -> Void in
             if succeed, let total = total {
                 self.collectionView.performBatchUpdates({
-                    
                     var indexPaths = [IndexPath]()
                     for i in (self.gifFeed.currentOffset - total)..<self.gifFeed.currentOffset {
                         let indexPath = IndexPath(item: i, section: 0)
                         indexPaths.append(indexPath)
                     }
                     self.collectionView.insertItems(at: indexPaths)
-                    
-                }, completion: { done -> Void in
-                    
-                })
+                }, completion: nil)
             } else if let error = error {
                 let alert = self.showAlert(error)
                 self.present(alert, animated: true, completion: nil)
@@ -108,6 +83,7 @@ class SearchController: UIViewController{
     }
 }
 
+// MARK: -
 // MARK: UICollectionView Delegate
 extension SearchController: UICollectionViewDelegate {
 
@@ -124,7 +100,7 @@ extension SearchController: UIScrollViewDelegate {
                                                    width: collectionView.frame.width,
                                                    height: Constants.screenHeight / 2)) &&
             collectionView.contentSize.height > 0 {
-            loadMoreFeed()
+            loadFeed()
         }
     }
 }
@@ -146,7 +122,7 @@ extension SearchController: UICollectionViewDataSource {
 // MARK: CustomCollectionViewLayout Delegate
 extension SearchController: CustomCollectionViewLayoutDelegate {
 
-    func collectionView(_ collectionView: UICollectionView, heightForGifAtIndexPath indexPath: IndexPath, fixedWidth: CGFloat) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, heightForGifAtIndexPath indexPath: IndexPath, fixedWidth: Double) -> Double {
         let gif = gifFeed.gifsArray[indexPath.item]
         let gifHeight = gif.height * fixedWidth / gif.width
         return gifHeight

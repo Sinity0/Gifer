@@ -6,19 +6,18 @@
 //  Copyright © 2017 Niar. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 protocol CustomCollectionViewLayoutDelegate {
-    func collectionView(_ collectionView:UICollectionView, heightForGifAtIndexPath indexPath:IndexPath, fixedWidth:CGFloat) -> CGFloat
+    func collectionView(_ collectionView:UICollectionView, heightForGifAtIndexPath indexPath:IndexPath, fixedWidth:Double) -> Double
 }
 
 class CustomCollectionViewLayout: UICollectionViewLayout {
     
     var delegate: CustomCollectionViewLayoutDelegate!
     private var attributes = [CustomLayoutAttributes]()
-    private var contentHeight: CGFloat = 0.0
-    private var contentWidth: CGFloat = 0.0
+    private var contentHeight: Double = 0.0
+    private var contentWidth: Double = 0.0
     
     override class var layoutAttributesClass : AnyClass {
         return CustomLayoutAttributes.self
@@ -28,18 +27,18 @@ class CustomCollectionViewLayout: UICollectionViewLayout {
         
         var column = 0
         contentHeight = 0
-        contentWidth = collectionView!.frame.width - collectionView!.contentInset.left - collectionView!.contentInset.right
-        let itemWidth: CGFloat = floor(contentWidth / 2.0)
-        let xOffset: [CGFloat] = [0, itemWidth]
-        var yOffset: [CGFloat] = [0, 0]
+        contentWidth = Double(collectionView!.frame.width - collectionView!.contentInset.left - collectionView!.contentInset.right)
+        let itemWidth: Double = floor(contentWidth / 2.0)
+        let xOffset: [Double] = [0, itemWidth]
+        var yOffset: [Double] = [0, 0]
         attributes = []
         
         for item in 0..<collectionView!.numberOfItems(inSection: 0) {
             
             let indexPath = IndexPath(item: item, section: 0)
-            let gifWidth: CGFloat = itemWidth - 2 * Constants.cellPaddingTop
-            let gifHeight: CGFloat = delegate.collectionView(collectionView!, heightForGifAtIndexPath: indexPath, fixedWidth: gifWidth)
-            let itemHeight: CGFloat = gifHeight + 2 * Constants.cellPaddingTop
+            let gifWidth: Double = itemWidth - 2 * Double(Constants.cellPaddingRight)
+            let gifHeight: Double = delegate.collectionView(collectionView!, heightForGifAtIndexPath: indexPath, fixedWidth: gifWidth)
+            let itemHeight: Double = gifHeight + 2 * Double(Constants.cellPaddingTop)
             
             if yOffset[0] > yOffset[1] {
                 column = 1
@@ -54,7 +53,7 @@ class CustomCollectionViewLayout: UICollectionViewLayout {
             attribute.gifWidth = gifWidth
             attributes.append(attribute)
             
-            contentHeight = max(contentHeight, itemFrame.maxY)
+            contentHeight = max(contentHeight, Double(itemFrame.maxY))
             yOffset[column] = yOffset[column] + itemHeight
             
         }

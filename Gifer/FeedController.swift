@@ -16,6 +16,7 @@ class FeedController: UIViewController{
 
     private var gifFeed: FeedModel = FeedModel(type: .trending)
     private var refreshControl: UIRefreshControl!
+    private let rating: String  = Constants.preferredSearchRating
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,24 +85,11 @@ class FeedController: UIViewController{
         gifFeed.clearFeed()
         collectionView.reloadData()
         refreshControl.endRefreshing()
-        loadMoreFeed()
+        loadFeed()
     }
-    
+
     func loadFeed() {
-        gifFeed.requestFeed(20, offset: 0, rating: nil, terms: nil,
-                            comletionHandler: { (succeed, _, error) -> Void in
-            if succeed {
-                self.collectionView.reloadData()
-                self.loadMoreFeed()
-            } else if let error = error {
-                let alert = self.showAlert(error)
-                self.present(alert, animated: true, completion: nil)
-            }
-        })
-    }
-    
-    func loadMoreFeed() {
-        gifFeed.requestFeed(20, offset: gifFeed.currentOffset, rating: nil, terms: nil,
+        gifFeed.requestFeed(Constants.gifsRequestLimit, offset: gifFeed.currentOffset, rating: rating, terms: nil,
                             comletionHandler: { (succeed, total, error) -> Void in
             if succeed, let total = total {
                 self.collectionView.performBatchUpdates({
@@ -111,7 +99,6 @@ class FeedController: UIViewController{
                         indexPaths.append(indexPath)
                     }
                     self.collectionView.insertItems(at: indexPaths)
-                    
                 }, completion: nil)
             } else if let error = error {
                 let alert = self.showAlert(error)
@@ -126,7 +113,7 @@ class FeedController: UIViewController{
 extension FeedController: CustomCollectionViewLayoutDelegate {
 
     func collectionView(_ collectionView: UICollectionView, heightForGifAtIndexPath indexPath: IndexPath,
-                        fixedWidth: CGFloat) -> CGFloat {
+                        fixedWidth: Double) -> Double {
         let gif = gifFeed.gifsArray[indexPath.item]
         let gifHeight = gif.height * fixedWidth / gif.width
         return gifHeight
@@ -166,7 +153,7 @@ extension FeedController: UIScrollViewDelegate {
             CGRect(x: 0, y: collectionView.contentSize.height - Constants.screenHeight / 2,
                    width: collectionView.frame.width, height: Constants.screenHeight / 2)) &&
             collectionView.contentSize.height > 0  {
-            loadMoreFeed()
+            loadFeed()
         }
     }
 }

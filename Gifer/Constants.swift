@@ -6,7 +6,6 @@
 //  Copyright © 2017 Niar. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import Alamofire
 
@@ -16,6 +15,7 @@ struct Constants {
     static let cellPaddingRight: CGFloat = 5.0
     static let cellPaddingTop: CGFloat = 5.0
     static let cellPaddingBottom: CGFloat = 5.0
+
     static let screenHeight: CGFloat = UIScreen.main.bounds.height
     static let screenWidth: CGFloat = UIScreen.main.bounds.width
 
@@ -27,6 +27,5 @@ struct Constants {
     static let preferredImageType: String = "fixed_width_downsampled"
     static let trendedIconName: String = "trendedIcon"
     static let trendedIconSize: CGFloat = 25
-    static let gifsOnPage: Int = 20
-    
+    static let gifsRequestLimit: Int = 20
 }
