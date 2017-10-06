@@ -73,7 +73,14 @@
                             <constraint firstItem="XvC-kY-v14" firstAttribute="leading" secondItem="7U9-P3-fPt" secondAttribute="leading" id="h0I-dO-zIf"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="dZZ-9D-sIm"/>
+                    <navigationItem key="navigationItem" id="dZZ-9D-sIm">
+                        <barButtonItem key="rightBarButtonItem" id="gep-w8-LmN">
+                            <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="2fJ-Zx-oyV">
+                                <rect key="frame" x="308" y="6.5" width="51" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </switch>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="Teb-Ws-K8B" id="ODZ-Ep-5cL"/>
                         <outlet property="searchBar" destination="XvC-kY-v14" id="k8C-0o-TiD"/>

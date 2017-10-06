@@ -14,8 +14,8 @@ class FeedController: UIViewController{
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet var collectionView: UICollectionView!
 
-    private var gifFeed: FeedModel = FeedModel(type: .trending)
-    private var refreshControl: UIRefreshControl!
+    lazy private var gifFeed: FeedModel = FeedModel(type: .trending)
+    lazy private var refreshControl: UIRefreshControl = UIRefreshControl()
     private let rating: String  = Constants.preferredSearchRating
 
     override func viewDidLoad() {
@@ -89,7 +89,10 @@ class FeedController: UIViewController{
     }
 
     func loadFeed() {
-        gifFeed.requestFeed(Constants.gifsRequestLimit, offset: gifFeed.currentOffset, rating: rating, terms: nil,
+        gifFeed.requestFeed(Constants.gifsRequestLimit,
+                            offset: gifFeed.currentOffset,
+                            rating: rating,
+                            terms: nil,
                             comletionHandler: { (succeed, total, error) -> Void in
             if succeed, let total = total {
                 self.collectionView.performBatchUpdates({

@@ -45,11 +45,17 @@ class GifsModel {
         }
         
         if let trendingDateTime = data["trending_datetime"].string {
-            if trendingDateTime == Constants.nonTrendedDateTimeFormat {
-                trended = false
-            } else {
+            guard trendingDateTime == Constants.nonTrendedDateTimeFormat else {
                 trended = true
+                return
             }
+            trended = false
+            
+//            if trendingDateTime == Constants.nonTrendedDateTimeFormat {
+//                trended = false
+//            } else {
+//                trended = true
+//            }
         }
     }
 }

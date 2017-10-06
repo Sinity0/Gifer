@@ -12,8 +12,9 @@ import Alamofire
 class SearchResultController: UIViewController{
 
     @IBOutlet var collectionView: UICollectionView!
-    var searchTerms: String!
-    private var gifFeed: FeedModel = FeedModel(type: .search)
+    
+    var searchTerms: String = ""
+    lazy private var gifFeed: FeedModel = FeedModel(type: .search)
     private let rating: String  = Constants.preferredSearchRating
     private let gifsRequestLimit: Int = Constants.gifsRequestLimit
     
@@ -23,12 +24,8 @@ class SearchResultController: UIViewController{
 
         navigationController?.navigationBar.barTintColor = .darkGray
         navigationController?.navigationBar.tintColor = .white
-        
-        if searchTerms == nil {
-            searchTerms = ""
-        }
 
-        (searchTerms.characters.count > 15) ? (self.title = String(searchTerms.characters.prefix(15)) + "...") : (self.title = searchTerms)
+        self.title = (searchTerms.characters.count > 15) ? (String(searchTerms.characters.prefix(15)) + "...") : (searchTerms)
 
         collectionView.delegate = self
         collectionView.dataSource = self
