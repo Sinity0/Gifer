@@ -59,6 +59,7 @@ class FeedController: UIViewController{
         collectionView.collectionViewLayout.invalidateLayout()
     }
 
+
     // MARK: Feeds
     @objc func refreshFeed() {
         gifFeed.clearFeed()
@@ -143,9 +144,9 @@ extension FeedController: UIScrollViewDelegate {
 extension FeedController: UISearchBarDelegate {
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if let searchTerms = searchBar.text, searchTerms != "" {
+        if let searchTerm = searchBar.text, searchTerm != "" {
             if let searchResultController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchResultController") as? SearchResultController {
-                searchResultController.searchTerms = searchTerms
+                searchResultController.searchTerm = searchTerm
                 self.navigationController?.pushViewController(searchResultController, animated: true)
             }
         }

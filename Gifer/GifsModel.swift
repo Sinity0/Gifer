@@ -40,15 +40,23 @@ class GifsModel {
         }
         
         if let gifWidth = preferredGif["width"].string {
-            if let n = Double(gifWidth) {
-                width = n
-            }
+            guard let n = Double(gifWidth) else { return }
+             width = n
+
+//            if let n = Double(gifWidth) {
+//                width = n
+//            }
+
         }
         
         if let gifHeight = preferredGif["height"].string {
-            if let n = Double(gifHeight) {
-                width = n
-            }
+            guard let n = Double(gifHeight) else { return }
+            height = n
+
+//            if let n = Double(gifHeight) {
+//                width = n
+//            }
+
         }
     }
 }

@@ -12,8 +12,6 @@ import SwiftyJSON
 
 class AlamofireManager {
 
-    static let sharedInstance = AlamofireManager()
-
     private let url = Constants.url
     private let apiKey = Constants.apiKey
 
@@ -52,7 +50,9 @@ class AlamofireManager {
 
     func fetchTrendingGifs(limit: Int,
                            offset: Int,
-                           completion:@escaping (_ gifs: [GifsModel]?,_ total: Int?,_ error: String?) -> Void) {
+                           completion:@escaping (_ gifs: [GifsModel]?,
+                                                _ total: Int?,
+                                                _ error: String?) -> Void) {
 
         let parameters = [
             "api_key": apiKey,
@@ -60,7 +60,10 @@ class AlamofireManager {
             "offset": offset
             ] as [String : Any]
 
-        Alamofire.request(url + "v1/gifs/trending", method: .get, parameters: parameters, encoding: URLEncoding.default).responseJSON( completionHandler: { response in
+        Alamofire.request(url + "v1/gifs/trending",
+                          method: .get,
+                          parameters: parameters,
+                          encoding: URLEncoding.default).responseJSON( completionHandler: { response in
 
             switch response.result {
                 case .success(let value):
@@ -72,7 +75,6 @@ class AlamofireManager {
                             total = totalcount
                         }
                     }
-                    //print(gifJson)
                     if let gifData = gifJson["data"].array {
                         var gifs = [GifsModel]()
                         for gif in gifData {
@@ -87,30 +89,6 @@ class AlamofireManager {
             }
         })
     }
-
-//    func queryTrendingGifs(_ limit: Int, offset: Int, completionHandler:@escaping (_ gifs: [GifModel]?, _ error: String?) -> Void) {
-//
-//        alamofireManager.request(baseURL + "v1/gifs/trending", method: .get, parameters: ["api_key" : giphyAPIKey, "limit" : "\(limit)", "offset" : "\(offset)"], encoding: URLEncoding.default).responseJSON(completionHandler: { response in
-//
-//            switch response.result {
-//            case .success(let result):
-//                let resultJSON = JSON.init(result)
-//                if let gifdata = resultJSON["data"].array {
-//                    var gifs = [GifModel]()
-//                    for gifJSON in gifdata {
-//                        let gif = GifModel.init(data: gifJSON)
-//                        gifs.append(gif)
-//                    }
-//                    completionHandler(gifs, nil)
-//                } else {
-//                    completionHandler(nil, "Something is wrong")
-//                }
-//            case .failure(let error):
-//                completionHandler(nil, error.localizedDescription)
-//            }
-//
-//        })
-//    }
 
     func fetchSearchGifs(searchStr: String, limit: Int, offset: Int, rating: String?, completionHandler:@escaping (_ gifs: [GifsModel]?, _ total: Int?, _ error: String?) -> Void) {
         var ratingStr: String = ""

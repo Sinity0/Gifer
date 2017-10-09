@@ -8,11 +8,11 @@
 
 import UIKit
 
-class SearchResultController: UIViewController {
+class SearchResultController: UIViewController, UICollectionViewDelegate {
 
     @IBOutlet var collectionView: UICollectionView!
     
-    var searchTerms = ""
+    var searchTerm = ""
     lazy private var gifFeed = FeedModel(type: .search)
     private let rating = Constants.preferredSearchRating
     private let gifsRequestLimit = Constants.gifsRequestLimit
@@ -24,14 +24,23 @@ class SearchResultController: UIViewController {
         navigationController?.navigationBar.barTintColor = .darkGray
         navigationController?.navigationBar.tintColor = .white
 
-        title = searchTerms
+        title = searchTerm
 
-        collectionView.dataSource = self
-        collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "MyCell")
+
+//        if let layout = collectionView.collectionViewLayout as? CustomCollectionViewLayout {
+//            layout.delegate = self
+//        }
+//        collectionView.delegate = self
+//        collectionView.dataSource = self
+//        collectionView.backgroundColor = .clear
 
         if let layout = collectionView.collectionViewLayout as? CustomCollectionViewLayout {
             layout.delegate = self
         }
+
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "MySearchControllerCell")
 
         if let patternImage = UIImage(named: "Pattern") {
             collectionView.backgroundColor = UIColor(patternImage: patternImage)
@@ -50,7 +59,7 @@ class SearchResultController: UIViewController {
     
     // MARK: Feeds
     func loadFeed() {
-        gifFeed.requestFeed(gifsRequestLimit, offset: gifFeed.currentOffset, rating: rating, terms: searchTerms,
+        gifFeed.requestFeed(gifsRequestLimit, offset: gifFeed.currentOffset, rating: rating, terms: searchTerm,
                             comletionHandler: { (succeed, total, error) -> Void in
             if succeed, let total = total {
                 self.collectionView.performBatchUpdates({
@@ -91,7 +100,7 @@ extension SearchResultController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyCell", for: indexPath) as! CustomCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MySearchControllerCell", for: indexPath) as! CustomCollectionViewCell
         cell.gif = gifFeed.gifsArray[indexPath.item]
         return cell
     }
