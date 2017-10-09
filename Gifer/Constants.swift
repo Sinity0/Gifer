@@ -7,10 +7,12 @@
 //
 
 import UIKit
-import Alamofire
 
 struct Constants {
-    
+
+    static let url = "https://api.giphy.com/"
+    static let apiKey = "GRF3LPBmOu3x3fEleLMQFszisiodVkDG"
+
     static let cellPaddingLeft: CGFloat = 5.0
     static let cellPaddingRight: CGFloat = 5.0
     static let cellPaddingTop: CGFloat = 5.0
@@ -19,13 +21,13 @@ struct Constants {
     static let screenHeight: CGFloat = UIScreen.main.bounds.height
     static let screenWidth: CGFloat = UIScreen.main.bounds.width
 
-    static let dateTimeFormat: String = "yyyy-MM-dd HH:mm:ss"
-    static let nonTrendedDateTimeFormat: String = "0000-00-00 00:00:00"
+    static let dateTimeFormat = "yyyy-MM-dd HH:mm:ss"
+    static let nonTrendedDateTimeFormat = "0000-00-00 00:00:00"
     
-    static let searchResultsLimit: Int = 400
-    static let preferredSearchRating: String = "pg"
-    static let preferredImageType: String = "fixed_width_downsampled"
-    static let trendedIconName: String = "trendedIcon"
-    static let trendedIconSize: CGFloat = 25
-    static let gifsRequestLimit: Int = 20
+    static let searchResultsLimit = 400
+    static let preferredSearchRating = "pg"
+    static let preferredImageType = "fixed_width_downsampled"
+    static let trendedIconName = "trendedIcon"
+    static let trendedIconSize: CGFloat = 25.0
+    static let gifsRequestLimit = 20
 }

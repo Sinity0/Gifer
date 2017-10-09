@@ -6,16 +6,15 @@
 //  Copyright © 2017 Niar. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 enum Result<Value> {
-    case success(Value)
+    case success(Value, Int)
+    //case paginationCount(Int)
     case failure(Error)
 }
 
 extension UIViewController {
-
     func showAlert(_ message: String) -> UIAlertController {
         let alertController = UIAlertController(title: "GifSearcher", message: message, preferredStyle: .alert)
         let confirm = UIAlertAction(title: "OK", style: .cancel, handler: nil)

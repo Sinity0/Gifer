@@ -14,9 +14,9 @@ class FeedController: UIViewController{
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet var collectionView: UICollectionView!
 
-    lazy private var gifFeed: FeedModel = FeedModel(type: .trending)
-    lazy private var refreshControl: UIRefreshControl = UIRefreshControl()
-    private let rating: String  = Constants.preferredSearchRating
+    lazy private var gifFeed = FeedModel(type: .trending)
+    lazy private var refreshControl = UIRefreshControl()
+    private let rating = Constants.preferredSearchRating
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +28,7 @@ class FeedController: UIViewController{
         searchBar.delegate = self
         searchBar.tintColor = .white
         searchBar.backgroundImage = UIImage()
-        self.view.addSubview(searchBar)
+        view.addSubview(searchBar)
 
         if let layout = collectionView.collectionViewLayout as? CustomCollectionViewLayout {
             layout.delegate = self
@@ -46,45 +46,23 @@ class FeedController: UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        refreshControl.endRefreshing()
-        self.navigationController?.isNavigationBarHidden = true
+        navigationController?.isNavigationBarHidden = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.navigationController?.isNavigationBarHidden = false
+        navigationController?.isNavigationBarHidden = false
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        self.willRotate(to: UIApplication.shared.statusBarOrientation, duration: 0)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
-        if toInterfaceOrientation == .portrait || UIApplication.shared.statusBarOrientation == .portraitUpsideDown {
-            collectionView.contentInset = UIEdgeInsetsMake(searchBar.frame.height - Constants.cellPaddingTop,
-                                                           Constants.cellPaddingLeft,
-                                                           Constants.cellPaddingBottom,
-                                                           Constants.cellPaddingRight)
-        } else {
-            collectionView.contentInset = UIEdgeInsetsMake(searchBar.frame.height + Constants.cellPaddingTop,
-                                                           Constants.cellPaddingLeft,
-                                                           Constants.cellPaddingBottom,
-                                                           Constants.cellPaddingRight)
-        }
-
         collectionView.collectionViewLayout.invalidateLayout()
     }
-    
+
     // MARK: Feeds
     @objc func refreshFeed() {
         gifFeed.clearFeed()
         collectionView.reloadData()
-        refreshControl.endRefreshing()
         loadFeed()
     }
 
@@ -166,9 +144,7 @@ extension FeedController: UISearchBarDelegate {
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let searchTerms = searchBar.text, searchTerms != "" {
-            if let searchResultController = UIStoryboard(name: "Main", bundle: nil)
-                .instantiateViewController(withIdentifier: "SearchResultController") as? SearchResultController
-            {
+            if let searchResultController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchResultController") as? SearchResultController {
                 searchResultController.searchTerms = searchTerms
                 self.navigationController?.pushViewController(searchResultController, animated: true)
             }

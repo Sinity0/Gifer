@@ -7,13 +7,12 @@
 //
 
 import Foundation
-import UIKit
 import SwiftyJSON
 
 class GifsModel {
     
-    var width: Double = 0
-    var height: Double = 0
+    var width = 0.0
+    var height = 0.0
     var url: String?
     var id: String?
     var rating: String?
@@ -29,33 +28,27 @@ class GifsModel {
         if let gifRating = data["rating"].string {
             rating = gifRating
         }
+
+        if let trendingDateTime = data["trending_datetime"].string {
+            trended = trendingDateTime != Constants.nonTrendedDateTimeFormat
+        }
+
+        let preferredGif = data["images"][Constants.preferredImageType]
         
-        if let gifURL = data["images"][Constants.preferredImageType]["url"].string {
+        if let gifURL = preferredGif["url"].string {
             url = gifURL
         }
         
-        if let gifWidth = data["images"][Constants.preferredImageType]["width"].string {
-            guard let n = Double(gifWidth) else { return }
-            width = n
-        }
-        
-        if let gifHeight = data["images"][Constants.preferredImageType]["height"].string {
-            guard let n = Double(gifHeight) else { return }
-            height = n
-        }
-        
-        if let trendingDateTime = data["trending_datetime"].string {
-            guard trendingDateTime == Constants.nonTrendedDateTimeFormat else {
-                trended = true
-                return
+        if let gifWidth = preferredGif["width"].string {
+            if let n = Double(gifWidth) {
+                width = n
             }
-            trended = false
-            
-//            if trendingDateTime == Constants.nonTrendedDateTimeFormat {
-//                trended = false
-//            } else {
-//                trended = true
-//            }
+        }
+        
+        if let gifHeight = preferredGif["height"].string {
+            if let n = Double(gifHeight) {
+                width = n
+            }
         }
     }
 }

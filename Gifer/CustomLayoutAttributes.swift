@@ -10,8 +10,8 @@ import UIKit
 
 class CustomLayoutAttributes: UICollectionViewLayoutAttributes {
 
-    var gifHeight: Double = 0.0
-    var gifWidth: Double = 0.0
+    var gifHeight = 0.0
+    var gifWidth = 0.0
 
     override func copy(with zone: NSZone?) -> Any {
         let copy = super.copy(with: zone) as! CustomLayoutAttributes

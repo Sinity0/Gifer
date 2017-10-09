@@ -7,16 +7,15 @@
 //
 
 import UIKit
-import Alamofire
 
-class SearchResultController: UIViewController{
+class SearchResultController: UIViewController {
 
     @IBOutlet var collectionView: UICollectionView!
     
-    var searchTerms: String = ""
-    lazy private var gifFeed: FeedModel = FeedModel(type: .search)
-    private let rating: String  = Constants.preferredSearchRating
-    private let gifsRequestLimit: Int = Constants.gifsRequestLimit
+    var searchTerms = ""
+    lazy private var gifFeed = FeedModel(type: .search)
+    private let rating = Constants.preferredSearchRating
+    private let gifsRequestLimit = Constants.gifsRequestLimit
     
     // MARK: View
     override func viewDidLoad() {
@@ -25,21 +24,20 @@ class SearchResultController: UIViewController{
         navigationController?.navigationBar.barTintColor = .darkGray
         navigationController?.navigationBar.tintColor = .white
 
-        self.title = (searchTerms.characters.count > 15) ? (String(searchTerms.characters.prefix(15)) + "...") : (searchTerms)
+        title = searchTerms
 
-        collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = .clear
+        collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "MyCell")
 
         if let layout = collectionView.collectionViewLayout as? CustomCollectionViewLayout {
             layout.delegate = self
         }
+
         if let patternImage = UIImage(named: "Pattern") {
             collectionView.backgroundColor = UIColor(patternImage: patternImage)
         }
-        collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "MyCell")
 
-        self.view.addSubview(collectionView)
+        view.addSubview(collectionView)
 
         loadFeed()
     }
@@ -47,15 +45,6 @@ class SearchResultController: UIViewController{
     // MARK: Subview & Orientation
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        self.willRotate(to: UIApplication.shared.statusBarOrientation, duration: 0)
-    }
-    
-    override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
-
-        collectionView.contentInset = UIEdgeInsetsMake(Constants.cellPaddingTop,
-                                                       Constants.cellPaddingLeft,
-                                                       Constants.cellPaddingBottom,
-                                                       Constants.cellPaddingRight)
         collectionView.collectionViewLayout.invalidateLayout()
     }
     
@@ -80,23 +69,15 @@ class SearchResultController: UIViewController{
     }
 }
 
-// MARK: -
-// MARK: UICollectionView Delegate
-extension SearchResultController: UICollectionViewDelegate {
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    }
-}
-
 // MARK: UIScrollView Delegate
 extension SearchResultController: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if collectionView.bounds.intersects(CGRect(x: 0,
-                                                   y: collectionView.contentSize.height - Constants.screenHeight / 2,
-                                                   width: collectionView.frame.width,
-                                                   height: Constants.screenHeight / 2)) &&
-            collectionView.contentSize.height > 0 {
+        let collectionViewBounds = CGRect(x: 0,
+                   y: collectionView.contentSize.height - Constants.screenHeight / 2,
+                   width: collectionView.frame.width,
+                   height: Constants.screenHeight / 2)
+        if collectionView.bounds.intersects(collectionViewBounds), collectionView.contentSize.height > 0 {
             loadFeed()
         }
     }
