@@ -45,18 +45,22 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .clear
-        collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "FeedControllerCell")
+        collectionView.register(CustomCollectionViewCell.self,
+                                forCellWithReuseIdentifier: "FeedControllerCell")
 
         let attributes = [
             NSAttributedStringKey.foregroundColor : UIColor.white,
             NSAttributedStringKey.strokeWidth : 3.0
             ] as [NSAttributedStringKey : Any]
         refreshControl = UIRefreshControl()
-        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: attributes)
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh",
+                                                        attributes: attributes)
         refreshControl.addTarget(self, action: #selector(refreshFeed(_:)), for: .valueChanged)
         collectionView.addSubview(refreshControl)
 
-        loadFeed(type: .trending, terms: nil, completionHandler: { result -> Void in
+        loadFeed(type: .trending,
+                terms: nil,
+    completionHandler: { result -> Void in
             if !result {
                 print("Failed to load feed.")
             }
@@ -68,12 +72,14 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         collectionView.collectionViewLayout.invalidateLayout()
     }
 
-
-    // MARK: Feeds
     @objc func refreshFeed(_ sender: UIRefreshControl) {
+
         if isSearching(){
             gifFeed.clearFeed()
-            loadFeed(type: .search, terms: searchController.searchBar.text, completionHandler: { result -> Void in
+            loadFeed(type: .search,
+                    terms: searchController.searchBar.text,
+        completionHandler: { result -> Void in
+
                 if !result {
                     print("Failed to refresh search.")
                 } else {
@@ -83,7 +89,9 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
             collectionView.reloadData()
         } else {
             gifFeed.clearFeed()
-            loadFeed(type: .trending, terms: nil, completionHandler: { result -> Void in
+            loadFeed(type: .trending,
+                    terms: nil,
+        completionHandler: { result -> Void in
                 if !result {
                     print("Failed to refresh feed.")
                 } else {
@@ -94,13 +102,17 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         }
     }
 
-    func loadFeed(type: FeedModel.feedType, terms: String?, completionHandler:@escaping (_ result: Bool) -> Void ) {
+    func loadFeed(type: FeedType,
+                 terms: String?,
+     completionHandler: @escaping (_ result: Bool) -> Void ) {
+
         gifFeed.requestFeed( limit: Constants.gifsRequestLimit,
                             offset: gifFeed.currentOffset,
                             rating: rating,
                              terms: terms,
                               type: type,
                   comletionHandler: { (succeed, total, error) -> Void in
+
             if succeed, let total = total {
                 self.collectionView.performBatchUpdates({
                     var indexPaths = [IndexPath]()
@@ -134,12 +146,13 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
     }
 }
 
-// MARK: -
-// MARK: CustomCollectionViewLayout Delegate
+// MARK: - CustomCollectionViewLayout Delegate
 extension FeedController: CustomCollectionViewLayoutDelegate {
 
-    func collectionView(_ collectionView: UICollectionView, heightForGifAtIndexPath indexPath: IndexPath,
+    func collectionView(_ collectionView: UICollectionView,
+       heightForGifAtIndexPath indexPath: IndexPath,
                         fixedWidth: Double) -> Double {
+
         let gif = gifFeed.gifsArray[indexPath.item]
         let gifHeight = gif.height * fixedWidth / gif.width
         return gifHeight
@@ -149,13 +162,15 @@ extension FeedController: CustomCollectionViewLayoutDelegate {
 // MARK: UICollectionView Data Source
 extension FeedController: UICollectionViewDataSource {
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView,
+          numberOfItemsInSection section: Int) -> Int {
         return gifFeed.gifsArray.count
     }
 
     func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeedControllerCell", for: indexPath) as! CustomCollectionViewCell
+                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeedControllerCell",
+                                                      for: indexPath) as! CustomCollectionViewCell
         cell.gif = gifFeed.gifsArray[indexPath.item]
         return cell
     }
@@ -166,10 +181,12 @@ extension FeedController: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if collectionView.bounds.intersects(
-            CGRect(x: 0, y: collectionView.contentSize.height - Constants.screenHeight / 2,
-                   width: collectionView.frame.width, height: Constants.screenHeight / 2)) &&
+            CGRect(x: 0,
+                   y: collectionView.contentSize.height - Constants.screenHeight / 2,
+               width: collectionView.frame.width,
+              height: Constants.screenHeight / 2)) &&
             collectionView.contentSize.height > 0  {
-            loadFeed(type: .trending, terms: nil, completionHandler: { result -> Void in
+            loadFeed(type: .trending, terms: "", completionHandler: { result -> Void in
                 if !result {
                     print("Failed to add data to feed.")
                 }
@@ -178,8 +195,8 @@ extension FeedController: UIScrollViewDelegate {
     }
 }
 
+// MARK: UISearchResultsUpdating Delegate
 extension FeedController: UISearchResultsUpdating {
-    // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResults(for searchController: UISearchController) {
         // TODO
     }
@@ -189,28 +206,29 @@ extension FeedController: UISearchResultsUpdating {
 extension FeedController: UISearchBarDelegate {
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+
         if isSearching() {
             gifFeed.clearFeed()
-            loadFeed(type: .search, terms: searchController.searchBar.text, completionHandler: { result -> Void in
+            loadFeed(type: .search,
+                    terms: searchController.searchBar.text,
+        completionHandler: { result -> Void in
+
                 if !result {
                     print("Something went wrong.")
                 }
             })
             collectionView.reloadData()
         }
-
-//        if let searchTerm = searchBar.text, searchTerm != "" {
-//            if let searchResultController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchResultController") as? SearchResultController {
-//                searchResultController.searchTerm = searchTerm
-//                self.navigationController?.pushViewController(searchResultController, animated: true)
-//            }
-//        }
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+
         if isSearching() {
             gifFeed.clearFeed()
-            loadFeed(type: .trending, terms: nil, completionHandler: { result -> Void in
+            loadFeed(type: .trending,
+                    terms: nil,
+        completionHandler: { result -> Void in
+
                 if !result {
                     print("Something went wrong.")
                 }
@@ -228,7 +246,4 @@ extension FeedController: UISearchBarDelegate {
         searchController.searchBar.showsCancelButton = true
         return true
     }
-
 }
-
-

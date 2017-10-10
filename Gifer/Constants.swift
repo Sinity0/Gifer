@@ -24,7 +24,6 @@ struct Constants {
     static let dateTimeFormat = "yyyy-MM-dd HH:mm:ss"
     static let nonTrendedDateTimeFormat = "0000-00-00 00:00:00"
     
-    static let searchResultsLimit = 400
     static let preferredSearchRating = "pg"
     static let preferredImageType = "fixed_width_downsampled"
     static let trendedIconName = "trendedIcon"

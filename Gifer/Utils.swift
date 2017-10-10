@@ -14,9 +14,13 @@ enum Result<Value> {
     case failure(Error)
 }
 
+enum FeedType {
+    case trending, search
+}
+
 extension UIViewController {
     func showAlert(_ message: String) -> UIAlertController {
-        let alertController = UIAlertController(title: "GifSearcher", message: message, preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Gifer", message: message, preferredStyle: .alert)
         let confirm = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         alertController.addAction(confirm)
         return alertController

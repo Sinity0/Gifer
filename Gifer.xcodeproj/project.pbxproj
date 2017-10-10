@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		22AA07F47A61B6F325256E7C /* Pods_Gifer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 953141CE848BFC1D6B0F6CB9 /* Pods_Gifer.framework */; };
 		8356BB301F861587007A3315 /* CustomLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8356BB2F1F861587007A3315 /* CustomLayoutAttributes.swift */; };
+		837970F61F8D064F003A7948 /* FeedMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837970F51F8D064F003A7948 /* FeedMapper.swift */; };
 		844B97D61F7A8EC0005DA644 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B97D51F7A8EC0005DA644 /* AppDelegate.swift */; };
 		844B97DB1F7A8EC0005DA644 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 844B97D91F7A8EC0005DA644 /* Main.storyboard */; };
 		844B97DD1F7A8EC0005DA644 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 844B97DC1F7A8EC0005DA644 /* Assets.xcassets */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		8356BB2F1F861587007A3315 /* CustomLayoutAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLayoutAttributes.swift; sourceTree = "<group>"; };
+		837970F51F8D064F003A7948 /* FeedMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedMapper.swift; sourceTree = "<group>"; };
 		844B97D21F7A8EC0005DA644 /* Gifer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gifer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		844B97D51F7A8EC0005DA644 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		844B97DA1F7A8EC0005DA644 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				844B97EF1F7ADFDE005DA644 /* GifsModel.swift */,
 				844B97F91F7C3FB0005DA644 /* FeedModel.swift */,
 				844B97F11F7B01D0005DA644 /* AlamofireManager.swift */,
+				837970F51F8D064F003A7948 /* FeedMapper.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -247,7 +250,9 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Gifer/Pods-Gifer-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireObjectMapper/AlamofireObjectMapper.framework",
 				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
+				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/libwebp/libwebp.framework",
@@ -255,7 +260,9 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireObjectMapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libwebp.framework",
@@ -296,6 +303,7 @@
 				844B97F81F7C241F005DA644 /* Utils.swift in Sources */,
 				844B97F21F7B01D0005DA644 /* AlamofireManager.swift in Sources */,
 				844B97D61F7A8EC0005DA644 /* AppDelegate.swift in Sources */,
+				837970F61F8D064F003A7948 /* FeedMapper.swift in Sources */,
 				844B97F41F7B06F3005DA644 /* Constants.swift in Sources */,
 				844B98011F7C6063005DA644 /* FeedController.swift in Sources */,
 				844B97FF1F7C5409005DA644 /* CustomCollectionViewLayout.swift in Sources */,

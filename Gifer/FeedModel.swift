@@ -15,16 +15,7 @@ class FeedModel {
     var previousOffset = -1
     var gifsArray = [GifsModel]()
     var requesting = false
-    //var type: feedType = .trending
     let alamofireManager = AlamofireManager()
-
-    enum feedType {
-        case trending, search
-    }
-
-//    init(type: feedType) {
-//        self.type = type
-//    }
 
     func clearFeed() {
         gifsArray = []
@@ -34,76 +25,123 @@ class FeedModel {
     }
 
     func requestFeed(  limit: Int,
-                      offset: Int?,
-                      rating: String?,
+                       offset: Int?,
+                       rating: String?,
                        terms: String?,
-                        type: feedType,
-            comletionHandler:@escaping (_ succeed: Bool,
-                                          _ total: Int?,
-                                          _ error: String?) -> Void) {
+                       type: FeedType,
+                       comletionHandler:@escaping (_ succeed: Bool,
+                                                     _ total: Int?,
+                                                     _ error: String?) -> Void) {
+
         if requesting {
-            comletionHandler(false, nil, nil)
+            comletionHandler(true, nil, nil)
             return
         }
         requesting = true
 
-        switch type {
-        case .trending:
-            alamofireManager.fetchTrendingGifs(limit: limit,
-                                              offset: offset!,
-                                          completion: {(gifs, total, error) -> Void in
-
-                self.requesting = false
-
-                if let error = error {
-                    comletionHandler(false, nil, error)
-                } else {
-                    if let newGifs = gifs {
-
-                        if let totalGif = total {
-                            //print(totalGif)
-                            if totalGif > 0 {
-                                self.previousOffset = self.currentOffset
-                                self.currentOffset = self.currentOffset + newGifs.count
-                                self.gifsArray.append(contentsOf: newGifs)
-                                comletionHandler(true, newGifs.count, nil)
-                            } else {
-                                comletionHandler(false, nil, nil)
-                            }
-                        }
-                    }
-                }
-            })
-
-        case .search:
-            alamofireManager.fetchSearchGifs(searchStr: terms!,
-                                                 limit: limit,
-                                                offset: offset!,
-                                                rating: rating,
-                                     completionHandler: {(gifs, total, error) -> Void in
-                
-                self.requesting = false
-
-                if let error = error {
-                    comletionHandler(false, nil, error)
-                } else {
-
-                    if let newGifs = gifs {
-                        if let totalGif = total {
-
-                            if totalGif > 0 {
-                                self.previousOffset = self.currentOffset
-                                self.currentOffset = self.currentOffset + newGifs.count
-                                self.gifsArray.append(contentsOf: newGifs)
-                                comletionHandler(true, newGifs.count, nil)
-                            } else {
-                                comletionHandler(false, nil, nil)
-                            }
-                        }
-                    }
-                }
-            })
+        var searchTerm = ""
+        if terms != nil {
+            searchTerm = terms!
         }
+
+        alamofireManager.fetchGifs(type: type,
+                                  limit: limit,
+                                 offset: offset!,
+                                 rating: rating,
+                              searchStr: terms,
+                      completionHandler: { (gifs, total, error) -> Void in
+
+            self.requesting = false
+                        
+            if let error = error {
+                comletionHandler(false, nil, error)
+            } else {
+                if let newGifs = gifs {
+                    if let totalGif = total {
+                        if totalGif > 0 {
+                            self.previousOffset = self.currentOffset
+                            self.currentOffset = self.currentOffset + newGifs.count
+                            self.gifsArray.append(contentsOf: newGifs)
+                            comletionHandler(true, newGifs.count, nil)
+                        } else {
+                            comletionHandler(true, nil, nil)
+                        }
+                    }
+                }
+            }
+        })
     }
+
+//    func requestFeedOld(  limit: Int,
+//                      offset: Int?,
+//                      rating: String?,
+//                       terms: String?,
+//                        type: FeedType,
+//            comletionHandler:@escaping (_ succeed: Bool,
+//                                          _ total: Int?,
+//                                          _ error: String?) -> Void) {
+//        if requesting {
+//            comletionHandler(false, nil, nil)
+//            return
+//        }
+//        requesting = true
+//
+//        switch type {
+//        case .trending:
+//            alamofireManager.fetchTrendingGifs(limit: limit,
+//                                              offset: offset!,
+//                                          completion: {(gifs, total, error) -> Void in
+//
+//                self.requesting = false
+//
+//                if let error = error {
+//                    comletionHandler(false, nil, error)
+//                } else {
+//                    if let newGifs = gifs {
+//
+//                        if let totalGif = total {
+//                            if totalGif > 0 {
+//                                self.previousOffset = self.currentOffset
+//                                self.currentOffset = self.currentOffset + newGifs.count
+//                                self.gifsArray.append(contentsOf: newGifs)
+//                                comletionHandler(true, newGifs.count, nil)
+//                            } else {
+//                                comletionHandler(false, nil, nil)
+//                            }
+//                        }
+//                    }
+//                }
+//            })
+//
+//        case .search:
+//            alamofireManager.fetchSearchGifs(searchStr: terms!,
+//                                                 limit: limit,
+//                                                offset: offset!,
+//                                                rating: rating,
+//                                     completionHandler: {(gifs, total, error) -> Void in
+//
+//                self.requesting = false
+//
+//                if let error = error {
+//                    comletionHandler(false, nil, error)
+//                } else {
+//
+//                    if let newGifs = gifs {
+//                        if let totalGif = total {
+//
+//                            if totalGif > 0 {
+//                                self.previousOffset = self.currentOffset
+//                                self.currentOffset = self.currentOffset + newGifs.count
+//                                self.gifsArray.append(contentsOf: newGifs)
+//                                comletionHandler(true, newGifs.count, nil)
+//                            } else {
+//                                comletionHandler(false, nil, nil)
+//                            }
+//                        }
+//                    }
+//                }
+//            })
+//        }
+//    }
 }
 
