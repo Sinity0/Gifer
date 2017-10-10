@@ -15,16 +15,16 @@ class FeedModel {
     var previousOffset = -1
     var gifsArray = [GifsModel]()
     var requesting = false
-    var type: feedType = .trending
+    //var type: feedType = .trending
     let alamofireManager = AlamofireManager()
 
     enum feedType {
         case trending, search
     }
 
-    init(type: feedType) {
-        self.type = type
-    }
+//    init(type: feedType) {
+//        self.type = type
+//    }
 
     func clearFeed() {
         gifsArray = []
@@ -33,10 +33,11 @@ class FeedModel {
         previousOffset = -1
     }
 
-    func requestFeed(_ limit: Int,
+    func requestFeed(  limit: Int,
                       offset: Int?,
                       rating: String?,
                        terms: String?,
+                        type: feedType,
             comletionHandler:@escaping (_ succeed: Bool,
                                           _ total: Int?,
                                           _ error: String?) -> Void) {

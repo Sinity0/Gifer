@@ -13,7 +13,7 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
 
     @IBOutlet var collectionView: UICollectionView!
 
-    lazy private var gifFeed = FeedModel(type: .trending)
+    lazy private var gifFeed = FeedModel()
     lazy private var refreshControl = UIRefreshControl()
     private let rating = Constants.preferredSearchRating
 
@@ -56,7 +56,7 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         refreshControl.addTarget(self, action: #selector(refreshFeed(_:)), for: .valueChanged)
         collectionView.addSubview(refreshControl)
 
-        loadFeed(completionHandler: { result -> Void in
+        loadFeed(type: .trending, terms: nil, completionHandler: { result -> Void in
             if !result {
                 print("Failed to load feed.")
             }
@@ -71,22 +71,35 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
 
     // MARK: Feeds
     @objc func refreshFeed(_ sender: UIRefreshControl) {
-        gifFeed.clearFeed()
-        loadFeed(completionHandler: { result -> Void in
-            if !result {
-                print("Failed to refresh feed.")
-            } else {
-                sender.endRefreshing()
-            }
-        })
-        collectionView.reloadData()
+        if isSearching(){
+            gifFeed.clearFeed()
+            loadFeed(type: .search, terms: searchController.searchBar.text, completionHandler: { result -> Void in
+                if !result {
+                    print("Failed to refresh search.")
+                } else {
+                    sender.endRefreshing()
+                }
+            })
+            collectionView.reloadData()
+        } else {
+            gifFeed.clearFeed()
+            loadFeed(type: .trending, terms: nil, completionHandler: { result -> Void in
+                if !result {
+                    print("Failed to refresh feed.")
+                } else {
+                    sender.endRefreshing()
+                }
+            })
+            collectionView.reloadData()
+        }
     }
 
-    func loadFeed(completionHandler:@escaping (_ result: Bool) -> Void ) {
-        gifFeed.requestFeed(Constants.gifsRequestLimit,
+    func loadFeed(type: FeedModel.feedType, terms: String?, completionHandler:@escaping (_ result: Bool) -> Void ) {
+        gifFeed.requestFeed( limit: Constants.gifsRequestLimit,
                             offset: gifFeed.currentOffset,
                             rating: rating,
-                             terms: nil,
+                             terms: terms,
+                              type: type,
                   comletionHandler: { (succeed, total, error) -> Void in
             if succeed, let total = total {
                 self.collectionView.performBatchUpdates({
@@ -109,6 +122,15 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
                 completionHandler(false)
             }
         })
+    }
+
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+
+    func isSearching() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
     }
 }
 
@@ -147,7 +169,7 @@ extension FeedController: UIScrollViewDelegate {
             CGRect(x: 0, y: collectionView.contentSize.height - Constants.screenHeight / 2,
                    width: collectionView.frame.width, height: Constants.screenHeight / 2)) &&
             collectionView.contentSize.height > 0  {
-            loadFeed(completionHandler: { result -> Void in
+            loadFeed(type: .trending, terms: nil, completionHandler: { result -> Void in
                 if !result {
                     print("Failed to add data to feed.")
                 }
@@ -167,17 +189,39 @@ extension FeedController: UISearchResultsUpdating {
 extension FeedController: UISearchBarDelegate {
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if let searchTerm = searchBar.text, searchTerm != "" {
-            if let searchResultController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchResultController") as? SearchResultController {
-                searchResultController.searchTerm = searchTerm
-                self.navigationController?.pushViewController(searchResultController, animated: true)
-            }
+        if isSearching() {
+            gifFeed.clearFeed()
+            loadFeed(type: .search, terms: searchController.searchBar.text, completionHandler: { result -> Void in
+                if !result {
+                    print("Something went wrong.")
+                }
+            })
+            collectionView.reloadData()
         }
+
+//        if let searchTerm = searchBar.text, searchTerm != "" {
+//            if let searchResultController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchResultController") as? SearchResultController {
+//                searchResultController.searchTerm = searchTerm
+//                self.navigationController?.pushViewController(searchResultController, animated: true)
+//            }
+//        }
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchController.searchBar.text = ""
-        searchController.searchBar.showsCancelButton = false
+        if isSearching() {
+            gifFeed.clearFeed()
+            loadFeed(type: .trending, terms: nil, completionHandler: { result -> Void in
+                if !result {
+                    print("Something went wrong.")
+                }
+            })
+            collectionView.reloadData()
+            searchController.searchBar.text = ""
+            searchController.searchBar.showsCancelButton = false
+        } else {
+            searchController.searchBar.text = ""
+            searchController.searchBar.showsCancelButton = false
+        }
     }
 
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {

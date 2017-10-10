@@ -13,7 +13,6 @@
 		844B97DB1F7A8EC0005DA644 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 844B97D91F7A8EC0005DA644 /* Main.storyboard */; };
 		844B97DD1F7A8EC0005DA644 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 844B97DC1F7A8EC0005DA644 /* Assets.xcassets */; };
 		844B97E01F7A8EC0005DA644 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 844B97DE1F7A8EC0005DA644 /* LaunchScreen.storyboard */; };
-		844B97EB1F7AC23E005DA644 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B97EA1F7AC23E005DA644 /* SearchController.swift */; };
 		844B97F01F7ADFDE005DA644 /* GifsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B97EF1F7ADFDE005DA644 /* GifsModel.swift */; };
 		844B97F21F7B01D0005DA644 /* AlamofireManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B97F11F7B01D0005DA644 /* AlamofireManager.swift */; };
 		844B97F41F7B06F3005DA644 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B97F31F7B06F3005DA644 /* Constants.swift */; };
@@ -32,7 +31,6 @@
 		844B97DC1F7A8EC0005DA644 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		844B97DF1F7A8EC0005DA644 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		844B97E11F7A8EC0005DA644 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		844B97EA1F7AC23E005DA644 /* SearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		844B97EF1F7ADFDE005DA644 /* GifsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GifsModel.swift; sourceTree = "<group>"; };
 		844B97F11F7B01D0005DA644 /* AlamofireManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireManager.swift; sourceTree = "<group>"; };
 		844B97F31F7B06F3005DA644 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -100,7 +98,6 @@
 		844B97E71F7A966C005DA644 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				844B97EA1F7AC23E005DA644 /* SearchController.swift */,
 				844B98001F7C6063005DA644 /* FeedController.swift */,
 			);
 			name = ViewControllers;
@@ -296,7 +293,6 @@
 				8356BB301F861587007A3315 /* CustomLayoutAttributes.swift in Sources */,
 				844B97F01F7ADFDE005DA644 /* GifsModel.swift in Sources */,
 				844B97FD1F7C49B8005DA644 /* CustomCollectionViewCell.swift in Sources */,
-				844B97EB1F7AC23E005DA644 /* SearchController.swift in Sources */,
 				844B97F81F7C241F005DA644 /* Utils.swift in Sources */,
 				844B97F21F7B01D0005DA644 /* AlamofireManager.swift in Sources */,
 				844B97D61F7A8EC0005DA644 /* AppDelegate.swift in Sources */,

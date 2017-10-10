@@ -13,7 +13,7 @@ class SearchResultController: UIViewController, UICollectionViewDelegate {
     @IBOutlet var collectionView: UICollectionView!
     
     var searchTerm = ""
-    lazy private var gifFeed = FeedModel(type: .search)
+    lazy private var gifFeed = FeedModel()
     private let rating = Constants.preferredSearchRating
     private let gifsRequestLimit = Constants.gifsRequestLimit
     
@@ -48,10 +48,11 @@ class SearchResultController: UIViewController, UICollectionViewDelegate {
     
     // MARK: Feeds
     func loadFeed() {
-        gifFeed.requestFeed(gifsRequestLimit,
+        gifFeed.requestFeed( limit: gifsRequestLimit,
                             offset: gifFeed.currentOffset,
                             rating: rating,
                              terms: searchTerm,
+                              type: .search,
                   comletionHandler: { (succeed, total, error) -> Void in
             if succeed, let total = total {
                 self.collectionView.performBatchUpdates({
@@ -75,9 +76,9 @@ extension SearchResultController: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let collectionViewBounds = CGRect(x: 0,
-                   y: collectionView.contentSize.height - Constants.screenHeight / 2,
-                   width: collectionView.frame.width,
-                   height: Constants.screenHeight / 2)
+                                          y: collectionView.contentSize.height - Constants.screenHeight / 2,
+                                      width: collectionView.frame.width,
+                                     height: Constants.screenHeight / 2)
         if collectionView.bounds.intersects(collectionViewBounds), collectionView.contentSize.height > 0 {
             loadFeed()
         }
