@@ -26,6 +26,9 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
             view.backgroundColor = UIColor(patternImage: patternImage)
         }
 
+        navigationController?.navigationBar.barTintColor = .darkGray
+        navigationController?.navigationBar.tintColor = .white
+
         // Setup the Search Controller
         searchController.searchResultsUpdater = self
         searchController.hidesNavigationBarDuringPresentation = false
@@ -42,13 +45,22 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .clear
+        collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "FeedControllerCell")
 
+        let attributes = [
+            NSAttributedStringKey.foregroundColor : UIColor.white,
+            NSAttributedStringKey.strokeWidth : 3.0
+            ] as [NSAttributedStringKey : Any]
         refreshControl = UIRefreshControl()
-        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: attributes)
         refreshControl.addTarget(self, action: #selector(refreshFeed(_:)), for: .valueChanged)
         collectionView.addSubview(refreshControl)
 
-        loadFeed()
+        loadFeed(completionHandler: { result -> Void in
+            if !result {
+                print("Failed to load feed.")
+            }
+        })
     }
 
     override func viewWillLayoutSubviews() {
@@ -60,17 +72,22 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
     // MARK: Feeds
     @objc func refreshFeed(_ sender: UIRefreshControl) {
         gifFeed.clearFeed()
+        loadFeed(completionHandler: { result -> Void in
+            if !result {
+                print("Failed to refresh feed.")
+            } else {
+                sender.endRefreshing()
+            }
+        })
         collectionView.reloadData()
-        loadFeed()
-        sender.endRefreshing()
     }
 
-    func loadFeed() {
+    func loadFeed(completionHandler:@escaping (_ result: Bool) -> Void ) {
         gifFeed.requestFeed(Constants.gifsRequestLimit,
                             offset: gifFeed.currentOffset,
                             rating: rating,
-                            terms: nil,
-                            comletionHandler: { (succeed, total, error) -> Void in
+                             terms: nil,
+                  comletionHandler: { (succeed, total, error) -> Void in
             if succeed, let total = total {
                 self.collectionView.performBatchUpdates({
                     var indexPaths = [IndexPath]()
@@ -79,10 +96,17 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
                         indexPaths.append(indexPath)
                     }
                     self.collectionView.insertItems(at: indexPaths)
-                }, completion: nil)
+                }, completion: { done -> Void in
+                    if !done {
+                        completionHandler(false)
+                    } else {
+                        completionHandler(true)
+                    }
+                })
             } else if let error = error {
                 let alert = self.showAlert(error)
                 self.present(alert, animated: true, completion: nil)
+                completionHandler(false)
             }
         })
     }
@@ -109,7 +133,7 @@ extension FeedController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CustomCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeedControllerCell", for: indexPath) as! CustomCollectionViewCell
         cell.gif = gifFeed.gifsArray[indexPath.item]
         return cell
     }
@@ -123,7 +147,11 @@ extension FeedController: UIScrollViewDelegate {
             CGRect(x: 0, y: collectionView.contentSize.height - Constants.screenHeight / 2,
                    width: collectionView.frame.width, height: Constants.screenHeight / 2)) &&
             collectionView.contentSize.height > 0  {
-            loadFeed()
+            loadFeed(completionHandler: { result -> Void in
+                if !result {
+                    print("Failed to add data to feed.")
+                }
+            })
         }
     }
 }
@@ -149,7 +177,6 @@ extension FeedController: UISearchBarDelegate {
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchController.searchBar.text = ""
-        //view.endEditing(true)
         searchController.searchBar.showsCancelButton = false
     }
 

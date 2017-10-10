@@ -21,9 +21,6 @@ class SearchResultController: UIViewController, UICollectionViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationController?.navigationBar.barTintColor = .darkGray
-        navigationController?.navigationBar.tintColor = .white
-
         title = searchTerm
 
         if let layout = collectionView.collectionViewLayout as? CustomCollectionViewLayout {
