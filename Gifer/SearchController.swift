@@ -26,14 +26,6 @@ class SearchResultController: UIViewController, UICollectionViewDelegate {
 
         title = searchTerm
 
-
-//        if let layout = collectionView.collectionViewLayout as? CustomCollectionViewLayout {
-//            layout.delegate = self
-//        }
-//        collectionView.delegate = self
-//        collectionView.dataSource = self
-//        collectionView.backgroundColor = .clear
-
         if let layout = collectionView.collectionViewLayout as? CustomCollectionViewLayout {
             layout.delegate = self
         }
@@ -59,8 +51,11 @@ class SearchResultController: UIViewController, UICollectionViewDelegate {
     
     // MARK: Feeds
     func loadFeed() {
-        gifFeed.requestFeed(gifsRequestLimit, offset: gifFeed.currentOffset, rating: rating, terms: searchTerm,
-                            comletionHandler: { (succeed, total, error) -> Void in
+        gifFeed.requestFeed(gifsRequestLimit,
+                            offset: gifFeed.currentOffset,
+                            rating: rating,
+                             terms: searchTerm,
+                  comletionHandler: { (succeed, total, error) -> Void in
             if succeed, let total = total {
                 self.collectionView.performBatchUpdates({
                     var indexPaths = [IndexPath]()

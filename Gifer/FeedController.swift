@@ -9,14 +9,15 @@
 import UIKit
 import Alamofire
 
-class FeedController: UIViewController{
-    
-    @IBOutlet weak var searchBar: UISearchBar!
+class FeedController: UIViewController, UISearchControllerDelegate, UICollectionViewDelegate{
+
     @IBOutlet var collectionView: UICollectionView!
 
     lazy private var gifFeed = FeedModel(type: .trending)
     lazy private var refreshControl = UIRefreshControl()
     private let rating = Constants.preferredSearchRating
+
+    let searchController = UISearchController(searchResultsController: nil)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,10 +26,15 @@ class FeedController: UIViewController{
             view.backgroundColor = UIColor(patternImage: patternImage)
         }
 
-        searchBar.delegate = self
-        searchBar.tintColor = .white
-        searchBar.backgroundImage = UIImage()
-        view.addSubview(searchBar)
+        // Setup the Search Controller
+        searchController.searchResultsUpdater = self
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.delegate = self
+        searchController.searchBar.delegate = self
+        definesPresentationContext = true
+        navigationItem.titleView = searchController.searchBar
 
         if let layout = collectionView.collectionViewLayout as? CustomCollectionViewLayout {
             layout.delegate = self
@@ -38,22 +44,13 @@ class FeedController: UIViewController{
         collectionView.backgroundColor = .clear
 
         refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refreshFeed), for: .valueChanged)
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(refreshFeed(_:)), for: .valueChanged)
         collectionView.addSubview(refreshControl)
 
         loadFeed()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.isNavigationBarHidden = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.isNavigationBarHidden = false
-    }
-    
+
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         collectionView.collectionViewLayout.invalidateLayout()
@@ -61,10 +58,11 @@ class FeedController: UIViewController{
 
 
     // MARK: Feeds
-    @objc func refreshFeed() {
+    @objc func refreshFeed(_ sender: UIRefreshControl) {
         gifFeed.clearFeed()
         collectionView.reloadData()
         loadFeed()
+        sender.endRefreshing()
     }
 
     func loadFeed() {
@@ -117,16 +115,6 @@ extension FeedController: UICollectionViewDataSource {
     }
 }
 
-// MARK: UICollectionView Delegate
-extension FeedController: UICollectionViewDelegate {
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        searchBar.text = ""
-        view.endEditing(true)
-        searchBar.showsCancelButton = false
-    }
-}
-
 // MARK: UIScrollView Delegate
 extension FeedController: UIScrollViewDelegate {
 
@@ -137,6 +125,13 @@ extension FeedController: UIScrollViewDelegate {
             collectionView.contentSize.height > 0  {
             loadFeed()
         }
+    }
+}
+
+extension FeedController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        // TODO
     }
 }
 
@@ -153,15 +148,16 @@ extension FeedController: UISearchBarDelegate {
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.text = ""
-        view.endEditing(true)
-        searchBar.showsCancelButton = false
+        searchController.searchBar.text = ""
+        //view.endEditing(true)
+        searchController.searchBar.showsCancelButton = false
     }
 
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        searchBar.showsCancelButton = true
+        searchController.searchBar.showsCancelButton = true
         return true
     }
+
 }
 
 

@@ -25,6 +25,24 @@
             </objects>
             <point key="canvasLocation" x="-276" y="118"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="5vr-De-DTn">
+            <objects>
+                <viewController id="xJI-Mw-49J" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="zpr-r0-Ayo"/>
+                        <viewControllerLayoutGuide type="bottom" id="Net-a9-lyP"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="TrH-Ua-iev">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Uyb-fW-QLp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="481" y="387"/>
+        </scene>
         <!--Feed Controller-->
         <scene sceneID="IMS-RN-h0F">
             <objects>
@@ -52,44 +70,24 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <searchBar contentMode="redraw" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="XvC-kY-v14">
-                                <rect key="frame" x="0.0" y="15" width="375" height="56"/>
-                                <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <scopeButtonTitles>
-                                    <string>Title</string>
-                                    <string>Title</string>
-                                </scopeButtonTitles>
-                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="XvC-kY-v14" firstAttribute="top" secondItem="7U9-P3-fPt" secondAttribute="top" constant="15" id="0WC-SY-024"/>
                             <constraint firstItem="7oP-Qn-7MX" firstAttribute="top" secondItem="Teb-Ws-K8B" secondAttribute="bottom" id="5bs-iZ-U4j"/>
                             <constraint firstAttribute="trailing" secondItem="Teb-Ws-K8B" secondAttribute="trailing" id="5dq-At-R62"/>
-                            <constraint firstItem="Teb-Ws-K8B" firstAttribute="top" secondItem="dBU-dz-8IC" secondAttribute="bottom" id="DXv-bj-xPR"/>
                             <constraint firstItem="Teb-Ws-K8B" firstAttribute="leading" secondItem="7U9-P3-fPt" secondAttribute="leading" id="H0u-Mb-CLi"/>
-                            <constraint firstAttribute="trailing" secondItem="XvC-kY-v14" secondAttribute="trailing" id="gy2-Zo-maU"/>
-                            <constraint firstItem="XvC-kY-v14" firstAttribute="leading" secondItem="7U9-P3-fPt" secondAttribute="leading" id="h0I-dO-zIf"/>
+                            <constraint firstItem="Teb-Ws-K8B" firstAttribute="top" secondItem="dBU-dz-8IC" secondAttribute="bottom" id="xEe-ZR-QIJ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="dZZ-9D-sIm">
-                        <barButtonItem key="rightBarButtonItem" id="gep-w8-LmN">
-                            <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="2fJ-Zx-oyV">
-                                <rect key="frame" x="308" y="6.5" width="51" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </switch>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="dZZ-9D-sIm"/>
                     <connections>
                         <outlet property="collectionView" destination="Teb-Ws-K8B" id="ODZ-Ep-5cL"/>
-                        <outlet property="searchBar" destination="XvC-kY-v14" id="k8C-0o-TiD"/>
                         <segue destination="XZx-OB-3NC" kind="show" identifier="SearchResultSegue" id="JQW-cR-a1V"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E4v-FO-5O5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="516" y="119.1904047976012"/>
+            <point key="canvasLocation" x="481" y="-291"/>
         </scene>
         <!--Search Result Controller-->
         <scene sceneID="Tn3-TK-0Qk">
