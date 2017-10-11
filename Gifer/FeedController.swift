@@ -186,11 +186,26 @@ extension FeedController: UIScrollViewDelegate {
                width: collectionView.frame.width,
               height: Constants.screenHeight / 2)) &&
             collectionView.contentSize.height > 0  {
-            loadFeed(type: .trending, terms: "", completionHandler: { result -> Void in
-                if !result {
-                    print("Failed to add data to feed.")
-                }
-            })
+
+
+            if isSearching() {
+                loadFeed(type: .search,
+                         terms: searchController.searchBar.text,
+                         completionHandler: { result -> Void in
+
+                    if !result {
+                        print("Failed to add data to feed.")
+                    }
+                })
+            } else {
+                loadFeed(type: .trending,
+                         terms: "",
+                         completionHandler: { result -> Void in
+                    if !result {
+                        print("Failed to add data to feed.")
+                    }
+                })
+            }
         }
     }
 }

@@ -20,18 +20,16 @@ class GifModel {
     convenience init(data: GifMapper) {
         self.init()
         
-        self.url = data.url
-        self.id = data.id
-        self.rating = data.rating
-        self.trended = data.trended
+        url = data.url
+        id = data.id
+        rating = data.rating
+        trended = data.trended
 
         if let gifHeight = data.height {
-            guard let n = Double(gifHeight) else { return }
-            height = n
+            height = Double(gifHeight)!
         }
         if let gifWidth = data.width {
-            guard let n = Double(gifWidth) else { return }
-            width = n
+            width = Double(gifWidth)!
         }
     }
 }
