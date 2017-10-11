@@ -18,7 +18,6 @@
 		844B97F21F7B01D0005DA644 /* AlamofireManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B97F11F7B01D0005DA644 /* AlamofireManager.swift */; };
 		844B97F41F7B06F3005DA644 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B97F31F7B06F3005DA644 /* Constants.swift */; };
 		844B97F81F7C241F005DA644 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B97F71F7C241F005DA644 /* Utils.swift */; };
-		844B97FA1F7C3FB0005DA644 /* FeedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B97F91F7C3FB0005DA644 /* FeedModel.swift */; };
 		844B97FD1F7C49B8005DA644 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B97FC1F7C49B8005DA644 /* CustomCollectionViewCell.swift */; };
 		844B97FF1F7C5409005DA644 /* CustomCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B97FE1F7C5409005DA644 /* CustomCollectionViewLayout.swift */; };
 		844B98011F7C6063005DA644 /* FeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B98001F7C6063005DA644 /* FeedController.swift */; };
@@ -37,7 +36,6 @@
 		844B97F11F7B01D0005DA644 /* AlamofireManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireManager.swift; sourceTree = "<group>"; };
 		844B97F31F7B06F3005DA644 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		844B97F71F7C241F005DA644 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		844B97F91F7C3FB0005DA644 /* FeedModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedModel.swift; sourceTree = "<group>"; };
 		844B97FC1F7C49B8005DA644 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
 		844B97FE1F7C5409005DA644 /* CustomCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewLayout.swift; sourceTree = "<group>"; };
 		844B98001F7C6063005DA644 /* FeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedController.swift; sourceTree = "<group>"; };
@@ -109,7 +107,6 @@
 			isa = PBXGroup;
 			children = (
 				837970F71F8E54E4003A7948 /* GifModel.swift */,
-				844B97F91F7C3FB0005DA644 /* FeedModel.swift */,
 				844B97F11F7B01D0005DA644 /* AlamofireManager.swift */,
 				837970F51F8D064F003A7948 /* FeedMapper.swift */,
 			);
@@ -307,7 +304,6 @@
 				837970F81F8E54E4003A7948 /* GifModel.swift in Sources */,
 				844B98011F7C6063005DA644 /* FeedController.swift in Sources */,
 				844B97FF1F7C5409005DA644 /* CustomCollectionViewLayout.swift in Sources */,
-				844B97FA1F7C3FB0005DA644 /* FeedModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,11 +13,17 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
 
     @IBOutlet var collectionView: UICollectionView!
 
-    lazy private var gifFeed = FeedModel()
     lazy private var refreshControl = UIRefreshControl()
     private let rating = Constants.preferredSearchRating
 
     let searchController = UISearchController(searchResultsController: nil)
+
+    var currentOffset = 0
+    var previousOffset = -1
+    var gifsArray = [GifModel]()
+    var requesting = false
+    let alamofireManager = AlamofireManager()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,7 +81,7 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
     @objc func refreshFeed(_ sender: UIRefreshControl) {
 
         if isSearching(){
-            gifFeed.clearFeed()
+            clearFeed()
             loadFeed(type: .search,
                     terms: searchController.searchBar.text,
         completionHandler: { result -> Void in
@@ -88,7 +94,7 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
             })
             collectionView.reloadData()
         } else {
-            gifFeed.clearFeed()
+            clearFeed()
             loadFeed(type: .trending,
                     terms: nil,
         completionHandler: { result -> Void in
@@ -106,8 +112,8 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
                  terms: String?,
      completionHandler: @escaping (_ result: Bool) -> Void ) {
 
-        gifFeed.requestFeed( limit: Constants.gifsRequestLimit,
-                            offset: gifFeed.currentOffset,
+        requestFeed( limit: Constants.gifsRequestLimit,
+                            offset: currentOffset,
                             rating: rating,
                              terms: terms,
                               type: type,
@@ -116,7 +122,7 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
             if succeed, let total = total {
                 self.collectionView.performBatchUpdates({
                     var indexPaths = [IndexPath]()
-                    for i in (self.gifFeed.currentOffset - total)..<self.gifFeed.currentOffset {
+                    for i in (self.currentOffset - total)..<self.currentOffset {
                         let indexPath = IndexPath(item: i, section: 0)
                         indexPaths.append(indexPath)
                     }
@@ -136,6 +142,62 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         })
     }
 
+    func requestFeed(  limit: Int,
+                       offset: Int?,
+                       rating: String?,
+                       terms: String?,
+                       type: FeedType,
+                       comletionHandler:@escaping (_ succeed: Bool,
+        _ total: Int?,
+        _ error: String?) -> Void) {
+
+        if requesting {
+            comletionHandler(true, nil, nil)
+            return
+        }
+        requesting = true
+
+        var searchTerm = ""
+        if terms != nil {
+            searchTerm = terms!
+        }
+
+        alamofireManager.fetchGifs(type: type,
+                                   limit: limit,
+                                   offset: offset!,
+                                   rating: rating,
+                                   searchStr: terms,
+                                   completionHandler: { (gifs, total, error) -> Void in
+
+                                    self.requesting = false
+
+            if let error = error {
+                comletionHandler(false, nil, error)
+            } else {
+                if let newGifs = gifs {
+                    if let totalGif = total {
+                        if totalGif > 0 {
+                            self.previousOffset = self.currentOffset
+                            self.currentOffset = self.currentOffset + newGifs.count
+                            self.gifsArray.append(contentsOf: newGifs)
+
+                            comletionHandler(true, newGifs.count, nil)
+                        } else {
+                            comletionHandler(true, nil, nil)
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    func clearFeed() {
+        gifsArray = []
+        requesting = false
+        currentOffset = 0
+        previousOffset = -1
+    }
+
     func searchBarIsEmpty() -> Bool {
         // Returns true if the text is empty or nil
         return searchController.searchBar.text?.isEmpty ?? true
@@ -146,14 +208,22 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
     }
 }
 
+
+
+
+
+
+
+
+
 // MARK: - CustomCollectionViewLayout Delegate
 extension FeedController: CustomCollectionViewLayoutDelegate {
 
     func collectionView(_ collectionView: UICollectionView,
-       heightForGifAtIndexPath indexPath: IndexPath,
+                        heightForGifAtIndexPath indexPath: IndexPath,
                         fixedWidth: Double) -> Double {
 
-        let gif = gifFeed.gifsArray[indexPath.item]
+        let gif = gifsArray[indexPath.item]
         let gifHeight = gif.height * fixedWidth / gif.width
         return gifHeight
     }
@@ -163,15 +233,15 @@ extension FeedController: CustomCollectionViewLayoutDelegate {
 extension FeedController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView,
-          numberOfItemsInSection section: Int) -> Int {
-        return gifFeed.gifsArray.count
+                        numberOfItemsInSection section: Int) -> Int {
+        return gifsArray.count
     }
 
     func collectionView(_ collectionView: UICollectionView,
-                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeedControllerCell",
                                                       for: indexPath) as! CustomCollectionViewCell
-        cell.gif = gifFeed.gifsArray[indexPath.item]
+        cell.gif = gifsArray[indexPath.item]
         return cell
     }
 }
@@ -183,8 +253,8 @@ extension FeedController: UIScrollViewDelegate {
         if collectionView.bounds.intersects(
             CGRect(x: 0,
                    y: collectionView.contentSize.height - Constants.screenHeight / 2,
-               width: collectionView.frame.width,
-              height: Constants.screenHeight / 2)) &&
+                   width: collectionView.frame.width,
+                   height: Constants.screenHeight / 2)) &&
             collectionView.contentSize.height > 0  {
 
 
@@ -193,17 +263,17 @@ extension FeedController: UIScrollViewDelegate {
                          terms: searchController.searchBar.text,
                          completionHandler: { result -> Void in
 
-                    if !result {
-                        print("Failed to add data to feed.")
-                    }
+                            if !result {
+                                print("Failed to add data to feed.")
+                            }
                 })
             } else {
                 loadFeed(type: .trending,
                          terms: "",
                          completionHandler: { result -> Void in
-                    if !result {
-                        print("Failed to add data to feed.")
-                    }
+                            if !result {
+                                print("Failed to add data to feed.")
+                            }
                 })
             }
         }
@@ -213,7 +283,6 @@ extension FeedController: UIScrollViewDelegate {
 // MARK: UISearchResultsUpdating Delegate
 extension FeedController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        // TODO
     }
 }
 
@@ -223,14 +292,14 @@ extension FeedController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 
         if isSearching() {
-            gifFeed.clearFeed()
+            clearFeed()
             loadFeed(type: .search,
-                    terms: searchController.searchBar.text,
-        completionHandler: { result -> Void in
+                     terms: searchController.searchBar.text,
+                     completionHandler: { result -> Void in
 
-                if !result {
-                    print("Something went wrong.")
-                }
+                        if !result {
+                            print("Something went wrong.")
+                        }
             })
             collectionView.reloadData()
         }
@@ -239,14 +308,14 @@ extension FeedController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
 
         if isSearching() {
-            gifFeed.clearFeed()
+            clearFeed()
             loadFeed(type: .trending,
-                    terms: nil,
-        completionHandler: { result -> Void in
+                     terms: nil,
+                     completionHandler: { result -> Void in
 
-                if !result {
-                    print("Something went wrong.")
-                }
+                        if !result {
+                            print("Something went wrong.")
+                        }
             })
             collectionView.reloadData()
             searchController.searchBar.text = ""
@@ -262,3 +331,5 @@ extension FeedController: UISearchBarDelegate {
         return true
     }
 }
+
+

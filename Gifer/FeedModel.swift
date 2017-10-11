@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class FeedModel {
+class FeedModelOld {
 
     var currentOffset = 0
     var previousOffset = -1
@@ -63,7 +63,6 @@ class FeedModel {
                             self.currentOffset = self.currentOffset + newGifs.count
                             self.gifsArray.append(contentsOf: newGifs)
 
-                            //self.gifsArray.append(newGifs)
                             comletionHandler(true, newGifs.count, nil)
                         } else {
                             comletionHandler(true, nil, nil)
