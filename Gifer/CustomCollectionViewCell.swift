@@ -13,7 +13,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
 
     var imageView: FLAnimatedImageView?
 
-    var gif: GifsModel? {
+    var gif: GifModel? {
         didSet {
             if let gif = gif, let url = gif.url {
                 imageView?.sd_setImage(with: URL(string: url))

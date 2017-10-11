@@ -11,8 +11,8 @@ import ObjectMapper
 
 class GifMapper: NSObject, Mappable {
 
-    var width = 0.0
-    var height = 0.0
+    var width: String?
+    var height: String?
     var id: String?
     var url: String?
     var rating: String?
@@ -35,11 +35,8 @@ class GifMapper: NSObject, Mappable {
         rating <- map["rating"]
         trendingDateTime <- map["trending_datetime"]
         trended = trendingDateTime != Constants.nonTrendedDateTimeFormat
-        url <- map["images.\(Constants.preferredImageType).url"]
-        width <- map["images.\(Constants.preferredImageType).width"]
-        height <- map["images.\(Constants.preferredImageType).height"]
-        count <- map["pagination.count"]
-        totalCount <- map["pagination.total_count"]
-         //if let pagination = resultJSON["pagination"].dictionary {
+        url <- map["images.original.url"]
+        width <- map["images.original.width"]
+        height <- map["images.original.height"]
     }
 }

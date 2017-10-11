@@ -10,6 +10,7 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 import ObjectMapper
+import AlamofireObjectMapper
 
 class AlamofireManager {
 
@@ -20,7 +21,7 @@ class AlamofireManager {
                  offset: Int,
                  rating: String?,
                  searchStr: String?,
-      completionHandler: @escaping ( _ gifs: [GifsModel]?,
+      completionHandler: @escaping ( _ gifs: [GifModel]?,
                                     _ total: Int?,
                                     _ error: String?) -> Void) {
 
@@ -46,45 +47,28 @@ class AlamofireManager {
                 ] as [String : Any]
         }
 
+
         Alamofire.request(url,
                           method: .get,
-                      parameters: parameters,
-                        encoding: URLEncoding.default).responseJSON(completionHandler: { response in
+                          parameters: parameters,
+                          encoding: URLEncoding.default).responseArray(keyPath: "data") { (response: DataResponse<[GifMapper]>) in
 
             switch response.result {
-                case .success(let result):
+            case .success:
+                let gifArray: [GifMapper] = response.result.value ?? []
+                let total = gifArray.count
 
-                    let resultJSON = JSON(result)
-                    var total: Int?
+                var gifs = [GifModel]()
+                for gif in gifArray {
+                    let a = GifModel(data: gif)
+                    gifs.append(a)
+                }
+                completionHandler(gifs, total, nil)
 
-                    if let pagination = resultJSON["pagination"].dictionary {
-                        switch type {
-                            case .search:
-                                if let totalcount = pagination["total_count"]?.int {
-                                    total = totalcount
-                                }
-
-                            case .trending:
-                                if let totalcount = pagination["count"]?.int {
-                                    total = totalcount
-                                }
-                        }
-                    }
-
-                    if let gifdata = resultJSON["data"].array {
-                        var gifs = [GifsModel]()
-                        for gifJSON in gifdata {
-                            let gif = GifsModel(data: gifJSON)
-                            gifs.append(gif)
-                        }
-                        completionHandler(gifs, total, nil)
-                    } else {
-                        completionHandler(nil, nil, "Something went wrong")
-                    }
-                case .failure(let error):
-                    completionHandler(nil, nil, error.localizedDescription)
+            case .failure(let error):
+                completionHandler(nil, nil, error.localizedDescription)
             }
-        })
+        }
     }
 }
 
