@@ -24,7 +24,6 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
     var requesting = false
     let alamofireManager = AlamofireManager()
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,11 +52,10 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         collectionView.backgroundColor = .clear
         collectionView.register(CustomCollectionViewCell.self,
                                 forCellWithReuseIdentifier: "FeedControllerCell")
-
-        let attributes = [
+        let attributes: [NSAttributedStringKey : Any] = [
             NSAttributedStringKey.foregroundColor : UIColor.white,
             NSAttributedStringKey.strokeWidth : 3.0
-            ] as [NSAttributedStringKey : Any]
+            ]
         refreshControl = UIRefreshControl()
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh",
                                                         attributes: attributes)
@@ -65,8 +63,8 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         collectionView.addSubview(refreshControl)
 
         loadFeed(type: .trending,
-                terms: nil,
-    completionHandler: { result -> Void in
+                 terms: nil,
+                 completionHandler: { result -> Void in
             if !result {
                 print("Failed to load feed.")
             }
@@ -83,8 +81,8 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         if isSearching(){
             clearFeed()
             loadFeed(type: .search,
-                    terms: searchController.searchBar.text,
-        completionHandler: { result -> Void in
+                     terms: searchController.searchBar.text,
+                     completionHandler: { result -> Void in
 
                 if !result {
                     print("Failed to refresh search.")
@@ -96,8 +94,8 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         } else {
             clearFeed()
             loadFeed(type: .trending,
-                    terms: nil,
-        completionHandler: { result -> Void in
+                     terms: nil,
+                     completionHandler: { result -> Void in
                 if !result {
                     print("Failed to refresh feed.")
                 } else {
@@ -109,14 +107,14 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
     }
 
     func loadFeed(type: FeedType,
-                 terms: String?,
-     completionHandler: @escaping (_ result: Bool) -> Void ) {
+                  terms: String?,
+                  completionHandler: @escaping (_ result: Bool) -> Void ) {
 
-        requestFeed( limit: Constants.gifsRequestLimit,
-                            offset: currentOffset,
-                            rating: rating,
-                             terms: terms,
-                              type: type,
+        requestFeed(limit: Constants.gifsRequestLimit,
+                    offset: currentOffset,
+                    rating: rating,
+                    terms: terms,
+                    type: type,
                   comletionHandler: { (succeed, total, error) -> Void in
 
             if succeed, let total = total {
@@ -147,9 +145,9 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
                        rating: String?,
                        terms: String?,
                        type: FeedType,
-                       comletionHandler:@escaping (_ succeed: Bool,
-        _ total: Int?,
-        _ error: String?) -> Void) {
+                       comletionHandler:@escaping ( _ succeed: Bool,
+                                                    _ total: Int?,
+                                                    _ error: String?) -> Void) {
 
         if requesting {
             comletionHandler(true, nil, nil)
@@ -207,14 +205,6 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         return searchController.isActive && !searchBarIsEmpty()
     }
 }
-
-
-
-
-
-
-
-
 
 // MARK: - CustomCollectionViewLayout Delegate
 extension FeedController: CustomCollectionViewLayoutDelegate {
