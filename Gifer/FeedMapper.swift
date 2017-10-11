@@ -17,7 +17,8 @@ class GifMapper: NSObject, Mappable {
     var url: String?
     var rating: String?
     var trended: Bool?
-
+    var count: Int?
+    var totalCount: Int?
 
     override init() {
         super.init()
@@ -37,5 +38,8 @@ class GifMapper: NSObject, Mappable {
         url <- map["images.\(Constants.preferredImageType).url"]
         width <- map["images.\(Constants.preferredImageType).width"]
         height <- map["images.\(Constants.preferredImageType).height"]
+        count <- map["pagination.count"]
+        totalCount <- map["pagination.total_count"]
+         //if let pagination = resultJSON["pagination"].dictionary {
     }
 }
