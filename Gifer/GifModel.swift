@@ -1,17 +1,10 @@
-//
-//  GifModel.swift
-//  Gifer
-//
-//  Created by Mikhalkov, Eugene on 10/11/17.
-//  Copyright © 2017 Niar. All rights reserved.
-//
 
 import Foundation
 
 class GifModel {
     
-    var width = 0.0
-    var height = 0.0
+    var width: Double?
+    var height: Double?
     var url: String?
     var id: String?
     var rating: String?
@@ -26,10 +19,10 @@ class GifModel {
         trended = data.trended
 
         if let gifHeight = data.height {
-            height = Double(gifHeight)!
+            height = Double(gifHeight)
         }
         if let gifWidth = data.width {
-            width = Double(gifWidth)!
+            width = Double(gifWidth)
         }
     }
 }

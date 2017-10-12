@@ -1,10 +1,3 @@
-//
-//  FeedMapper.swift
-//  Gifer
-//
-//  Created by Mikhalkov, Eugene on 10/10/17.
-//  Copyright © 2017 Niar. All rights reserved.
-//
 
 import Foundation
 import ObjectMapper

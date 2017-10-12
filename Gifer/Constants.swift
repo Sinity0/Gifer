@@ -1,10 +1,3 @@
-//
-//  Constants.swift
-//  Gifer
-//
-//  Created by Niar on 9/27/17.
-//  Copyright © 2017 Niar. All rights reserved.
-//
 
 import UIKit
 

@@ -1,10 +1,3 @@
-//
-//  FeedController.swift
-//  Gifer
-//
-//  Created by Niar on 9/28/17.
-//  Copyright © 2017 Niar. All rights reserved.
-//
 
 import UIKit
 import Alamofire
@@ -13,16 +6,16 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
 
     @IBOutlet var collectionView: UICollectionView!
 
-    lazy private var refreshControl = UIRefreshControl()
+    private lazy var refreshControl = UIRefreshControl()
     private let rating = Constants.preferredSearchRating
 
-    let searchController = UISearchController(searchResultsController: nil)
+    private let searchController = UISearchController(searchResultsController: nil)
 
-    var currentOffset = 0
-    var previousOffset = -1
-    var gifsArray = [GifModel]()
-    var requesting = false
-    let alamofireManager = AlamofireManager()
+    private var currentOffset = 0
+    private var previousOffset = 0
+    private var gifsArray = [GifModel]()
+    private var requesting = false
+    private let networkManager = NetworkManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,7 +69,7 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         collectionView.collectionViewLayout.invalidateLayout()
     }
 
-    @objc func refreshFeed(_ sender: UIRefreshControl) {
+    @objc private func refreshFeed(_ sender: UIRefreshControl) {
 
         if isSearching(){
             clearFeed()
@@ -106,7 +99,7 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         }
     }
 
-    func loadFeed(type: FeedType,
+    private func loadFeed(type: FeedType,
                   terms: String?,
                   completionHandler: @escaping (_ result: Bool) -> Void ) {
 
@@ -140,7 +133,7 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         })
     }
 
-    func requestFeed(  limit: Int,
+    private func requestFeed(  limit: Int,
                        offset: Int?,
                        rating: String?,
                        terms: String?,
@@ -160,7 +153,7 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
             searchTerm = terms!
         }
 
-        alamofireManager.fetchGifs(type: type,
+        networkManager.fetchGifs(type: type,
                                    limit: limit,
                                    offset: offset!,
                                    rating: rating,
@@ -189,19 +182,19 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         })
     }
 
-    func clearFeed() {
+    private func clearFeed() {
         gifsArray = []
         requesting = false
         currentOffset = 0
         previousOffset = -1
     }
 
-    func searchBarIsEmpty() -> Bool {
+    private func searchBarIsEmpty() -> Bool {
         // Returns true if the text is empty or nil
         return searchController.searchBar.text?.isEmpty ?? true
     }
 
-    func isSearching() -> Bool {
+    private func isSearching() -> Bool {
         return searchController.isActive && !searchBarIsEmpty()
     }
 }
@@ -214,8 +207,12 @@ extension FeedController: CustomCollectionViewLayoutDelegate {
                         fixedWidth: Double) -> Double {
 
         let gif = gifsArray[indexPath.item]
-        let gifHeight = gif.height * fixedWidth / gif.width
-        return gifHeight
+
+        if let height = gif.height, let width = gif.width {
+            let gifHeight = height * fixedWidth / width
+            return gifHeight
+        }
+        return 0.0
     }
 }
 

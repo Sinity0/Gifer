@@ -15,7 +15,7 @@
 		844B97DB1F7A8EC0005DA644 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 844B97D91F7A8EC0005DA644 /* Main.storyboard */; };
 		844B97DD1F7A8EC0005DA644 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 844B97DC1F7A8EC0005DA644 /* Assets.xcassets */; };
 		844B97E01F7A8EC0005DA644 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 844B97DE1F7A8EC0005DA644 /* LaunchScreen.storyboard */; };
-		844B97F21F7B01D0005DA644 /* AlamofireManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B97F11F7B01D0005DA644 /* AlamofireManager.swift */; };
+		844B97F21F7B01D0005DA644 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B97F11F7B01D0005DA644 /* NetworkManager.swift */; };
 		844B97F41F7B06F3005DA644 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B97F31F7B06F3005DA644 /* Constants.swift */; };
 		844B97F81F7C241F005DA644 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B97F71F7C241F005DA644 /* Utils.swift */; };
 		844B97FD1F7C49B8005DA644 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B97FC1F7C49B8005DA644 /* CustomCollectionViewCell.swift */; };
@@ -33,7 +33,7 @@
 		844B97DC1F7A8EC0005DA644 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		844B97DF1F7A8EC0005DA644 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		844B97E11F7A8EC0005DA644 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		844B97F11F7B01D0005DA644 /* AlamofireManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireManager.swift; sourceTree = "<group>"; };
+		844B97F11F7B01D0005DA644 /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		844B97F31F7B06F3005DA644 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		844B97F71F7C241F005DA644 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		844B97FC1F7C49B8005DA644 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -107,7 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				837970F71F8E54E4003A7948 /* GifModel.swift */,
-				844B97F11F7B01D0005DA644 /* AlamofireManager.swift */,
+				844B97F11F7B01D0005DA644 /* NetworkManager.swift */,
 				837970F51F8D064F003A7948 /* FeedMapper.swift */,
 			);
 			name = Model;
@@ -297,7 +297,7 @@
 				8356BB301F861587007A3315 /* CustomLayoutAttributes.swift in Sources */,
 				844B97FD1F7C49B8005DA644 /* CustomCollectionViewCell.swift in Sources */,
 				844B97F81F7C241F005DA644 /* Utils.swift in Sources */,
-				844B97F21F7B01D0005DA644 /* AlamofireManager.swift in Sources */,
+				844B97F21F7B01D0005DA644 /* NetworkManager.swift in Sources */,
 				844B97D61F7A8EC0005DA644 /* AppDelegate.swift in Sources */,
 				837970F61F8D064F003A7948 /* FeedMapper.swift in Sources */,
 				844B97F41F7B06F3005DA644 /* Constants.swift in Sources */,

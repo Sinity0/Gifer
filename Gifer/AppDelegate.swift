@@ -1,10 +1,3 @@
-//
-//  AppDelegate.swift
-//  Gifer
-//
-//  Created by Niar on 9/26/17.
-//  Copyright © 2017 Niar. All rights reserved.
-//
 
 import UIKit
 

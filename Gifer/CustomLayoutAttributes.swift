@@ -1,10 +1,3 @@
-//
-//  CustomLayoutAttributes.swift
-//  Gifer
-//
-//  Created by Mikhalkov, Eugene on 10/5/17.
-//  Copyright © 2017 Niar. All rights reserved.
-//
 
 import UIKit
 
