@@ -6,5 +6,6 @@ target 'Gifer' do
 	pod 'SwiftyJSON'
     pod 'SDWebImage/WebP'
     pod 'SDWebImage/GIF'
-    pod 'AlamofireObjectMapper', '~> 5.0'
+    pod 'AlamofireObjectMapper'
+    pod 'UIScrollView-InfiniteScroll'
 end

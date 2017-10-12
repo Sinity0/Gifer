@@ -27,6 +27,7 @@
 		8356BB2F1F861587007A3315 /* CustomLayoutAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLayoutAttributes.swift; sourceTree = "<group>"; };
 		837970F51F8D064F003A7948 /* FeedMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedMapper.swift; sourceTree = "<group>"; };
 		837970F71F8E54E4003A7948 /* GifModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifModel.swift; sourceTree = "<group>"; };
+		83E2583B1F8FA21B0092794F /* Gifer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Gifer-Bridging-Header.h"; sourceTree = "<group>"; };
 		844B97D21F7A8EC0005DA644 /* Gifer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gifer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		844B97D51F7A8EC0005DA644 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		844B97DA1F7A8EC0005DA644 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -119,6 +120,7 @@
 				844B97D51F7A8EC0005DA644 /* AppDelegate.swift */,
 				844B97F31F7B06F3005DA644 /* Constants.swift */,
 				844B97F71F7C241F005DA644 /* Utils.swift */,
+				83E2583B1F8FA21B0092794F /* Gifer-Bridging-Header.h */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -252,6 +254,7 @@
 				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/UIScrollView-InfiniteScroll/UIScrollView_InfiniteScroll.framework",
 				"${BUILT_PRODUCTS_DIR}/libwebp/libwebp.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -262,6 +265,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIScrollView_InfiniteScroll.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libwebp.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -444,6 +448,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = niar.Gifer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "Gifer/Gifer-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;

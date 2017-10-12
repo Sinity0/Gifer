@@ -10,6 +10,7 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
     private let rating = Constants.preferredSearchRating
 
     private let searchController = UISearchController(searchResultsController: nil)
+    public typealias RequestFeedCompletion = ( _ succeed: Bool,_ total: Int?,_ error: String?) -> Void
 
     private var currentOffset = 0
     private var previousOffset = 0
@@ -62,6 +63,30 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
                 print("Failed to load feed.")
             }
         })
+
+
+        collectionView.infiniteScrollIndicatorStyle = .white
+        collectionView.addInfiniteScroll(handler: {collectionView -> Void in
+            collectionView.performBatchUpdates({ () -> Void in
+                if self.isSearching() {
+                    self.loadFeed(type: .search, terms: self.searchController.searchBar.text, completionHandler: { result -> Void in
+
+                                if !result {
+                                    print("Failed to add data to feed.")
+                                }
+                    })
+                } else {
+                    self.loadFeed(type: .trending, terms: "", completionHandler: { result -> Void in
+                                if !result {
+                                    print("Failed to add data to feed.")
+                                }
+                    })
+                }
+            }, completion: { (finished) -> Void in
+                // finish infinite scroll animations
+                collectionView.finishInfiniteScroll()
+            });
+        })
     }
 
     override func viewWillLayoutSubviews() {
@@ -99,16 +124,18 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         }
     }
 
-    private func loadFeed(type: FeedType,
-                  terms: String?,
-                  completionHandler: @escaping (_ result: Bool) -> Void ) {
+    func loadFeed(type: FeedType,
+                          terms: String?,
+                          completionHandler: @escaping (_ result: Bool) -> Void ) {
 
         requestFeed(limit: Constants.gifsRequestLimit,
                     offset: currentOffset,
                     rating: rating,
                     terms: terms,
                     type: type,
-                  comletionHandler: { (succeed, total, error) -> Void in
+                    comletionHandler: { (succeed, total, error) -> Void in
+
+
 
             if succeed, let total = total {
                 self.collectionView.performBatchUpdates({
@@ -133,14 +160,13 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         })
     }
 
-    private func requestFeed(  limit: Int,
-                       offset: Int?,
-                       rating: String?,
-                       terms: String?,
-                       type: FeedType,
-                       comletionHandler:@escaping ( _ succeed: Bool,
-                                                    _ total: Int?,
-                                                    _ error: String?) -> Void) {
+    private func requestFeed(limit: Int,
+                             offset: Int?,
+                             rating: String?,
+                             terms: String?,
+                             type: FeedType,
+                             comletionHandler:@escaping RequestFeedCompletion) {
+        //print("requestFeed was called")
 
         if requesting {
             comletionHandler(true, nil, nil)
@@ -148,45 +174,68 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         }
         requesting = true
 
-        var searchTerm = ""
-        if terms != nil {
-            searchTerm = terms!
-        }
+        switch type{
+        case .search:
+            if let searchTerm = terms, let tableOffset = offset {
+                networkManager.searchGifs(searchTerm: searchTerm,
+                                          rating: rating,
+                                          limit: limit,
+                                          offset: tableOffset,
+                                          completionHandler: {(gifs, total, error) -> Void in
 
-        networkManager.fetchGifs(type: type,
-                                   limit: limit,
-                                   offset: offset!,
-                                   rating: rating,
-                                   searchStr: terms,
-                                   completionHandler: { (gifs, total, error) -> Void in
+                    self.requesting = false
+                    if let error = error {
+                        comletionHandler(false, nil, error)
+                    } else {
+                        if let newGifs = gifs {
+                            if let totalGif = total {
+                                if totalGif > 0 {
+                                    self.previousOffset = self.currentOffset
+                                    self.currentOffset = self.currentOffset + newGifs.count
+                                    self.gifsArray.append(contentsOf: newGifs)
 
-                                    self.requesting = false
-
-            if let error = error {
-                comletionHandler(false, nil, error)
-            } else {
-                if let newGifs = gifs {
-                    if let totalGif = total {
-                        if totalGif > 0 {
-                            self.previousOffset = self.currentOffset
-                            self.currentOffset = self.currentOffset + newGifs.count
-                            self.gifsArray.append(contentsOf: newGifs)
-
-                            comletionHandler(true, newGifs.count, nil)
-                        } else {
-                            comletionHandler(true, nil, nil)
+                                    comletionHandler(true, newGifs.count, nil)
+                                } else {
+                                    comletionHandler(true, nil, nil)
+                                }
+                            }
                         }
                     }
-                }
+                })
             }
-        })
+        case .trending:
+            if let tableOffset = offset {
+                networkManager.fetchTrendedGifs(limit: limit,
+                                                offset: tableOffset,
+                                                completionHandler: {(gifs, total, error) -> Void in
+                    self.requesting = false
+                    if let error = error {
+                        comletionHandler(false, nil, error)
+                    } else {
+                        if let newGifs = gifs {
+                            if let totalGif = total {
+                                if totalGif > 0 {
+                                    self.previousOffset = self.currentOffset
+                                    self.currentOffset = self.currentOffset + newGifs.count
+                                    self.gifsArray.append(contentsOf: newGifs)
+
+                                    comletionHandler(true, newGifs.count, nil)
+                                } else {
+                                    comletionHandler(true, nil, nil)
+                                }
+                            }
+                        }
+                    }
+                })
+            }
+        }
     }
 
     private func clearFeed() {
         gifsArray = []
         requesting = false
         currentOffset = 0
-        previousOffset = -1
+        previousOffset = 0
     }
 
     private func searchBarIsEmpty() -> Bool {
@@ -198,6 +247,7 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         return searchController.isActive && !searchBarIsEmpty()
     }
 }
+
 
 // MARK: - CustomCollectionViewLayout Delegate
 extension FeedController: CustomCollectionViewLayoutDelegate {
@@ -230,40 +280,6 @@ extension FeedController: UICollectionViewDataSource {
                                                       for: indexPath) as! CustomCollectionViewCell
         cell.gif = gifsArray[indexPath.item]
         return cell
-    }
-}
-
-// MARK: UIScrollView Delegate
-extension FeedController: UIScrollViewDelegate {
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if collectionView.bounds.intersects(
-            CGRect(x: 0,
-                   y: collectionView.contentSize.height - Constants.screenHeight / 2,
-                   width: collectionView.frame.width,
-                   height: Constants.screenHeight / 2)) &&
-            collectionView.contentSize.height > 0  {
-
-
-            if isSearching() {
-                loadFeed(type: .search,
-                         terms: searchController.searchBar.text,
-                         completionHandler: { result -> Void in
-
-                            if !result {
-                                print("Failed to add data to feed.")
-                            }
-                })
-            } else {
-                loadFeed(type: .trending,
-                         terms: "",
-                         completionHandler: { result -> Void in
-                            if !result {
-                                print("Failed to add data to feed.")
-                            }
-                })
-            }
-        }
     }
 }
 
