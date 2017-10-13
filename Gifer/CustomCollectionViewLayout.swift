@@ -1,84 +1,172 @@
-//
-//  CustomCollectionViewLayout.swift
-//  Gifer
-//
-//  Created by Niar on 9/28/17.
-//  Copyright © 2017 Niar. All rights reserved.
-//
 
-import Foundation
 import UIKit
 
+//protocol CustomCollectionViewLayoutDelegatet: class {
+//    // 1. Method to ask the delegate for the height of the image
+//    func collectionView(_ collectionView: UICollectionView, heightForGifAtIndexPath indexPath: IndexPath) -> CGFloat
+//}
+//
+//class CustomCollectionViewLayoutt: UICollectionViewLayout {
+//    //1. Pinterest Layout Delegate
+//    weak var delegate: CustomCollectionViewLayoutDelegate!
+//
+//    //2. Configurable properties
+//    fileprivate var numberOfColumns = 2
+//    fileprivate var cellPadding: CGFloat = 6
+//
+//    //3. Array to keep a cache of attributes.
+//    fileprivate var cache = [UICollectionViewLayoutAttributes]()
+//
+//    //4. Content height and size
+//    fileprivate var contentHeight: CGFloat = 0
+//
+//    fileprivate var contentWidth: CGFloat {
+//        guard let collectionView = collectionView else {
+//            return 0
+//        }
+//        let insets = collectionView.contentInset
+//        return collectionView.bounds.width - (insets.left + insets.right)
+//    }
+//
+//    override var collectionViewContentSize: CGSize {
+//        return CGSize(width: contentWidth, height: contentHeight)
+//    }
+//
+//    override func prepare() {
+//        // 1. Only calculate once
+//        guard cache.isEmpty == true, let collectionView = collectionView else {
+//            return
+//        }
+//        // 2. Pre-Calculates the X Offset for every column and adds an array to increment the currently max Y Offset for each column
+//        let columnWidth = contentWidth / CGFloat(numberOfColumns)
+//        var xOffset = [CGFloat]()
+//        for column in 0 ..< numberOfColumns {
+//            xOffset.append(CGFloat(column) * columnWidth)
+//        }
+//        var column = 0
+//        var yOffset = [CGFloat](repeating: 0, count: numberOfColumns)
+//
+//        // 3. Iterates through the list of items in the first section
+//        for item in 0 ..< collectionView.numberOfItems(inSection: 0) {
+//
+//            let indexPath = IndexPath(item: item, section: 0)
+//
+//            // 4. Asks the delegate for the height of the picture and the annotation and calculates the cell frame.
+//            let gifHeight = delegate.collectionView(collectionView, heightForGifAtIndexPath: indexPath)
+//            let height = cellPadding * 2 + gifHeight
+//            let frame = CGRect(x: xOffset[column], y: yOffset[column], width: columnWidth, height: height)
+//            let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
+//
+//            // 5. Creates an UICollectionViewLayoutItem with the frame and add it to the cache
+//            let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+//            attributes.frame = insetFrame
+//            cache.append(attributes)
+//
+//            // 6. Updates the collection view content height
+//            contentHeight = max(contentHeight, frame.maxY)
+//            yOffset[column] = yOffset[column] + height
+//
+//            column = column < (numberOfColumns - 1) ? (column + 1) : 0
+//        }
+//    }
+//
+//    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+//
+//        var visibleLayoutAttributes = [UICollectionViewLayoutAttributes]()
+//
+//        // Loop through the cache and look for items in the rect
+//        for attributes in cache {
+//            if attributes.frame.intersects(rect) {
+//                visibleLayoutAttributes.append(attributes)
+//            }
+//        }
+//        return visibleLayoutAttributes
+//    }
+//
+//    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+//        return cache[indexPath.item]
+//    }
+//}
+
 protocol CustomCollectionViewLayoutDelegate {
-    func collectionView(_ collectionView:UICollectionView, heightForGifAtIndexPath indexPath:IndexPath, fixedWidth:CGFloat) -> CGFloat
+    func collectionView(_ collectionView:UICollectionView, heightForGifAtIndexPath indexPath:IndexPath, fixedWidth:Double) -> Double
 }
 
-
-
 class CustomCollectionViewLayout: UICollectionViewLayout {
-    
-    var delegate: CustomCollectionViewLayoutDelegate!
-    fileprivate var attributes = [CustomLayoutAttributes]()
-    fileprivate var contentHeight: CGFloat = 0.0
-    fileprivate var contentWidth: CGFloat = 0.0
-    
+
+    public var delegate: CustomCollectionViewLayoutDelegate!
+    private var attributes = [CustomLayoutAttributes]()
+    private var contentHeight = 0.0
+    private var contentWidth = 0.0
+
+    private let cellPaddingLeft: CGFloat = 5.0
+    private let cellPaddingRight: CGFloat = 5.0
+    private let cellPaddingTop: CGFloat = 5.0
+    private let cellPaddingBottom: CGFloat = 5.0
+
     override class var layoutAttributesClass : AnyClass {
         return CustomLayoutAttributes.self
     }
-    
+
     override func prepare() {
-        
+        super.prepare()
+        guard let collectionView = collectionView else { return }
         var column = 0
-        contentHeight = 0
-        contentWidth = collectionView!.frame.width - collectionView!.contentInset.left - collectionView!.contentInset.right
-        let itemWidth: CGFloat = floor(contentWidth / 2.0)
-        let xOffset: [CGFloat] = [0, itemWidth]
-        var yOffset: [CGFloat] = [0, 0]
+        contentWidth = Double(collectionView.frame.width)
+        let itemWidth: Double = floor(contentWidth / 2.0)
+        let xOffset: [Double] = [0, itemWidth]
+        var yOffset: [Double] = [0, 0]
+        //Array<Double>.init(repeating: 0.0, count: 2)
         attributes = []
-        
-        for item in 0..<collectionView!.numberOfItems(inSection: 0) {
-            
+
+        for item in 0..<collectionView.numberOfItems(inSection: 0) {
             let indexPath = IndexPath(item: item, section: 0)
-            let gifWidth = itemWidth - 2 * Constants.cellPadding
-            let gifHeight = delegate.collectionView(collectionView!, heightForGifAtIndexPath: indexPath, fixedWidth: gifWidth)
-            let itemHeight = gifHeight + 2 * Constants.cellPadding
-            
+
+            let gifWidth: Double = itemWidth - Double(cellPaddingRight)
+            let gifHeight: Double = delegate.collectionView(collectionView, heightForGifAtIndexPath: indexPath, fixedWidth: gifWidth)
+            let itemHeight: Double = gifHeight + Double(cellPaddingTop)
+
+            print(yOffset[0])
+            print(yOffset[1])
+
             if yOffset[0] > yOffset[1] {
                 column = 1
             } else {
                 column = 0
             }
-            
+
+            //yOffset.min()
+
             let itemFrame = CGRect(x: xOffset[column], y: yOffset[column], width: itemWidth, height: itemHeight)
             let attribute = CustomLayoutAttributes(forCellWith: indexPath)
             attribute.frame = itemFrame
             attribute.gifHeight = gifHeight
             attribute.gifWidth = gifWidth
             attributes.append(attribute)
-            
-            contentHeight = max(contentHeight, itemFrame.maxY)
+            contentHeight = max(contentHeight, Double(itemFrame.maxY))
             yOffset[column] = yOffset[column] + itemHeight
-            
         }
-        
     }
-    
+
     override var collectionViewContentSize : CGSize {
         return CGSize(width: contentWidth, height: contentHeight)
     }
-    
+
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        super.layoutAttributesForElements(in: rect)
         var layoutAttributes = [UICollectionViewLayoutAttributes]()
         for attribute in attributes {
             if attribute.frame.intersects(rect) {
                 layoutAttributes.append(attribute)
             }
         }
+
         return layoutAttributes
     }
-    
+
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        super.layoutAttributesForItem(at: indexPath)
         return attributes[indexPath.item]
     }
-    
 }
+

@@ -42,7 +42,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewLayout key="collectionViewLayout" id="ID0-Hd-wIF" customClass="CustomCollectionViewLayout" customModule="Gifer" customModuleProvider="target"/>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="fkG-33-FZk" customClass="CustomCollectionViewCell" customModule="Gifer" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FeedControllerCell" id="fkG-33-FZk" customClass="CustomCollectionViewCell" customModule="Gifer" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -52,81 +52,23 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <searchBar contentMode="redraw" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="XvC-kY-v14">
-                                <rect key="frame" x="0.0" y="15" width="375" height="56"/>
-                                <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <scopeButtonTitles>
-                                    <string>Title</string>
-                                    <string>Title</string>
-                                </scopeButtonTitles>
-                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="XvC-kY-v14" firstAttribute="top" secondItem="7U9-P3-fPt" secondAttribute="top" constant="15" id="0WC-SY-024"/>
                             <constraint firstItem="7oP-Qn-7MX" firstAttribute="top" secondItem="Teb-Ws-K8B" secondAttribute="bottom" id="5bs-iZ-U4j"/>
                             <constraint firstAttribute="trailing" secondItem="Teb-Ws-K8B" secondAttribute="trailing" id="5dq-At-R62"/>
-                            <constraint firstItem="Teb-Ws-K8B" firstAttribute="top" secondItem="dBU-dz-8IC" secondAttribute="bottom" id="DXv-bj-xPR"/>
                             <constraint firstItem="Teb-Ws-K8B" firstAttribute="leading" secondItem="7U9-P3-fPt" secondAttribute="leading" id="H0u-Mb-CLi"/>
-                            <constraint firstAttribute="trailing" secondItem="XvC-kY-v14" secondAttribute="trailing" id="gy2-Zo-maU"/>
-                            <constraint firstItem="XvC-kY-v14" firstAttribute="leading" secondItem="7U9-P3-fPt" secondAttribute="leading" id="h0I-dO-zIf"/>
+                            <constraint firstItem="Teb-Ws-K8B" firstAttribute="top" secondItem="dBU-dz-8IC" secondAttribute="bottom" id="xEe-ZR-QIJ"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="dZZ-9D-sIm"/>
                     <connections>
                         <outlet property="collectionView" destination="Teb-Ws-K8B" id="ODZ-Ep-5cL"/>
-                        <outlet property="searchBar" destination="XvC-kY-v14" id="k8C-0o-TiD"/>
-                        <segue destination="0RK-nm-tCV" kind="show" id="JQW-cR-a1V"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E4v-FO-5O5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="516" y="119.1904047976012"/>
-        </scene>
-        <!--Search Controller-->
-        <scene sceneID="Tn3-TK-0Qk">
-            <objects>
-                <viewController storyboardIdentifier="SearchResultController" id="0RK-nm-tCV" customClass="SearchController" customModule="Gifer" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="tkd-XD-fVC"/>
-                        <viewControllerLayoutGuide type="bottom" id="aZE-ld-ssE"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="f8A-k1-vcK">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PQT-4o-jYl">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewLayout key="collectionViewLayout" id="BDv-ZX-fCV" customClass="CustomCollectionViewLayout" customModule="Gifer" customModuleProvider="target"/>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MyCell" id="1LA-Dp-f1J">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </view>
-                                    </collectionViewCell>
-                                </cells>
-                            </collectionView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="PQT-4o-jYl" firstAttribute="leading" secondItem="f8A-k1-vcK" secondAttribute="leading" id="Wzb-NT-yQp"/>
-                            <constraint firstItem="PQT-4o-jYl" firstAttribute="top" secondItem="tkd-XD-fVC" secondAttribute="bottom" id="XpN-qy-lim"/>
-                            <constraint firstAttribute="trailing" secondItem="PQT-4o-jYl" secondAttribute="trailing" id="d7W-5t-dUO"/>
-                            <constraint firstItem="aZE-ld-ssE" firstAttribute="top" secondItem="PQT-4o-jYl" secondAttribute="bottom" id="sbi-iD-0mw"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="collectionView" destination="PQT-4o-jYl" id="H79-Vv-x24"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7mz-PG-c8S" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1256.8" y="119.1904047976012"/>
+            <point key="canvasLocation" x="481" y="-291"/>
         </scene>
     </scenes>
 </document>

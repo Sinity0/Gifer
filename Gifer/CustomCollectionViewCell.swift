@@ -1,18 +1,17 @@
-//
-//  CustomCollectionViewCell.swift
-//  Gifer
-//
-//  Created by Niar on 9/28/17.
-//  Copyright © 2017 Niar. All rights reserved.
-//
 
-import Foundation
 import UIKit
 import SDWebImage
 
 class CustomCollectionViewCell: UICollectionViewCell {
-    
-    var gif: GifsModel? {
+
+    private var imageView: FLAnimatedImageView = FLAnimatedImageView()
+
+    private let cellPaddingLeft: CGFloat = 5.0
+    private let cellPaddingRight: CGFloat = 5.0
+    private let cellPaddingTop: CGFloat = 5.0
+    private let cellPaddingBottom: CGFloat = 5.0
+
+    public var gif: GifModel? {
         didSet {
             if let gif = gif, let url = gif.url {
                 imageView.sd_setImage(with: URL(string: url))
@@ -22,40 +21,34 @@ class CustomCollectionViewCell: UICollectionViewCell {
             }
         }
     }
-    
-    var imageView: FLAnimatedImageView!
-    var trendedImageView: UIImageView? {
+
+    private var trendedImageView: UIImageView = UIImageView() {
         didSet {
-            if let trendedImageView = trendedImageView {
-                trendedImageView.frame = CGRect(x: Constants.cellPadding * 2, y: Constants.cellPadding * 2, width: Constants.trendedIconSize, height: Constants.trendedIconSize)
-                self.addSubview(trendedImageView)
-            }
+            trendedImageView.frame = CGRect(x: cellPaddingTop * 2,
+                                            y: cellPaddingRight * 2,
+                                            width: Constants.trendedIconSize,
+                                            height: Constants.trendedIconSize)
+            self.addSubview(trendedImageView)
         }
     }
     
-    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+    public override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)
-        if let attributes = layoutAttributes as? CustomLayoutAttributes {
-            if imageView == nil {
-                imageView = FLAnimatedImageView()
-                imageView.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
-                
-                self.addSubview(imageView)
-            }
-            imageView.frame = CGRect(x: Constants.cellPadding, y: Constants.cellPadding, width: attributes.gifWidth, height: attributes.gifHeight)
-            imageView.layer.cornerRadius = 16
-            imageView.layer.masksToBounds = true
-        }
+        guard let attributes = layoutAttributes as? CustomLayoutAttributes else { return }
+        imageView.backgroundColor = .gray
+        self.addSubview(imageView)
+        imageView.frame = CGRect(x: cellPaddingTop,
+                                 y: cellPaddingRight,
+                                 width: CGFloat(attributes.gifWidth),
+                                 height: CGFloat(attributes.gifHeight))
+        imageView.layer.cornerRadius = 16
+        imageView.layer.masksToBounds = true
     }
     
-    override func prepareForReuse() {
+    public override func prepareForReuse() {
         super.prepareForReuse()
-        if imageView != nil {
-            imageView.animatedImage = nil
-        }
-        if trendedImageView != nil {
-            trendedImageView?.removeFromSuperview()
-            trendedImageView = nil
-        }
+        imageView.animatedImage = nil
+        trendedImageView.removeFromSuperview()
+        trendedImageView = UIImageView()
     }
 }
