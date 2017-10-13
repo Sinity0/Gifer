@@ -1,6 +1,7 @@
 
 import UIKit
 import Alamofire
+import Foundation
 
 class FeedController: UIViewController, UISearchControllerDelegate, UICollectionViewDelegate{
 
@@ -38,7 +39,10 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         definesPresentationContext = true
         navigationItem.titleView = searchController.searchBar
 
-        if let layout = collectionView.collectionViewLayout as? CustomCollectionViewLayout {
+//        if let layout = collectionView.collectionViewLayout as? CustomCollectionViewLayout {
+//            layout.delegate = self
+//        }
+        if let layout = collectionView.collectionViewLayout as? CustomCollectionViewLayout{
             layout.delegate = self
         }
         collectionView.delegate = self
@@ -64,10 +68,9 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
             }
         })
 
-
         collectionView.infiniteScrollIndicatorStyle = .white
-        collectionView.addInfiniteScroll(handler: {collectionView -> Void in
-            collectionView.performBatchUpdates({ () -> Void in
+        collectionView.addInfiniteScroll { collectionView in
+            collectionView.performBatchUpdates({ () in
                 if self.isSearching() {
                     self.loadFeed(type: .search, terms: self.searchController.searchBar.text, completionHandler: { result -> Void in
 
@@ -83,10 +86,9 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
                     })
                 }
             }, completion: { (finished) -> Void in
-                // finish infinite scroll animations
                 collectionView.finishInfiniteScroll()
             });
-        })
+        }
     }
 
     override func viewWillLayoutSubviews() {
@@ -97,10 +99,11 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
     @objc private func refreshFeed(_ sender: UIRefreshControl) {
 
         if isSearching(){
-            clearFeed()
+            //clearFeed()
             loadFeed(type: .search,
                      terms: searchController.searchBar.text,
                      completionHandler: { result -> Void in
+
 
                 if !result {
                     print("Failed to refresh search.")
@@ -108,9 +111,8 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
                     sender.endRefreshing()
                 }
             })
-            collectionView.reloadData()
         } else {
-            clearFeed()
+            //clearFeed()
             loadFeed(type: .trending,
                      terms: nil,
                      completionHandler: { result -> Void in
@@ -120,13 +122,13 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
                     sender.endRefreshing()
                 }
             })
-            collectionView.reloadData()
+
         }
     }
 
     func loadFeed(type: FeedType,
-                          terms: String?,
-                          completionHandler: @escaping (_ result: Bool) -> Void ) {
+                  terms: String?,
+                  completionHandler: @escaping (_ result: Bool) -> Void ) {
 
         requestFeed(limit: Constants.gifsRequestLimit,
                     offset: currentOffset,
@@ -135,22 +137,19 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
                     type: type,
                     comletionHandler: { (succeed, total, error) -> Void in
 
-
-
             if succeed, let total = total {
+
                 self.collectionView.performBatchUpdates({
+
                     var indexPaths = [IndexPath]()
                     for i in (self.currentOffset - total)..<self.currentOffset {
                         let indexPath = IndexPath(item: i, section: 0)
                         indexPaths.append(indexPath)
                     }
                     self.collectionView.insertItems(at: indexPaths)
+
                 }, completion: { done -> Void in
-                    if !done {
-                        completionHandler(false)
-                    } else {
-                        completionHandler(true)
-                    }
+                        completionHandler(done)
                 })
             } else if let error = error {
                 let alert = self.showAlert(error)
@@ -160,13 +159,32 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         })
     }
 
+    func requestFeedCompletionHandler (gifs: [GifModel]?, error: String? ) -> (Bool, Int?, String?) {
+
+                self.requesting = false
+                if let error = error {
+                    return (false, nil, error)
+                } else {
+                    if let newGifs = gifs {
+                        let gifCount = newGifs.count
+                        if gifCount > 0 {
+                            self.previousOffset = self.currentOffset
+                            self.currentOffset = self.currentOffset + gifCount
+                            self.gifsArray.append(contentsOf: newGifs)
+
+                            return(true, gifCount, nil)
+                        }
+                    }
+                }
+        return(true, nil, nil)
+    }
+
     private func requestFeed(limit: Int,
                              offset: Int?,
                              rating: String?,
                              terms: String?,
                              type: FeedType,
                              comletionHandler:@escaping RequestFeedCompletion) {
-        //print("requestFeed was called")
 
         if requesting {
             comletionHandler(true, nil, nil)
@@ -183,56 +201,30 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
                                           offset: tableOffset,
                                           completionHandler: {(gifs, total, error) -> Void in
 
-                    self.requesting = false
-                    if let error = error {
-                        comletionHandler(false, nil, error)
-                    } else {
-                        if let newGifs = gifs {
-                            if let totalGif = total {
-                                if totalGif > 0 {
-                                    self.previousOffset = self.currentOffset
-                                    self.currentOffset = self.currentOffset + newGifs.count
-                                    self.gifsArray.append(contentsOf: newGifs)
-
-                                    comletionHandler(true, newGifs.count, nil)
-                                } else {
-                                    comletionHandler(true, nil, nil)
-                                }
-                            }
-                        }
-                    }
+                                            let res = self.requestFeedCompletionHandler(gifs: gifs, error: error)
+                                            comletionHandler( res.0, res.1, res.2)
                 })
             }
+
         case .trending:
             if let tableOffset = offset {
                 networkManager.fetchTrendedGifs(limit: limit,
                                                 offset: tableOffset,
                                                 completionHandler: {(gifs, total, error) -> Void in
-                    self.requesting = false
-                    if let error = error {
-                        comletionHandler(false, nil, error)
-                    } else {
-                        if let newGifs = gifs {
-                            if let totalGif = total {
-                                if totalGif > 0 {
-                                    self.previousOffset = self.currentOffset
-                                    self.currentOffset = self.currentOffset + newGifs.count
-                                    self.gifsArray.append(contentsOf: newGifs)
 
-                                    comletionHandler(true, newGifs.count, nil)
-                                } else {
-                                    comletionHandler(true, nil, nil)
-                                }
-                            }
-                        }
-                    }
+                                                    let res = self.requestFeedCompletionHandler(gifs: gifs, error: error)
+                                                    comletionHandler( res.0, res.1, res.2)
                 })
             }
         }
     }
 
     private func clearFeed() {
+
         gifsArray = []
+        collectionView.reloadData()
+        collectionView.collectionViewLayout.invalidateLayout()
+        collectionView.layoutSubviews()
         requesting = false
         currentOffset = 0
         previousOffset = 0
@@ -247,7 +239,6 @@ class FeedController: UIViewController, UISearchControllerDelegate, UICollection
         return searchController.isActive && !searchBarIsEmpty()
     }
 }
-
 
 // MARK: - CustomCollectionViewLayout Delegate
 extension FeedController: CustomCollectionViewLayoutDelegate {
@@ -296,15 +287,18 @@ extension FeedController: UISearchBarDelegate {
 
         if isSearching() {
             clearFeed()
+
             loadFeed(type: .search,
                      terms: searchController.searchBar.text,
                      completionHandler: { result -> Void in
 
                         if !result {
                             print("Something went wrong.")
+                        } else {
+
                         }
             })
-            collectionView.reloadData()
+
         }
     }
 
@@ -320,7 +314,6 @@ extension FeedController: UISearchBarDelegate {
                             print("Something went wrong.")
                         }
             })
-            collectionView.reloadData()
             searchController.searchBar.text = ""
             searchController.searchBar.showsCancelButton = false
         } else {
