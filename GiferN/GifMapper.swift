@@ -11,11 +11,7 @@ class GifMapper: NSObject, Mappable {
     var trended: Bool?
     var count: Int?
     var totalCount: Int?
-    
-    override init() {
-        super.init()
-    }
-    
+
     convenience required init?(map: Map) {
         self.init()
     }

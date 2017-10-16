@@ -25,7 +25,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
     }
     
     public override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
-        //super.apply(layoutAttributes) //Void
+        super.apply(layoutAttributes) 
         guard let attributes = layoutAttributes as? CustomLayoutAttributes else { return }
         imageView.backgroundColor = .gray
         self.addSubview(imageView)
