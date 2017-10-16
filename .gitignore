@@ -10,43 +10,14 @@ Pods/
 *.lock
 profile
 
-#####
-# DotEnv files
-.env
-
 ####
 # Xcode temporary files that should never be committed
 *~.nib
 
-####
-# Objective-C/Swift specific
-*.hmap
-*.ipa
+## User settings
+xcuserdata/
 
-####
-# Xcode build files
-DerivedData/
-build/
-Builds/
-
-#####
-# Xcode private settings (window sizes, bookmarks, breakpoints, custom executables, smart groups)
-*.pbxuser
-*.mode1v3
-*.mode2v3
-*.perspectivev3
-!default.pbxuser
-!default.mode1v3
-!default.mode2v3
-!default.perspectivev3
-
-####
-# AppCode
-.idea/
-
-####
-# Other Xcode files
-profile
-*.hmap
-*.ipa
+## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
+*.xcscmblueprint
+*.xccheckout
 

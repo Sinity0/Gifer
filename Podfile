@@ -1,7 +1,7 @@
 use_frameworks!
 platform :ios, '10.0'
 
-target 'Gifer' do
+target 'GiferN' do
 	pod 'Alamofire'
 	pod 'SwiftyJSON'
     pod 'SDWebImage/WebP'
