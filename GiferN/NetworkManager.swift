@@ -1,4 +1,3 @@
-
 import Foundation
 import Alamofire
 import SwiftyJSON
@@ -14,42 +13,33 @@ public enum Result<Value> {
 }
 
 public class NetworkManager {
-    
-    private let apiKey = Constants.apiKey
-    private let url = Constants.url
 
     typealias SearchGifsCompletion = (Result<[GifModel]>) -> Void
-    
-    
+
     func fetchTrendedGifs(limit: Int, offset: Int, completionHandler: @escaping SearchGifsCompletion) {
-        
-        let url = Constants.url + "v1/gifs/trending"
-        let parameters: [String : Any] = [
-            "api_key": apiKey,
-            "limit": limit,
-            "offset": offset
-            ]
-        
-        request(url: url, parameters: parameters) { result -> Void in
+
+        request(url: Constants.urlTrending, parameters: getParameters(limit: limit, offset: offset)) { result -> Void in
             completionHandler(result)
         }
     }
     
     func searchGifs(searchTerm: String, rating: String, limit: Int, offset: Int,
                            completionHandler: @escaping SearchGifsCompletion) {
-        
-        let url = Constants.url + "v1/gifs/search"
-        let parameters: [String : Any] = [
-            "api_key": apiKey,
+
+        request(url: Constants.urlSearch, parameters: getParameters(limit: limit, offset: offset, searchTerm: searchTerm, rating: rating)) { result -> Void in
+            completionHandler(result)
+        }
+    }
+
+    private func getParameters(limit: Int, offset: Int, searchTerm: String = "", rating: String = "") -> [String: Any] {
+        let parameters: [String: Any] = [
+            "api_key": Constants.apiKey,
             "limit": limit,
             "offset": offset,
             "rating": rating,
             "q": searchTerm
-            ]
-        
-        request(url: url, parameters: parameters) { result -> Void in
-            completionHandler(result)
-        }
+        ]
+        return parameters
     }
     
     private func request(url: String, parameters: [String: Any], completion: @escaping SearchGifsCompletion) {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		837575A91F95FB3E00F97AE1 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837575A81F95FB3E00F97AE1 /* FeedView.swift */; };
 		844B980F1F914B0C005DA644 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B980E1F914B0C005DA644 /* AppDelegate.swift */; };
 		844B98141F914B0C005DA644 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 844B98121F914B0C005DA644 /* Main.storyboard */; };
 		844B98161F914B0C005DA644 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 844B98151F914B0C005DA644 /* Assets.xcassets */; };
@@ -26,6 +27,7 @@
 /* Begin PBXFileReference section */
 		1A14104F89304C54254574D1 /* Pods-GiferN.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GiferN.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GiferN/Pods-GiferN.debug.xcconfig"; sourceTree = "<group>"; };
 		5769AF969BA2766C26DB52B2 /* Pods_GiferN.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GiferN.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		837575A81F95FB3E00F97AE1 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 		844B980B1F914B0C005DA644 /* GiferN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiferN.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		844B980E1F914B0C005DA644 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		844B98131F914B0C005DA644 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				844B98321F92217E005DA644 /* GiferLayout.swift */,
 				844B98341F92471F005DA644 /* GiferCell.swift */,
 				844B98361F928B8D005DA644 /* GiferLayoutAttributes.swift */,
+				837575A81F95FB3E00F97AE1 /* FeedView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 				844B98291F914EA4005DA644 /* NetworkManager.swift in Sources */,
 				844B98371F928B8D005DA644 /* GiferLayoutAttributes.swift in Sources */,
 				844B98391F928FC5005DA644 /* Utils.swift in Sources */,
+				837575A91F95FB3E00F97AE1 /* FeedView.swift in Sources */,
 				844B98221F914D3A005DA644 /* FeedController.swift in Sources */,
 				844B980F1F914B0C005DA644 /* AppDelegate.swift in Sources */,
 				844B98271F914DC1005DA644 /* GifModel.swift in Sources */,

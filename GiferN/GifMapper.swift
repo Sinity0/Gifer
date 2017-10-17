@@ -2,15 +2,12 @@ import Foundation
 import ObjectMapper
 
 class GifMapper: NSObject, Mappable {
-    
     var width: String?
     var height: String?
     var id: String?
     var url: String?
     var rating: String?
     var trended: Bool?
-    var count: Int?
-    var totalCount: Int?
 
     convenience required init?(map: Map) {
         self.init()

@@ -1,25 +1,16 @@
-//
-//  Constants.swift
-//  GiferN
-//
-//  Created by Niar on 10/13/17.
-//  Copyright © 2017 Niar. All rights reserved.
-//
-
 import Foundation
 
 struct Constants {
-    
-    static let url = "https://api.giphy.com/"
+    static let urlTrending = "https://api.giphy.com/v1/gifs/trending"
+    static let urlSearch = "https://api.giphy.com/v1/gifs/search"
     static let apiKey = "GRF3LPBmOu3x3fEleLMQFszisiodVkDG"
     
     static let cellIdentifier = "FeedControllerCell"
-    
-    static let cellPaddingLeft: CGFloat = 5
-    static let cellPaddingTop: CGFloat = 5
-    
-    static let trendedImageframe = CGRect(x: cellPaddingLeft * 2,
-                                          y: cellPaddingTop * 2,
+
+    static let cellInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+
+    static let trendedImageframe = CGRect(x: cellInsets.left * 2,
+                                          y: cellInsets.top * 2,
                                           width: trendedIconSize,
                                           height: trendedIconSize)
     static let nonTrendedDateTimeFormat = "0000-00-00 00:00:00"

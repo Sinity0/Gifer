@@ -1,13 +1,23 @@
-
 import UIKit
 import Alamofire
 
 class FeedController: UIViewController, UICollectionViewDelegate, UISearchControllerDelegate {
 
     @IBOutlet var collectionView: UICollectionView!
+
+    //private var collectionView = UICollectionView()
     
     private lazy var refreshControl = UIRefreshControl()
-    fileprivate let searchController = UISearchController(searchResultsController: nil)
+
+    fileprivate lazy var searchController: UISearchController = {
+        let viewController = UISearchController(searchResultsController: nil)
+        viewController.hidesNavigationBarDuringPresentation = false
+        viewController.dimsBackgroundDuringPresentation = false
+        viewController.obscuresBackgroundDuringPresentation = false
+        viewController.delegate = self
+        viewController.searchBar.delegate = self
+        return viewController
+    }()
     private let networkManager = NetworkManager()
     
     private var currentOffset = 0
@@ -27,16 +37,11 @@ class FeedController: UIViewController, UICollectionViewDelegate, UISearchContro
         navigationController?.navigationBar.tintColor = .white
         
         // Setup the Search Controller
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.delegate = self
-        searchController.searchBar.delegate = self
         definesPresentationContext = true
         navigationItem.titleView = searchController.searchBar
         
         // Setup the Collection View
-        if let layout = collectionView?.collectionViewLayout as? GiferLayout {
+        if let layout = collectionView.collectionViewLayout as? GiferLayout {
             layout.delegate = self
         }
         collectionView.delegate = self
@@ -55,11 +60,9 @@ class FeedController: UIViewController, UICollectionViewDelegate, UISearchContro
         collectionView.infiniteScrollIndicatorStyle = .white
         collectionView.addInfiniteScroll { collectionView in
             collectionView.performBatchUpdates({ () in
-                if self.isSearching() {
-                    self.loadFeed(type: .search, term: self.searchController.searchBar.text ?? "")
-                } else {
-                    self.loadFeed(type: .trending, term: "")
-                }
+                let feedType: FeedType = self.isSearching() ? .search : .trending
+                self.loadFeed(type: feedType, term: self.searchController.searchBar.text ?? "")
+
             }, completion: { finished -> Void in
                 collectionView.finishInfiniteScroll()
             });
@@ -68,7 +71,7 @@ class FeedController: UIViewController, UICollectionViewDelegate, UISearchContro
     
     func processServerResponse(response: Result< [GifModel] >) {
 
-        self.requesting = false
+        requesting = false
         
         switch response {
         case .success(let value):
@@ -76,23 +79,23 @@ class FeedController: UIViewController, UICollectionViewDelegate, UISearchContro
             let gifCount = value.count
             
             if gifCount > 0 {
-                self.previousOffset = self.currentOffset
-                self.currentOffset = self.currentOffset + gifCount
-                self.gifsDataSource.append(contentsOf: value)
+                previousOffset = currentOffset
+                currentOffset = currentOffset + gifCount
+                gifsDataSource.append(contentsOf: value)
             }
             
-            self.collectionView.performBatchUpdates({
+            collectionView.performBatchUpdates({
                 var indexPaths = [IndexPath]()
-                for i in (self.currentOffset - gifCount)..<self.currentOffset {
+                for i in (currentOffset - gifCount)..<self.currentOffset {
                     let indexPath = IndexPath(item: i, section: 0)
                     indexPaths.append(indexPath)
                 }
-                self.collectionView.insertItems(at: indexPaths)
+                collectionView.insertItems(at: indexPaths)
             }, completion: nil)
             
         case .failure(let error):
-            let alert = self.showAlert(error.localizedDescription)
-            self.present(alert, animated: true, completion: nil)
+            let alert = showAlert(error.localizedDescription)
+            present(alert, animated: true, completion: nil)
         }
     }
     
@@ -123,7 +126,7 @@ class FeedController: UIViewController, UICollectionViewDelegate, UISearchContro
     @objc private func refreshFeed(_ sender: UIRefreshControl) {
 
         if isSearching() {
-            loadFeed(type: .search, term: self.searchController.searchBar.text ?? "", completionHandler: { () in
+            loadFeed(type: .search, term: searchController.searchBar.text ?? "", completionHandler: { () in
                 sender.endRefreshing()
             })
         } else {
@@ -156,7 +159,9 @@ class FeedController: UIViewController, UICollectionViewDelegate, UISearchContro
 extension FeedController: GiferLayoutDelegate {
     
     func heightOfElement( heightForGifAtIndexPath indexPath: IndexPath, fixedWidth: CGFloat) -> CGFloat {
-        guard let height = gifsDataSource[indexPath.item].height, let width = gifsDataSource[indexPath.item].width else { return 0.0 }
+        guard let height = gifsDataSource[indexPath.item].height, let width = gifsDataSource[indexPath.item].width else {
+            return 0.0
+        }
         return height * fixedWidth / width
     }
 }
@@ -190,12 +195,10 @@ extension FeedController: UISearchBarDelegate {
         if isSearching() {
             clearFeed()
             loadFeed(type: .trending, term: "")
-            searchController.searchBar.text = ""
-            searchController.searchBar.showsCancelButton = false
-        } else {
-            searchController.searchBar.text = ""
-            searchController.searchBar.showsCancelButton = false
         }
+            searchController.searchBar.text = ""
+            searchController.searchBar.showsCancelButton = false
+
     }
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {

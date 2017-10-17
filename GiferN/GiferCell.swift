@@ -1,4 +1,3 @@
-
 import UIKit
 import SDWebImage
 
@@ -8,19 +7,17 @@ class CustomCollectionViewCell: UICollectionViewCell {
     
     public var gif: GifModel? {
         didSet {
-            if let gif = gif, let url = gif.url {
-                imageView.sd_setImage(with: URL(string: url))
-            }
-            if let gif = gif, let trended = gif.trended, trended == true {
-                trendedImageView = UIImageView(image: UIImage(named: Constants.trendedIconName))
-            }
+            guard let gif = gif, let url = gif.url else { return }
+            imageView.sd_setImage(with: URL(string: url))
+            guard let trended = gif.trended, trended else { return }
+            trendedImageView = UIImageView(image: UIImage(named: Constants.trendedIconName))
         }
     }
-    
+
     private var trendedImageView: UIImageView = UIImageView() {
         didSet {
             trendedImageView.frame = Constants.trendedImageframe
-            self.addSubview(trendedImageView)
+            addSubview(trendedImageView)
         }
     }
     
@@ -28,9 +25,9 @@ class CustomCollectionViewCell: UICollectionViewCell {
         super.apply(layoutAttributes) 
         guard let attributes = layoutAttributes as? CustomLayoutAttributes else { return }
         imageView.backgroundColor = .gray
-        self.addSubview(imageView)
-        imageView.frame = CGRect(x: Constants.cellPaddingLeft,
-                                 y: Constants.cellPaddingTop,
+        addSubview(imageView)
+        imageView.frame = CGRect(x: Constants.cellInsets.left,
+                                 y: Constants.cellInsets.top,
                                  width: CGFloat(attributes.gifWidth),
                                  height: CGFloat(attributes.gifHeight))
         imageView.layer.cornerRadius = 16
@@ -41,6 +38,5 @@ class CustomCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         imageView.animatedImage = nil
         trendedImageView.removeFromSuperview()
-        trendedImageView = UIImageView()
     }
 }

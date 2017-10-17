@@ -1,15 +1,6 @@
-//
-//  GifModel.swift
-//  GiferN
-//
-//  Created by Niar on 10/13/17.
-//  Copyright © 2017 Niar. All rights reserved.
-//
-
 import Foundation
 
-class GifModel {
-    
+struct GifModel {
     var width: CGFloat?
     var height: CGFloat?
     var url: String?
@@ -17,9 +8,7 @@ class GifModel {
     var rating: String?
     var trended: Bool?
     
-    convenience init(data: GifMapper) {
-        self.init()
-        
+    init(data: GifMapper) {
         url = data.url
         id = data.id
         rating = data.rating
