@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		837575A91F95FB3E00F97AE1 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837575A81F95FB3E00F97AE1 /* FeedView.swift */; };
 		844B980F1F914B0C005DA644 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B980E1F914B0C005DA644 /* AppDelegate.swift */; };
-		844B98141F914B0C005DA644 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 844B98121F914B0C005DA644 /* Main.storyboard */; };
 		844B98161F914B0C005DA644 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 844B98151F914B0C005DA644 /* Assets.xcassets */; };
 		844B98191F914B0C005DA644 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 844B98171F914B0C005DA644 /* LaunchScreen.storyboard */; };
 		844B98221F914D3A005DA644 /* FeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B98211F914D3A005DA644 /* FeedController.swift */; };
@@ -30,7 +29,6 @@
 		837575A81F95FB3E00F97AE1 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 		844B980B1F914B0C005DA644 /* GiferN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiferN.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		844B980E1F914B0C005DA644 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		844B98131F914B0C005DA644 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		844B98151F914B0C005DA644 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		844B98181F914B0C005DA644 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		844B981A1F914B0C005DA644 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -111,7 +109,6 @@
 			isa = PBXGroup;
 			children = (
 				844B98171F914B0C005DA644 /* LaunchScreen.storyboard */,
-				844B98121F914B0C005DA644 /* Main.storyboard */,
 				844B98151F914B0C005DA644 /* Assets.xcassets */,
 				844B981A1F914B0C005DA644 /* Info.plist */,
 			);
@@ -222,7 +219,6 @@
 			files = (
 				844B98191F914B0C005DA644 /* LaunchScreen.storyboard in Resources */,
 				844B98161F914B0C005DA644 /* Assets.xcassets in Resources */,
-				844B98141F914B0C005DA644 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,14 +294,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		844B98121F914B0C005DA644 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				844B98131F914B0C005DA644 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		844B98171F914B0C005DA644 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

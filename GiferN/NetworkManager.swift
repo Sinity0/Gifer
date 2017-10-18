@@ -53,14 +53,7 @@ public class NetworkManager {
                             case .failure(let error):
                                 completion(.failure(error))
                             case .success(let value):
-                                
-                                let gifArray: [GifMapper] = value
-
-                                var gifs = [GifModel]()
-                                for gif in gifArray {
-                                    let a = GifModel(data: gif)
-                                    gifs.append(a)
-                                }
+                                let gifs: [GifModel] = value.map { GifModel(data: $0)}
                                 completion(.success(gifs))
                             }
         }

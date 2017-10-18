@@ -3,52 +3,63 @@ import Alamofire
 
 class FeedController: UIViewController, UICollectionViewDelegate, UISearchControllerDelegate {
 
-    @IBOutlet var collectionView: UICollectionView!
 
-    //private var collectionView = UICollectionView()
-    
+    var collectionView: UICollectionView!
+//    fileprivate lazy var collectionView: UICollectionView = {
+//        let view  = FeedView()
+//        view.delegate = self
+//        view.dataSource = self
+//        view.layoutDelegate = self
+//        return view.setupUICollectionView()
+//    }()
+
     private lazy var refreshControl = UIRefreshControl()
+    private let networkManager = NetworkManager()
 
     fileprivate lazy var searchController: UISearchController = {
-        let viewController = UISearchController(searchResultsController: nil)
-        viewController.hidesNavigationBarDuringPresentation = false
-        viewController.dimsBackgroundDuringPresentation = false
-        viewController.obscuresBackgroundDuringPresentation = false
-        viewController.delegate = self
-        viewController.searchBar.delegate = self
-        return viewController
+        let view = FeedView()
+        return view.setupUISearchController()
     }()
-    private let networkManager = NetworkManager()
-    
+
     private var currentOffset = 0
     private var previousOffset = 0
 
     fileprivate var gifsDataSource = [GifModel]()
     fileprivate var requesting = false
+
+    override func loadView() {
+        view = FeedView()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if let patternImage = UIImage(named: Constants.viewPatternName) {
-            view.backgroundColor = UIColor(patternImage: patternImage)
-        }
-        
+
         navigationController?.navigationBar.barTintColor = .darkGray
         navigationController?.navigationBar.tintColor = .white
         
         // Setup the Search Controller
+        searchController.delegate = self
+        searchController.searchBar.delegate = self
         definesPresentationContext = true
         navigationItem.titleView = searchController.searchBar
         
-        // Setup the Collection View
-        if let layout = collectionView.collectionViewLayout as? GiferLayout {
-            layout.delegate = self
-        }
+        // Current result: Fail
+        let layout = GiferLayout()
+        layout.delegate = self
+
+        collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .clear
         collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: Constants.cellIdentifier)
-        
+        view.addSubview(collectionView)
+
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+
         // Setup the Refresh Controll
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(refreshFeed(_:)), for: .valueChanged)
@@ -122,22 +133,14 @@ class FeedController: UIViewController, UICollectionViewDelegate, UISearchContro
         }
     }
     
-    
     @objc private func refreshFeed(_ sender: UIRefreshControl) {
-
-        if isSearching() {
-            loadFeed(type: .search, term: searchController.searchBar.text ?? "", completionHandler: { () in
-                sender.endRefreshing()
-            })
-        } else {
-            loadFeed(type: .trending, term: "", completionHandler: { () in
-                sender.endRefreshing()
-            })
-        }
+        let feedType: FeedType = self.isSearching() ? .search : .trending
+        loadFeed(type: feedType, term: searchController.searchBar.text ?? "", completionHandler: { () in
+            sender.endRefreshing()
+        })
     }
 
     private func searchBarIsEmpty() -> Bool {
-        // Returns true if the text is empty or nil
         return searchController.searchBar.text?.isEmpty ?? true
     }
     
@@ -148,12 +151,12 @@ class FeedController: UIViewController, UICollectionViewDelegate, UISearchContro
     fileprivate func clearFeed() {
         gifsDataSource = []
         collectionView.reloadData()
+        collectionView.setContentOffset(CGPoint(x:0, y:0), animated: true)
         collectionView.collectionViewLayout.invalidateLayout()
         collectionView.layoutSubviews()
         currentOffset = 0
         previousOffset = 0
     }
-
 }
 
 extension FeedController: GiferLayoutDelegate {
@@ -198,7 +201,6 @@ extension FeedController: UISearchBarDelegate {
         }
             searchController.searchBar.text = ""
             searchController.searchBar.showsCancelButton = false
-
     }
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {

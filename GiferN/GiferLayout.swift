@@ -69,12 +69,11 @@ class GiferLayout: UICollectionViewLayout {
 
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
 
-//        let superAttr = super.layoutAttributesForElements(in: rect)
         var visibleLayoutAttributes = [UICollectionViewLayoutAttributes]()
 
-//        if let superAttr = super.layoutAttributesForElements(in: rect) {
-//            visibleLayoutAttributes += superAttr
-//        }
+        if let superAttr = super.layoutAttributesForElements(in: rect) {
+            visibleLayoutAttributes += superAttr
+        }
 
         for attributes in cache {
             if attributes.frame.intersects(rect) {
