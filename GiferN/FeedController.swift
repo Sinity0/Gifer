@@ -1,7 +1,7 @@
 import UIKit
 import Alamofire
 
-class FeedController: UIViewController, UICollectionViewDelegate, UISearchControllerDelegate {
+class FeedController: UIViewController, UICollectionViewDelegate {
 
     fileprivate lazy var newCollectionView: GFNCollectionView = {
         let layout = GiferLayout()
@@ -18,9 +18,13 @@ class FeedController: UIViewController, UICollectionViewDelegate, UISearchContro
     private lazy var refreshControl = UIRefreshControl()
     private let networkManager = NetworkManager()
 
-    fileprivate lazy var searchController: UISearchController = {
-        return self.feedView.setupUISearchController()
+    fileprivate lazy var searchBar: UISearchBar = {
+        return self.feedView.setupSearchBar()
     }()
+
+//    fileprivate lazy var searchController: UISearchController = {
+//        return self.feedView.setupUISearchController()
+//    }()
 
     private var currentOffset = 0
     private var previousOffset = 0
@@ -45,10 +49,11 @@ class FeedController: UIViewController, UICollectionViewDelegate, UISearchContro
     }
 
     func setupSearchController() {
-        searchController.delegate = self
-        searchController.searchBar.delegate = self
+        searchBar.delegate = self
+//        searchController.delegate = self
+//        searchController.searchBar.delegate = self
         definesPresentationContext = true
-        navigationItem.titleView = searchController.searchBar
+        navigationItem.titleView = searchBar
     }
 
     func setupRefreshControl() {
@@ -63,7 +68,7 @@ class FeedController: UIViewController, UICollectionViewDelegate, UISearchContro
             self.newCollectionView.performBatchUpdates({ [weak self] () in
                 guard let `self` = self else { return }
                 let feedType: FeedType = self.isSearching() ? .search : .trending
-                self.loadFeed(type: feedType, term: self.searchController.searchBar.text ?? "")
+                self.loadFeed(type: feedType, term: self.searchBar.text ?? "")
 
                 }, completion: { [weak self] finished -> Void  in
                     guard let `self` = self else { return }
@@ -129,17 +134,17 @@ class FeedController: UIViewController, UICollectionViewDelegate, UISearchContro
 
     @objc private func refreshFeed(_ sender: UIRefreshControl) {
         let feedType: FeedType = self.isSearching() ? .search : .trending
-        loadFeed(type: feedType, term: searchController.searchBar.text ?? "", completionHandler: { () in
+        loadFeed(type: feedType, term: searchBar.text ?? "", completionHandler: { () in
             sender.endRefreshing()
         })
     }
 
     fileprivate func searchBarIsEmpty() -> Bool {
-        return searchController.searchBar.text?.isEmpty ?? true
+        return searchBar.text?.isEmpty ?? true
     }
 
     fileprivate func isSearching() -> Bool {
-        return searchController.isActive && !searchBarIsEmpty()
+        return  !searchBarIsEmpty()
     }
 
     fileprivate func clearFeed() {
@@ -184,7 +189,7 @@ extension FeedController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if isSearching() {
             clearFeed()
-            guard let searchTerm = searchController.searchBar.text else { return }
+            guard let searchTerm = searchBar.text else { return }
             loadFeed(type: .search, term: searchTerm)
         }
     }
@@ -194,12 +199,12 @@ extension FeedController: UISearchBarDelegate {
             clearFeed()
             loadFeed(type: .trending, term: "")
         }
-        searchController.searchBar.text = ""
-        searchController.searchBar.showsCancelButton = false
+        searchBar.text = ""
+        searchBar.showsCancelButton = false
     }
 
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        searchController.searchBar.showsCancelButton = true
+        searchBar.showsCancelButton = true
         return true
     }
 }
