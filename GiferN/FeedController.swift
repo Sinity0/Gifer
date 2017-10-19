@@ -22,10 +22,6 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         return self.feedView.setupSearchBar()
     }()
 
-//    fileprivate lazy var searchController: UISearchController = {
-//        return self.feedView.setupUISearchController()
-//    }()
-
     private var currentOffset = 0
     private var previousOffset = 0
 
@@ -50,8 +46,6 @@ class FeedController: UIViewController, UICollectionViewDelegate {
 
     func setupSearchController() {
         searchBar.delegate = self
-//        searchController.delegate = self
-//        searchController.searchBar.delegate = self
         definesPresentationContext = true
         navigationItem.titleView = searchBar
     }

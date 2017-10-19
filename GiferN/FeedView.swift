@@ -17,13 +17,5 @@ class FeedView: UIView {
         let searchBar = UISearchBar()
         return searchBar
     }
-
-    func setupUISearchController() -> UISearchController {
-        let viewController = UISearchController(searchResultsController: nil)
-        viewController.hidesNavigationBarDuringPresentation = false
-        viewController.dimsBackgroundDuringPresentation = false
-        viewController.obscuresBackgroundDuringPresentation = false
-        return viewController
-    }
 }
 
