@@ -34,6 +34,7 @@ class GiferLayout: UICollectionViewLayout {
 
         let columnWidth = contentWidth / CGFloat(numberOfColumns)
         var xOffset: [CGFloat] = []
+
         for column in 0 ..< numberOfColumns {
             xOffset.append(CGFloat(column) * columnWidth)
         }
@@ -75,11 +76,8 @@ class GiferLayout: UICollectionViewLayout {
             visibleLayoutAttributes += superAttr
         }
 
-        for attributes in cache {
-            if attributes.frame.intersects(rect) {
-                visibleLayoutAttributes.append(attributes)
-            }
-        }
+        visibleLayoutAttributes = cache.filter { $0.frame.intersects(rect) }
+
         return visibleLayoutAttributes
     }
 

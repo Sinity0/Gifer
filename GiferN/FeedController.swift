@@ -134,7 +134,7 @@ class FeedController: UIViewController, UICollectionViewDelegate, UISearchContro
         })
     }
 
-    private func searchBarIsEmpty() -> Bool {
+    fileprivate func searchBarIsEmpty() -> Bool {
         return searchController.searchBar.text?.isEmpty ?? true
     }
 
@@ -153,7 +153,7 @@ class FeedController: UIViewController, UICollectionViewDelegate, UISearchContro
     }
 }
 
-//MARK: Custom layout for CollectionView
+//MARK: - Custom layout for CollectionView
 extension FeedController: GiferLayoutDelegate {
 
     func heightOfElement( heightForGifAtIndexPath indexPath: IndexPath, fixedWidth: CGFloat) -> CGFloat {
