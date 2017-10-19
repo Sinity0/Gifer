@@ -26,7 +26,6 @@ class GFNCollectionView: UICollectionView {
     func setupConstraints() {
         guard let parentVC = parentVC else { return }
         parentVC.feedView.addSubview(self)
-        let layout = self.collectionViewLayout
         self.translatesAutoresizingMaskIntoConstraints = false
         self.leadingAnchor.constraint(equalTo: parentVC.feedView.leadingAnchor).isActive = true
         self.trailingAnchor.constraint(equalTo: parentVC.feedView.trailingAnchor).isActive = true

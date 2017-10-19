@@ -3,36 +3,30 @@ import Alamofire
 
 class FeedController: UIViewController, UICollectionViewDelegate, UISearchControllerDelegate {
 
-    //    fileprivate lazy var newCollectionView: GFNCollectionView = {
-    //        let layout = GiferLayout()
-    //        let view = GFNCollectionView(frame: self.view.frame, collectionViewLayout: layout, parent: self)
-    //        return view
-    //    }()
+    fileprivate lazy var newCollectionView: GFNCollectionView = {
+        let layout = GiferLayout()
+        layout.delegate = self
+        let view = GFNCollectionView(frame: self.view.frame, collectionViewLayout: layout, parent: self)
+        return view
+    }()
 
-    fileprivate var newCollectionView: GFNCollectionView!
-    public var feedView: FeedView!
-    //    fileprivate lazy var feedView: FeedView = {
-    //        let view = FeedView(frame: self.view.frame)
-    //        return view
-    //    }()
+    public lazy var feedView: FeedView = {
+        let view = FeedView(frame: self.view.frame)
+        return view
+    }()
 
     private lazy var refreshControl = UIRefreshControl()
     private let networkManager = NetworkManager()
 
-    //    fileprivate lazy var searchController: UISearchController = {
-    //        return self.feedView.setupUISearchController()
-    //    }()
-    var searchController: UISearchController!
+    fileprivate lazy var searchController: UISearchController = {
+        return self.feedView.setupUISearchController()
+    }()
 
     private var currentOffset = 0
     private var previousOffset = 0
 
     fileprivate var gifsDataSource = [GifModel]()
     fileprivate var requesting = false
-
-    //    override func loadView() {
-    //        view.addSubview(feedView)
-    //    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,14 +41,7 @@ class FeedController: UIViewController, UICollectionViewDelegate, UISearchContro
         navigationController?.navigationBar.barTintColor = .darkGray
         navigationController?.navigationBar.tintColor = .white
 
-        // Current result: Fail
-        let layout = GiferLayout()
-        layout.delegate = self
-
-        feedView = FeedView(frame: self.view.frame)
         view.addSubview(feedView)
-        newCollectionView = GFNCollectionView(frame: self.view.frame, collectionViewLayout: layout, parent: self)
-        searchController = feedView.setupUISearchController()
     }
 
     func setupSearchController() {
@@ -125,13 +112,15 @@ class FeedController: UIViewController, UICollectionViewDelegate, UISearchContro
         switch type {
         case .trending:
             networkManager.fetchTrendedGifs(limit: Constants.gifsRequestLimit, offset: currentOffset,
-                                            completionHandler: { result -> Void in
+                                            completionHandler: {[weak self] result -> Void in
+                                                guard let `self` = self else { return }
                                                 self.processServerResponse(response: result)
                                                 completionHandler?()
             })
         case .search:
             networkManager.searchGifs(searchTerm: term, rating: Constants.preferredSearchRating, limit: Constants.gifsRequestLimit,
-                                      offset: currentOffset, completionHandler: { result -> Void in
+                                      offset: currentOffset, completionHandler: {[weak self] result -> Void in
+                                        guard let `self` = self else { return }
                                         self.processServerResponse(response: result)
                                         completionHandler?()
             })
@@ -164,6 +153,7 @@ class FeedController: UIViewController, UICollectionViewDelegate, UISearchContro
     }
 }
 
+//MARK: Custom layout for CollectionView
 extension FeedController: GiferLayoutDelegate {
 
     func heightOfElement( heightForGifAtIndexPath indexPath: IndexPath, fixedWidth: CGFloat) -> CGFloat {
