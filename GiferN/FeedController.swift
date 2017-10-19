@@ -139,12 +139,8 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         })
     }
 
-    fileprivate func searchBarIsEmpty() -> Bool {
-        return searchBar.text?.isEmpty ?? true
-    }
-
     fileprivate func isSearching() -> Bool {
-        return  !searchBarIsEmpty()
+        return !(searchBar.text?.isEmpty ?? true)
     }
 
     fileprivate func clearFeed() {
