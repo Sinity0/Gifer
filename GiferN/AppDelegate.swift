@@ -7,12 +7,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
-        window = UIWindow(frame: UIScreen.main.bounds)
-        let navigationController = UINavigationController()
-        let mainViewController = FeedController()
-        navigationController.viewControllers = [mainViewController]
-        window!.rootViewController = navigationController
-        window?.makeKeyAndVisible()
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        let navigationController = UINavigationController(rootViewController: FeedController())
+        window.rootViewController = navigationController
+        window.makeKeyAndVisible()
+        self.window = window
+
         return true
     }
 }
