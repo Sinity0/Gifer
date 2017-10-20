@@ -1,12 +1,12 @@
 import UIKit
 
-protocol GiferLayoutDelegate: class {
-    func heightOfElement(heightForGifAtIndexPath indexPath: IndexPath, fixedWidth: CGFloat) -> CGFloat
-}
+//protocol GiferLayoutDelegate: class {
+//    func heightOfElement(heightForGifAtIndexPath indexPath: IndexPath, fixedWidth: CGFloat) -> CGFloat
+//}
 
 class GiferLayout: UICollectionViewLayout {
 
-    weak var delegate: GiferLayoutDelegate?
+    //weak var delegate: GiferLayoutDelegate?
 
     private var numberOfColumns = 2
     private var cellPadding: CGFloat = 6.0
