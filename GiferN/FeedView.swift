@@ -5,7 +5,7 @@ class FeedView: UIView {
     public lazy var collectionView: UICollectionView = {
         let collection = UICollectionView(frame: self.frame, collectionViewLayout: self.giferLayout)
         collection.backgroundColor = .clear
-        collection.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: Constants.cellIdentifier)
+        collection.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: CellInfo.cellIdentifier)
         return collection
     }()
 
@@ -44,20 +44,24 @@ class FeedView: UIView {
         self.addSubview(searchBar)
 
         searchBar.translatesAutoresizingMaskIntoConstraints = false
-        searchBar.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        searchBar.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        searchBar.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        searchBar.bottomAnchor.constraint(equalTo: collectionView.topAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            searchBar.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            searchBar.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            searchBar.topAnchor.constraint(equalTo: self.topAnchor),
+            searchBar.bottomAnchor.constraint(equalTo: collectionView.topAnchor)
+            ])
     }
 
     func setupCollectionView() {
         self.addSubview(collectionView)
 
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        collectionView.heightAnchor.constraint(equalTo: self.heightAnchor,multiplier: 0.9).isActive = true
+        NSLayoutConstraint.activate([
+            collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            collectionView.heightAnchor.constraint(equalTo: self.heightAnchor,multiplier: 0.9)
+            ])
     }
 
     func setupRefreshControl() {

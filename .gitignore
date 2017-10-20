@@ -6,12 +6,10 @@ Pods/
 
 ## Build generated
 build/
-DerivedData/
-
 
 # OS X temporary files that should never be committed
 .DS_Store
-*xcuserdata/
+xcuserdata/
 *.swp
 *.lock
 profile
@@ -19,7 +17,4 @@ profile
 ####
 # Xcode temporary files that should never be committed
 *~.nib
-
-## User settings
-xcuserdata/
 

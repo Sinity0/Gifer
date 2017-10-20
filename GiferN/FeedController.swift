@@ -119,7 +119,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
     fileprivate func clearFeed() {
         gifsDataSource = []
         feedView.collectionView.reloadData()
-        feedView.collectionView.setContentOffset(CGPoint(x:0, y:0), animated: true)
+        feedView.collectionView.setContentOffset(CGPoint(x:0, y:0), animated: false)
         feedView.collectionView.collectionViewLayout.invalidateLayout()
         feedView.collectionView.layoutSubviews()
         currentOffset = 0
@@ -146,7 +146,7 @@ extension FeedController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellIdentifier, for: indexPath) as! CustomCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellInfo.cellIdentifier, for: indexPath) as! CustomCollectionViewCell
         cell.gif = gifsDataSource[indexPath.item]
         return cell
     }

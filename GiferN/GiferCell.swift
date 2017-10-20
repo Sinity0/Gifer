@@ -1,7 +1,13 @@
 import UIKit
 import SDWebImage
 
+struct CellInfo {
+    static let cellIdentifier = "FeedControllerCell"
+}
+
 class CustomCollectionViewCell: UICollectionViewCell {
+
+    let cellInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
     
     private var imageView: FLAnimatedImageView = FLAnimatedImageView()
     
@@ -16,12 +22,15 @@ class CustomCollectionViewCell: UICollectionViewCell {
 
     private var trendedImageView: UIImageView = UIImageView() {
         didSet {
+            self.addSubview(trendedImageView)
 
-            trendedImageView.frame = CGRect(x: Constants.cellInsets.left * 2,
-                                            y: Constants.cellInsets.top * 2,
-                                            width: Constants.trendedIconSize,
-                                            height: Constants.trendedIconSize)
-            addSubview(trendedImageView)
+            trendedImageView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                trendedImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: -20),
+                trendedImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -70),
+                trendedImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+                trendedImageView.bottomAnchor.constraint(equalTo: self.topAnchor, constant: -50)
+                ])
         }
     }
     
@@ -30,10 +39,13 @@ class CustomCollectionViewCell: UICollectionViewCell {
         guard let attributes = layoutAttributes as? CustomLayoutAttributes else { return }
         imageView.backgroundColor = .gray
         addSubview(imageView)
-        imageView.frame = CGRect(x: Constants.cellInsets.left,
-                                 y: Constants.cellInsets.top,
-                                 width: CGFloat(attributes.gifWidth),
-                                 height: CGFloat(attributes.gifHeight))
+
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            imageView.widthAnchor.constraint(equalToConstant: attributes.gifWidth),
+            imageView.heightAnchor.constraint(equalToConstant: attributes.gifHeight)
+            ])
+
         imageView.layer.cornerRadius = 16
         imageView.layer.masksToBounds = true
     }
