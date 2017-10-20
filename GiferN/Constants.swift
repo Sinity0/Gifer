@@ -9,10 +9,7 @@ struct Constants {
 
     static let cellInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
 
-    static let trendedImageframe = CGRect(x: cellInsets.left * 2,
-                                          y: cellInsets.top * 2,
-                                          width: trendedIconSize,
-                                          height: trendedIconSize)
+
     static let nonTrendedDateTimeFormat = "0000-00-00 00:00:00"
     static let preferredSearchRating = "pg"
     static let trendedIconName = "trendedIcon"

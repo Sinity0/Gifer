@@ -16,7 +16,11 @@ class CustomCollectionViewCell: UICollectionViewCell {
 
     private var trendedImageView: UIImageView = UIImageView() {
         didSet {
-            trendedImageView.frame = Constants.trendedImageframe
+
+            trendedImageView.frame = CGRect(x: Constants.cellInsets.left * 2,
+                                            y: Constants.cellInsets.top * 2,
+                                            width: Constants.trendedIconSize,
+                                            height: Constants.trendedIconSize)
             addSubview(trendedImageView)
         }
     }

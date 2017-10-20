@@ -1,5 +1,4 @@
 import UIKit
-import Alamofire
 
 class FeedController: UIViewController, UICollectionViewDelegate {
 
