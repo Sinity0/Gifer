@@ -128,15 +128,15 @@ class FeedController: UIViewController, UICollectionViewDelegate {
 }
 
 //MARK: - Custom layout for CollectionView
-//extension FeedController: GiferLayoutDelegate {
-//
-//    func heightOfElement( heightForGifAtIndexPath indexPath: IndexPath, fixedWidth: CGFloat) -> CGFloat {
-//        guard let height = gifsDataSource[indexPath.item].height, let width = gifsDataSource[indexPath.item].width else {
-//            return 0.0
-//        }
-//        return height * fixedWidth / width
-//    }
-//}
+extension FeedController: GiferLayoutDelegate {
+
+    func heightOfElement( heightForGifAtIndexPath indexPath: IndexPath, fixedWidth: CGFloat) -> CGFloat {
+        guard let height = gifsDataSource[indexPath.item].height, let width = gifsDataSource[indexPath.item].width else {
+            return 0.0
+        }
+        return height * fixedWidth / width
+    }
+}
 
 // MARK: UICollectionView Data Source
 extension FeedController: UICollectionViewDataSource {
@@ -149,13 +149,6 @@ extension FeedController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellInfo.cellIdentifier, for: indexPath) as! CustomCollectionViewCell
         cell.gif = gifsDataSource[indexPath.item]
         return cell
-    }
-
-    func heightOfElement( heightForGifAtIndexPath indexPath: IndexPath, fixedWidth: CGFloat) -> CGFloat {
-        guard let height = gifsDataSource[indexPath.item].height, let width = gifsDataSource[indexPath.item].width else {
-            return 0.0
-        }
-        return height * fixedWidth / width
     }
 }
 

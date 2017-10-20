@@ -1,13 +1,9 @@
-
-Pods/
-!Podfile
-!Podfile.lock
-
-build/
-
 .DS_Store
-xcuserdata/
 *.swp
 *.lock
-profile
 
+Pods/
+!Podfile.lock
+
+xcuserdata/
+*.xcworkspace
