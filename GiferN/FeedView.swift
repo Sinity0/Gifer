@@ -2,7 +2,13 @@ import UIKit
 
 class FeedView: UIView {
 
-    public var collectionView: UICollectionView!
+    public lazy var collectionView: UICollectionView = {
+        let collection = UICollectionView(frame: self.frame, collectionViewLayout: self.giferLayout)
+        collection.backgroundColor = .clear
+        collection.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: Constants.cellIdentifier)
+        return collection
+    }()
+
     private var giferLayout: GiferLayout
     public lazy var refreshControl = UIRefreshControl()
     public lazy var searchBar = UISearchBar()
@@ -28,29 +34,15 @@ class FeedView: UIView {
     init(frame: CGRect, collectionViewLayout layout: GiferLayout ) {
         self.giferLayout = layout
         super.init(frame: frame)
-        setupSearchBar()
+
         setupCollectionView()
         setupRefreshControl()
-
+        setupSearchBar()
     }
 
     func setupSearchBar() {
         self.addSubview(searchBar)
-        //searchBar.delegate = self
-        //definesPresentationContext = true
-        //navigationItem.titleView = searchBar
-    }
 
-    func setupCollectionView() {
-        collectionView = UICollectionView(frame: self.frame, collectionViewLayout: giferLayout)
-        collectionView.backgroundColor = .clear
-        collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: Constants.cellIdentifier)
-        self.addSubview(collectionView)
-
-        setupConstraintsForUICollectionView()
-    }
-
-    private func setupConstraintsForSearchBar(){
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         searchBar.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         searchBar.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
@@ -58,12 +50,14 @@ class FeedView: UIView {
         searchBar.bottomAnchor.constraint(equalTo: collectionView.topAnchor).isActive = true
     }
 
-    private func setupConstraintsForUICollectionView(){
+    func setupCollectionView() {
+        self.addSubview(collectionView)
+
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        collectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor).isActive = true
+        collectionView.heightAnchor.constraint(equalTo: self.heightAnchor,multiplier: 0.9).isActive = true
     }
 
     func setupRefreshControl() {
