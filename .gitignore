@@ -1,20 +1,13 @@
-####
-# CocoaPods
+
 Pods/
 !Podfile
 !Podfile.lock
 
-## Build generated
 build/
 
-# OS X temporary files that should never be committed
 .DS_Store
 xcuserdata/
 *.swp
 *.lock
 profile
-
-####
-# Xcode temporary files that should never be committed
-*~.nib
 
