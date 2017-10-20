@@ -15,7 +15,6 @@
 		844B98271F914DC1005DA644 /* GifModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B98261F914DC1005DA644 /* GifModel.swift */; };
 		844B98291F914EA4005DA644 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B98281F914EA4005DA644 /* NetworkManager.swift */; };
 		844B982D1F91512B005DA644 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B982C1F91512B005DA644 /* Constants.swift */; };
-		844B98301F915764005DA644 /* GifMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B982F1F915764005DA644 /* GifMapper.swift */; };
 		844B98331F92217E005DA644 /* GiferLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B98321F92217E005DA644 /* GiferLayout.swift */; };
 		844B98351F92471F005DA644 /* GiferCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B98341F92471F005DA644 /* GiferCell.swift */; };
 		844B98371F928B8D005DA644 /* GiferLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844B98361F928B8D005DA644 /* GiferLayoutAttributes.swift */; };
@@ -37,7 +36,6 @@
 		844B98281F914EA4005DA644 /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		844B982C1F91512B005DA644 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		844B982E1F91524E005DA644 /* Gifer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Gifer-Bridging-Header.h"; sourceTree = "<group>"; };
-		844B982F1F915764005DA644 /* GifMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GifMapper.swift; sourceTree = "<group>"; };
 		844B98321F92217E005DA644 /* GiferLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiferLayout.swift; sourceTree = "<group>"; };
 		844B98341F92471F005DA644 /* GiferCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiferCell.swift; sourceTree = "<group>"; };
 		844B98361F928B8D005DA644 /* GiferLayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiferLayoutAttributes.swift; sourceTree = "<group>"; };
@@ -100,7 +98,6 @@
 			children = (
 				844B98261F914DC1005DA644 /* GifModel.swift */,
 				844B98281F914EA4005DA644 /* NetworkManager.swift */,
-				844B982F1F915764005DA644 /* GifMapper.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -279,7 +276,6 @@
 			files = (
 				844B98331F92217E005DA644 /* GiferLayout.swift in Sources */,
 				844B982D1F91512B005DA644 /* Constants.swift in Sources */,
-				844B98301F915764005DA644 /* GifMapper.swift in Sources */,
 				844B98291F914EA4005DA644 /* NetworkManager.swift in Sources */,
 				844B98371F928B8D005DA644 /* GiferLayoutAttributes.swift in Sources */,
 				844B98391F928FC5005DA644 /* Utils.swift in Sources */,

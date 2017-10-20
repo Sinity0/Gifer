@@ -46,15 +46,14 @@ public class NetworkManager {
         Alamofire.request(url,
                           method: .get,
                           parameters: parameters,
-                          encoding: URLEncoding.default).responseArray(keyPath: "data") { (response: DataResponse<[GifMapper]>) in
+                          encoding: URLEncoding.default).responseArray(keyPath: "data") { (response: DataResponse<[GifModel]>) in
                             
                             switch response.result {
                                 
                             case .failure(let error):
                                 completion(.failure(error))
                             case .success(let value):
-                                let gifs: [GifModel] = value.map { GifModel(data: $0)}
-                                completion(.success(gifs))
+                                completion(.success(value))
                             }
         }
     }
