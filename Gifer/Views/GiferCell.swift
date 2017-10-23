@@ -38,7 +38,6 @@ class CustomCollectionViewCell: UICollectionViewCell {
     public override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes) 
         guard let attributes = layoutAttributes as? CustomLayoutAttributes else { return }
-        imageView.backgroundColor = .gray
         addSubview(imageView)
 
 //        imageView.frame = CGRect(x: cellInsets.left,
@@ -49,8 +48,8 @@ class CustomCollectionViewCell: UICollectionViewCell {
 
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: cellInsets.left),
-            imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: cellInsets.top),
+//            imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: cellInsets.left),
+//            imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: cellInsets.top),
             imageView.widthAnchor.constraint(equalToConstant: attributes.gifWidth),
             imageView.heightAnchor.constraint(equalToConstant: attributes.gifHeight)
             ])
