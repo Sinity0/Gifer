@@ -31,6 +31,8 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isHidden = true
 
+        
+
         loadFeed(type: .trending, term: "")
         setupInfiniteScrolling()
     }

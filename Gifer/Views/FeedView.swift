@@ -47,7 +47,7 @@ class FeedView: UIView {
         NSLayoutConstraint.activate([
             searchBar.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             searchBar.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            searchBar.topAnchor.constraint(equalTo: self.topAnchor),
+            searchBar.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
             searchBar.bottomAnchor.constraint(equalTo: collectionView.topAnchor)
             ])
     }
@@ -60,7 +60,7 @@ class FeedView: UIView {
             collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            collectionView.heightAnchor.constraint(equalTo: self.heightAnchor,multiplier: 0.9)
+            //collectionView.heightAnchor.constraint(equalTo: self.heightAnchor,multiplier: 0.9)
             ])
     }
 

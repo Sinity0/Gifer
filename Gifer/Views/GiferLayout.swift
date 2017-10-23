@@ -42,7 +42,6 @@ class GiferLayout: UICollectionViewLayout {
         var column = 0
         var yOffset: [CGFloat] = Array<CGFloat>(repeating: 0, count: numberOfColumns)
 
-        //let itemWidth: CGFloat = floor(contentWidth / 2.0)
         cache.removeAll()
 
         for item in 0 ..< collectionView.numberOfItems(inSection: 0) {
@@ -55,6 +54,7 @@ class GiferLayout: UICollectionViewLayout {
             let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
 
             let attributes = CustomLayoutAttributes(forCellWith: indexPath)
+
             attributes.frame = insetFrame
             attributes.gifHeight = gifHeight
             attributes.gifWidth = columnWidth - cellPadding
