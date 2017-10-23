@@ -31,34 +31,29 @@ class FeedView: UIView {
         }
     }
 
-    init(frame: CGRect, collectionViewLayout layout: GiferLayout ) {
+    init(frame: CGRect, collectionViewLayout layout: GiferLayout) {
         self.giferLayout = layout
         super.init(frame: frame)
 
-        setupCollectionView()
-        setupSearchBar()
+        self.addSubview(searchBar)
+        self.addSubview(collectionView)
     }
 
-    func setupSearchBar() {
-        self.addSubview(searchBar)
-
+    override func layoutSubviews() {
+        super.layoutSubviews()
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             searchBar.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             searchBar.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            searchBar.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
-            searchBar.bottomAnchor.constraint(equalTo: collectionView.topAnchor)
+            searchBar.topAnchor.constraint(equalTo: self.topAnchor),
             ])
-    }
-
-    func setupCollectionView() {
-        self.addSubview(collectionView)
 
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            collectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor)
             ])
     }
 

@@ -48,7 +48,7 @@ class GiferLayout: UICollectionViewLayout {
 
             let indexPath = IndexPath(item: item, section: 0)
 
-            guard let gifHeight = delegate?.heightOfElement( heightForGifAtIndexPath: indexPath, fixedWidth: columnWidth) else { return }
+            guard let gifHeight = delegate?.heightOfElement(heightForGifAtIndexPath: indexPath, fixedWidth: columnWidth) else { return }
             let cellHeight = cellPadding + gifHeight
             let frame = CGRect(x: xOffset[column], y: yOffset[column], width: columnWidth, height: gifHeight)
             let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)

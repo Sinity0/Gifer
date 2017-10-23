@@ -46,6 +46,8 @@ class FeedController: UIViewController, UICollectionViewDelegate {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        feedView.collectionView.collectionViewLayout.invalidateLayout()
+        feedView.collectionView.layoutSubviews()
     }
 
     func setupInfiniteScrolling() {
@@ -131,8 +133,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         gifsDataSource = []
         feedView.collectionView.reloadData()
         feedView.collectionView.setContentOffset(CGPoint(x:0, y:0), animated: false)
-        feedView.collectionView.collectionViewLayout.invalidateLayout()
-        feedView.collectionView.layoutSubviews()
+        viewDidLayoutSubviews()
         currentOffset = 0
         previousOffset = 0
     }
@@ -175,11 +176,9 @@ extension FeedController: UISearchBarDelegate {
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-//        if isSearching() {
-            clearFeed()
-            loadFeed(type: .trending, term: "")
+        clearFeed()
+        loadFeed(type: .trending, term: "")
         searchBar.resignFirstResponder()
-//        }
         searchBar.text = ""
         searchBar.showsCancelButton = false
     }
