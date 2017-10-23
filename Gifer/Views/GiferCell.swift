@@ -26,24 +26,24 @@ class CustomCollectionViewCell: UICollectionViewCell {
 
             trendedImageView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                trendedImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: -20),
-                trendedImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -70),
-                trendedImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
-                trendedImageView.bottomAnchor.constraint(equalTo: self.topAnchor, constant: -50)
+                    trendedImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+                    trendedImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
+                    trendedImageView.widthAnchor.constraint(equalToConstant: Constants.trendedIconSize),
+                    trendedImageView.heightAnchor.constraint(equalToConstant: Constants.trendedIconSize)
                 ])
         }
     }
     
     public override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
-        super.apply(layoutAttributes) 
-        guard let attributes = layoutAttributes as? CustomLayoutAttributes else { return }
-        imageView.backgroundColor = .gray
+        super.apply(layoutAttributes)
         addSubview(imageView)
 
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalToConstant: attributes.gifWidth),
-            imageView.heightAnchor.constraint(equalToConstant: attributes.gifHeight)
+            imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            imageView.topAnchor.constraint(equalTo: self.topAnchor)
             ])
 
         imageView.layer.cornerRadius = 16

@@ -10,7 +10,7 @@ class GiferLayout: UICollectionViewLayout {
 
     private var numberOfColumns = 2
     private var cellPadding: CGFloat = 6.0
-    private var cache: [CustomLayoutAttributes] = []
+    private var cache: [UICollectionViewLayoutAttributes] = []
     private var contentHeight: CGFloat = 0
 
     private var contentWidth: CGFloat {
@@ -24,7 +24,7 @@ class GiferLayout: UICollectionViewLayout {
     }
 
     override class var layoutAttributesClass: AnyClass {
-        return CustomLayoutAttributes.self
+        return UICollectionViewLayoutAttributes.self
     }
 
     override func prepare() {
@@ -42,27 +42,24 @@ class GiferLayout: UICollectionViewLayout {
         var column = 0
         var yOffset: [CGFloat] = Array<CGFloat>(repeating: 0, count: numberOfColumns)
 
-        let itemWidth: CGFloat = floor(contentWidth / 2.0)
         cache.removeAll()
 
         for item in 0 ..< collectionView.numberOfItems(inSection: 0) {
 
             let indexPath = IndexPath(item: item, section: 0)
 
-            guard let gifHeight = delegate?.heightOfElement( heightForGifAtIndexPath: indexPath, fixedWidth: CGFloat(itemWidth)) else { return }
-            let height = cellPadding * 2 + gifHeight
-            let frame = CGRect(x: xOffset[column], y: yOffset[column], width: columnWidth, height: height)
+            guard let gifHeight = delegate?.heightOfElement(heightForGifAtIndexPath: indexPath, fixedWidth: columnWidth) else { return }
+            let cellHeight = cellPadding + gifHeight
+            let frame = CGRect(x: xOffset[column], y: yOffset[column], width: columnWidth, height: gifHeight)
             let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
 
-            let attributes = CustomLayoutAttributes(forCellWith: indexPath)
+            let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = insetFrame
-            attributes.gifHeight = gifHeight
-            attributes.gifWidth = itemWidth - cellPadding * 2
 
             cache.append(attributes)
 
             contentHeight = max(contentHeight, frame.maxY)
-            yOffset[column] = yOffset[column] + height
+            yOffset[column] = yOffset[column] + cellHeight
 
             column = column < (numberOfColumns - 1) ? (column + 1) : 0
         }
