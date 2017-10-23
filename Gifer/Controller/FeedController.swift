@@ -31,7 +31,9 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isHidden = true
 
-        
+        feedView.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        feedView.refreshControl.addTarget(self, action: #selector(refreshFeed(_:)), for: .valueChanged)
+        feedView.collectionView.addSubview(feedView.refreshControl)
 
         loadFeed(type: .trending, term: "")
         setupInfiniteScrolling()

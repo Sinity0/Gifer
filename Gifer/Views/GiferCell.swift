@@ -24,7 +24,6 @@ class CustomCollectionViewCell: UICollectionViewCell {
         didSet {
             self.addSubview(trendedImageView)
 
-
             trendedImageView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                     trendedImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
