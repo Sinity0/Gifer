@@ -42,27 +42,27 @@ class GiferLayout: UICollectionViewLayout {
         var column = 0
         var yOffset: [CGFloat] = Array<CGFloat>(repeating: 0, count: numberOfColumns)
 
-        let itemWidth: CGFloat = floor(contentWidth / 2.0)
         cache.removeAll()
 
         for item in 0 ..< collectionView.numberOfItems(inSection: 0) {
 
             let indexPath = IndexPath(item: item, section: 0)
 
-            guard let gifHeight = delegate?.heightOfElement( heightForGifAtIndexPath: indexPath, fixedWidth: CGFloat(itemWidth)) else { return }
-            let height = cellPadding * 2 + gifHeight
-            let frame = CGRect(x: xOffset[column], y: yOffset[column], width: columnWidth, height: height)
+            guard let gifHeight = delegate?.heightOfElement( heightForGifAtIndexPath: indexPath, fixedWidth: columnWidth) else { return }
+            let cellHeight = cellPadding + gifHeight
+            let frame = CGRect(x: xOffset[column], y: yOffset[column], width: columnWidth, height: gifHeight)
             let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
 
             let attributes = CustomLayoutAttributes(forCellWith: indexPath)
+
             attributes.frame = insetFrame
             attributes.gifHeight = gifHeight
-            attributes.gifWidth = itemWidth - cellPadding * 2
+            attributes.gifWidth = columnWidth - cellPadding
 
             cache.append(attributes)
 
             contentHeight = max(contentHeight, frame.maxY)
-            yOffset[column] = yOffset[column] + height
+            yOffset[column] = yOffset[column] + cellHeight
 
             column = column < (numberOfColumns - 1) ? (column + 1) : 0
         }
