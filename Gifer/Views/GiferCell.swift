@@ -15,7 +15,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
         didSet {
             guard let gif = gif, let url = gif.url else { return }
             imageView.sd_setImage(with: URL(string: url))
-            guard let trended = gif.trended, trended else { return }
+            //guard let trended = gif.trended, trended else { return }
             trendedImageView = UIImageView(image: UIImage(named: Constants.trendedIconName))
         }
     }
@@ -24,12 +24,13 @@ class CustomCollectionViewCell: UICollectionViewCell {
         didSet {
             self.addSubview(trendedImageView)
 
+
             trendedImageView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                trendedImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: -20),
-                trendedImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -70),
-                trendedImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
-                trendedImageView.bottomAnchor.constraint(equalTo: self.topAnchor, constant: -50)
+                    trendedImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+                    trendedImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
+                    trendedImageView.widthAnchor.constraint(equalToConstant: Constants.trendedIconSize),
+                    trendedImageView.heightAnchor.constraint(equalToConstant: Constants.trendedIconSize)
                 ])
         }
     }
@@ -40,8 +41,16 @@ class CustomCollectionViewCell: UICollectionViewCell {
         imageView.backgroundColor = .gray
         addSubview(imageView)
 
+//        imageView.frame = CGRect(x: cellInsets.left,
+//                                 y: cellInsets.top,
+//                                 width: attributes.gifWidth,
+//                                 height: attributes.gifHeight)
+
+
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: cellInsets.left),
+            imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: cellInsets.top),
             imageView.widthAnchor.constraint(equalToConstant: attributes.gifWidth),
             imageView.heightAnchor.constraint(equalToConstant: attributes.gifHeight)
             ])

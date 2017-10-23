@@ -80,11 +80,10 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         }
     }
 
-    func loadFeed(type: FeedType, term: String, completionHandler: (() -> ())? = nil ) {
+    func loadFeed(type: FeedType, term: String, completionHandler: (() -> Void)? = nil ) {
 
-        if requesting {
-            return
-        }
+        guard !requesting else { return }
+
         requesting = true
 
         switch type {
