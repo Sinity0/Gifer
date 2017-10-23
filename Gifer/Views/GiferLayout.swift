@@ -10,7 +10,7 @@ class GiferLayout: UICollectionViewLayout {
 
     private var numberOfColumns = 2
     private var cellPadding: CGFloat = 6.0
-    private var cache: [CustomLayoutAttributes] = []
+    private var cache: [UICollectionViewLayoutAttributes] = []
     private var contentHeight: CGFloat = 0
 
     private var contentWidth: CGFloat {
@@ -24,7 +24,7 @@ class GiferLayout: UICollectionViewLayout {
     }
 
     override class var layoutAttributesClass: AnyClass {
-        return CustomLayoutAttributes.self
+        return UICollectionViewLayoutAttributes.self
     }
 
     override func prepare() {
@@ -53,11 +53,8 @@ class GiferLayout: UICollectionViewLayout {
             let frame = CGRect(x: xOffset[column], y: yOffset[column], width: columnWidth, height: gifHeight)
             let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
 
-            let attributes = CustomLayoutAttributes(forCellWith: indexPath)
-
+            let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = insetFrame
-            attributes.gifHeight = gifHeight
-            attributes.gifWidth = columnWidth - cellPadding
 
             cache.append(attributes)
 
