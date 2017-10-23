@@ -15,7 +15,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
         didSet {
             guard let gif = gif, let url = gif.url else { return }
             imageView.sd_setImage(with: URL(string: url))
-            //guard let trended = gif.trended, trended else { return }
+            guard let trended = gif.trended, trended else { return }
             trendedImageView = UIImageView(image: UIImage(named: Constants.trendedIconName))
         }
     }
@@ -35,22 +35,15 @@ class CustomCollectionViewCell: UICollectionViewCell {
     }
     
     public override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
-        super.apply(layoutAttributes) 
-        guard let attributes = layoutAttributes as? CustomLayoutAttributes else { return }
+        super.apply(layoutAttributes)
         addSubview(imageView)
-
-//        imageView.frame = CGRect(x: cellInsets.left,
-//                                 y: cellInsets.top,
-//                                 width: attributes.gifWidth,
-//                                 height: attributes.gifHeight)
-
 
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-//            imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: cellInsets.left),
-//            imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: cellInsets.top),
-            imageView.widthAnchor.constraint(equalToConstant: attributes.gifWidth),
-            imageView.heightAnchor.constraint(equalToConstant: attributes.gifHeight)
+            imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            imageView.topAnchor.constraint(equalTo: self.topAnchor)
             ])
 
         imageView.layer.cornerRadius = 16
