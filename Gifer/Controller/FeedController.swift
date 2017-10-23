@@ -6,6 +6,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         let layout = GiferLayout()
         layout.delegate = self
         let view = FeedView(frame: .zero, collectionViewLayout: layout)
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
         view.dataSource = self
         view.searchDelegate = self
@@ -20,12 +21,16 @@ class FeedController: UIViewController, UICollectionViewDelegate {
     fileprivate var gifsDataSource = [GifModel]()
     fileprivate var requesting = false
 
-    override func loadView() {
-        view = feedView
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.addSubview(feedView)
+        NSLayoutConstraint.activate([
+            feedView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
+            feedView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor),
+            feedView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            feedView.rightAnchor.constraint(equalTo: view.rightAnchor)
+            ])
 
         navigationController?.navigationBar.barTintColor = .darkGray
         navigationController?.navigationBar.tintColor = .white
@@ -37,6 +42,10 @@ class FeedController: UIViewController, UICollectionViewDelegate {
 
         loadFeed(type: .trending, term: "")
         setupInfiniteScrolling()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
     }
 
     func setupInfiniteScrolling() {
@@ -55,9 +64,6 @@ class FeedController: UIViewController, UICollectionViewDelegate {
     }
 
     func processServerResponse(response: Result< [GifModel] >) {
-
-        requesting = false
-
         switch response {
         case .success(let value):
 
@@ -84,7 +90,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         }
     }
 
-    func loadFeed(type: FeedType, term: String, completionHandler: (() -> Void)? = nil ) {
+    func loadFeed(type: FeedType, term: String, completionHandler: (() -> Void)? = nil) {
 
         guard !requesting else { return }
 
@@ -96,6 +102,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
                                             completionHandler: {[weak self] result -> Void in
                                                 guard let `self` = self else { return }
                                                 self.processServerResponse(response: result)
+                                                self.requesting = false
                                                 completionHandler?()
             })
         case .search:
@@ -103,6 +110,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
                                       offset: currentOffset, completionHandler: {[weak self] result -> Void in
                                         guard let `self` = self else { return }
                                         self.processServerResponse(response: result)
+                                        self.requesting = false
                                         completionHandler?()
             })
         }
@@ -133,7 +141,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
 //MARK: - Custom layout for CollectionView
 extension FeedController: GiferLayoutDelegate {
 
-    func heightOfElement( heightForGifAtIndexPath indexPath: IndexPath, fixedWidth: CGFloat) -> CGFloat {
+    func heightOfElement(heightForGifAtIndexPath indexPath: IndexPath, fixedWidth: CGFloat) -> CGFloat {
         guard let height = gifsDataSource[indexPath.item].height, let width = gifsDataSource[indexPath.item].width else {
             return 0.0
         }
@@ -167,15 +175,17 @@ extension FeedController: UISearchBarDelegate {
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        if isSearching() {
+//        if isSearching() {
             clearFeed()
             loadFeed(type: .trending, term: "")
-        }
+        searchBar.resignFirstResponder()
+//        }
         searchBar.text = ""
         searchBar.showsCancelButton = false
     }
 
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        //searchBar.searchBarStyle = .minimal
         searchBar.showsCancelButton = true
         return true
     }
