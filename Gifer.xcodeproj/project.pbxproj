@@ -16,6 +16,7 @@
 		D4C159521F9A2F8900C13D5A /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C159441F9A2F4500C13D5A /* FeedView.swift */; };
 		D4C159531F9A2F9200C13D5A /* GiferCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C159461F9A2F4500C13D5A /* GiferCell.swift */; };
 		D4C159541F9A2F9400C13D5A /* GiferLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C159471F9A2F4500C13D5A /* GiferLayout.swift */; };
+		D4C159551F9A2F9600C13D5A /* GiferLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C159481F9A2F4500C13D5A /* GiferLayoutAttributes.swift */; };
 		D4C159561F9A2F9800C13D5A /* GifModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C159491F9A2F4500C13D5A /* GifModel.swift */; };
 		D4C159571F9A2F9A00C13D5A /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D4C1594A1F9A2F4500C13D5A /* Info.plist */; };
 		D4C159581F9A2F9C00C13D5A /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C1594B1F9A2F4500C13D5A /* NetworkManager.swift */; };
