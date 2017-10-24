@@ -35,17 +35,15 @@ class CustomCollectionViewCell: UICollectionViewCell {
     }
     
     public override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
-        super.apply(layoutAttributes)
+        super.apply(layoutAttributes) 
         guard let attributes = layoutAttributes as? CustomLayoutAttributes else { return }
         imageView.backgroundColor = .gray
         addSubview(imageView)
 
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            imageView.topAnchor.constraint(equalTo: self.topAnchor)
+            imageView.widthAnchor.constraint(equalToConstant: attributes.gifWidth),
+            imageView.heightAnchor.constraint(equalToConstant: attributes.gifHeight)
             ])
 
         imageView.layer.cornerRadius = 16

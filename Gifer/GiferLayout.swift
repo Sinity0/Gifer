@@ -56,6 +56,8 @@ class GiferLayout: UICollectionViewLayout {
 
             let attributes = CustomLayoutAttributes(forCellWith: indexPath)
             attributes.frame = insetFrame
+            attributes.gifHeight = gifHeight
+            attributes.gifWidth = itemWidth - cellPadding * 2
 
             cache.append(attributes)
 
