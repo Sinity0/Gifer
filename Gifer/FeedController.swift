@@ -1,5 +1,9 @@
 import UIKit
 
+protocol RefreshFeedDelegate: class {
+    func refreshFeed(_ sender: UIRefreshControl)
+}
+
 class FeedController: UIViewController, UICollectionViewDelegate {
 
     public lazy var feedView: FeedView = {
@@ -9,6 +13,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         view.delegate = self
         view.dataSource = self
         view.searchDelegate = self
+        view.refreshDelegate = self
         return view
     }()
 
@@ -31,9 +36,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isHidden = true
 
-        feedView.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        feedView.refreshControl.addTarget(self, action: #selector(refreshFeed(_:)), for: .valueChanged)
-        feedView.collectionView.addSubview(feedView.refreshControl)
+
 
         loadFeed(type: .trending, term: "")
         setupInfiniteScrolling()
@@ -109,13 +112,6 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         }
     }
 
-    @objc public func refreshFeed(_ sender: UIRefreshControl) {
-        let feedType: FeedType = self.isSearching() ? .search : .trending
-        loadFeed(type: feedType, term: feedView.searchBar.text ?? "", completionHandler: { () in
-            sender.endRefreshing()
-        })
-    }
-
     fileprivate func isSearching() -> Bool {
         return !(feedView.searchBar.text?.isEmpty ?? true)
     }
@@ -178,6 +174,17 @@ extension FeedController: UISearchBarDelegate {
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         searchBar.showsCancelButton = true
         return true
+    }
+}
+
+//MARK: Refresh feed delegate
+extension FeedController: RefreshFeedDelegate {
+
+    func refreshFeed(_ sender: UIRefreshControl) {
+        let feedType: FeedType = self.isSearching() ? .search : .trending
+        loadFeed(type: feedType, term: feedView.searchBar.text ?? "", completionHandler: { () in
+            sender.endRefreshing()
+        })
     }
 }
 

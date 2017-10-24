@@ -12,6 +12,13 @@ class FeedView: UIView {
     private var giferLayout: GiferLayout
     public lazy var refreshControl = UIRefreshControl()
     public lazy var searchBar = UISearchBar()
+    weak var refreshFeedDelegate: RefreshFeedDelegate?
+
+    weak var refreshDelegate: RefreshFeedDelegate? {
+        didSet {
+            self.refreshFeedDelegate = refreshDelegate
+        }
+    }
 
     weak var delegate: UICollectionViewDelegate? {
         didSet {
@@ -37,6 +44,17 @@ class FeedView: UIView {
 
         setupCollectionView()
         setupSearchBar()
+        setupRefreshControll()
+    }
+
+    func setupRefreshControll() {
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(callRefreshDelegate(_:)), for: .valueChanged)
+        collectionView.addSubview(refreshControl)
+    }
+
+    @objc func callRefreshDelegate(_ sender: UIRefreshControl) {
+        refreshFeedDelegate?.refreshFeed(sender)
     }
 
     func setupSearchBar() {
