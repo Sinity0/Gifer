@@ -15,12 +15,11 @@ class FeedController: UIViewController, UICollectionViewDelegate {
     }()
 
     private let networkManager = NetworkManager()
+    fileprivate var gifsDataSource = [GifModel]()
+    fileprivate var requesting = false
 
     private var currentOffset = 0
     private var previousOffset = 0
-
-    fileprivate var gifsDataSource = [GifModel]()
-    fileprivate var requesting = false
 
     override func viewDidLoad() {
         super.viewDidLoad()

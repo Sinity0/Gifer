@@ -41,7 +41,6 @@ class GiferLayout: UICollectionViewLayout {
 
         var column = 0
         var yOffset: [CGFloat] = Array<CGFloat>(repeating: 0, count: numberOfColumns)
-
         let itemWidth: CGFloat = floor(contentWidth / 2.0)
         cache.removeAll()
 
