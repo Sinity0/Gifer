@@ -22,10 +22,6 @@ class FeedController: UIViewController, UICollectionViewDelegate {
     fileprivate var gifsDataSource = [GifModel]()
     fileprivate var requesting = false
 
-//    override func loadView() {
-//        view = feedView
-//    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -96,9 +92,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
 
     func loadFeed(type: FeedType, term: String?, completionHandler: (() -> ())? = nil) {
 
-        if requesting {
-            return
-        }
+        guard !requesting else { return }
         requesting = true
 
         switch type {
