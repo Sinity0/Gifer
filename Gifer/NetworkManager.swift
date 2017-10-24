@@ -23,7 +23,7 @@ public class NetworkManager {
         }
     }
     
-    func searchGifs(searchTerm: String, rating: String, limit: Int, offset: Int,
+    func searchGifs(searchTerm: String?, rating: String, limit: Int, offset: Int,
                            completionHandler: @escaping SearchGifsCompletion) {
 
         request(url: Constants.urlSearch, parameters: getParameters(limit: limit, offset: offset, searchTerm: searchTerm, rating: rating)) { result -> Void in
@@ -31,13 +31,13 @@ public class NetworkManager {
         }
     }
 
-    private func getParameters(limit: Int, offset: Int, searchTerm: String = "", rating: String = "") -> [String: Any] {
+    private func getParameters(limit: Int, offset: Int, searchTerm: String? = "", rating: String = "") -> [String: Any] {
         let parameters: [String: Any] = [
             "api_key": Constants.apiKey,
             "limit": limit,
             "offset": offset,
             "rating": rating,
-            "q": searchTerm
+            "q": searchTerm ?? ""
         ]
         return parameters
     }

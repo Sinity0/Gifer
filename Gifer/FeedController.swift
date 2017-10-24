@@ -1,5 +1,9 @@
 import UIKit
 
+protocol RefreshFeedDelegate: class {
+    func refreshFeed(_ sender: UIRefreshControl)
+}
+
 class FeedController: UIViewController, UICollectionViewDelegate {
 
     public lazy var feedView: FeedView = {
@@ -9,6 +13,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         view.delegate = self
         view.dataSource = self
         view.searchDelegate = self
+        view.refreshDelegate = self
         return view
     }()
 
@@ -31,10 +36,6 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isHidden = true
 
-        feedView.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        feedView.refreshControl.addTarget(self, action: #selector(refreshFeed(_:)), for: .valueChanged)
-        feedView.collectionView.addSubview(feedView.refreshControl)
-
         loadFeed(type: .trending, term: "")
         setupInfiniteScrolling()
     }
@@ -45,7 +46,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
             self.feedView.collectionView.performBatchUpdates({ [weak self] () in
                 guard let `self` = self else { return }
                 let feedType: FeedType = self.isSearching() ? .search : .trending
-                self.loadFeed(type: feedType, term: self.feedView.searchBar.text ?? "")
+                self.loadFeed(type: feedType, term: self.feedView.searchBar.text)
 
                 }, completion: { [weak self] finished -> Void  in
                     guard let `self` = self else { return }
@@ -84,7 +85,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         }
     }
 
-    func loadFeed(type: FeedType, term: String, completionHandler: (() -> ())? = nil ) {
+    func loadFeed(type: FeedType, term: String?, completionHandler: (() -> ())? = nil ) {
 
         if requesting {
             return
@@ -107,13 +108,6 @@ class FeedController: UIViewController, UICollectionViewDelegate {
                                         completionHandler?()
             })
         }
-    }
-
-    @objc public func refreshFeed(_ sender: UIRefreshControl) {
-        let feedType: FeedType = self.isSearching() ? .search : .trending
-        loadFeed(type: feedType, term: feedView.searchBar.text ?? "", completionHandler: { () in
-            sender.endRefreshing()
-        })
     }
 
     fileprivate func isSearching() -> Bool {
@@ -178,6 +172,17 @@ extension FeedController: UISearchBarDelegate {
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         searchBar.showsCancelButton = true
         return true
+    }
+}
+
+//MARK: Refresh feed delegate
+extension FeedController: RefreshFeedDelegate {
+
+    func refreshFeed(_ sender: UIRefreshControl) {
+        let feedType: FeedType = self.isSearching() ? .search : .trending
+        loadFeed(type: feedType, term: feedView.searchBar.text) { () in
+            sender.endRefreshing()
+        }
     }
 }
 
