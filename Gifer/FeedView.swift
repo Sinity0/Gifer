@@ -53,7 +53,7 @@ class FeedView: UIView {
         collectionView.addSubview(refreshControl)
     }
 
-    @objc func callRefreshDelegate(_ sender: UIRefreshControl) {
+    func callRefreshDelegate(_ sender: UIRefreshControl) {
         refreshFeedDelegate?.refreshFeed(sender)
     }
 
@@ -61,6 +61,7 @@ class FeedView: UIView {
         self.addSubview(searchBar)
 
         searchBar.translatesAutoresizingMaskIntoConstraints = false
+
         NSLayoutConstraint.activate([
             searchBar.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             searchBar.trailingAnchor.constraint(equalTo: self.trailingAnchor),
