@@ -26,16 +26,18 @@ class CustomCollectionViewCell: UICollectionViewCell {
 
             trendedImageView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                    trendedImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-                    trendedImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
-                    trendedImageView.widthAnchor.constraint(equalToConstant: Constants.trendedIconSize),
-                    trendedImageView.heightAnchor.constraint(equalToConstant: Constants.trendedIconSize)
+                    trendedImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: -20),
+                    trendedImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -70),
+                    trendedImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+                    trendedImageView.bottomAnchor.constraint(equalTo: self.topAnchor, constant: -50)
                 ])
         }
     }
     
     public override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)
+        guard let attributes = layoutAttributes as? CustomLayoutAttributes else { return }
+        imageView.backgroundColor = .gray
         addSubview(imageView)
 
         imageView.translatesAutoresizingMaskIntoConstraints = false
