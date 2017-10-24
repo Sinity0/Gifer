@@ -58,7 +58,8 @@ class FeedView: UIView {
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            collectionView.heightAnchor.constraint(equalTo: self.heightAnchor,multiplier: 0.9)
             ])
     }
 

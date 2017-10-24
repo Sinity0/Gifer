@@ -56,7 +56,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
 
     func processServerResponse(response: Result< [GifModel] >) {
 
-        self.requesting = false
+        requesting = false
 
         switch response {
         case .success(let value):
@@ -84,10 +84,11 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         }
     }
 
-    func loadFeed(type: FeedType, term: String, completionHandler: (() -> Void)? = nil ) {
+    func loadFeed(type: FeedType, term: String, completionHandler: (() -> ())? = nil ) {
 
-        guard !requesting else { return }
-
+        if requesting {
+            return
+        }
         requesting = true
 
         switch type {
