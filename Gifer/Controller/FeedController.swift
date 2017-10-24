@@ -130,7 +130,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
 //MARK: - Custom layout for CollectionView
 extension FeedController: GiferLayoutDelegate {
 
-    func heightOfElement( heightForGifAtIndexPath indexPath: IndexPath, fixedWidth: CGFloat) -> CGFloat {
+    func heightOfElement(heightForGifAtIndexPath indexPath: IndexPath, fixedWidth: CGFloat) -> CGFloat {
         guard let height = gifsDataSource[indexPath.item].height, let width = gifsDataSource[indexPath.item].width else {
             return 0.0
         }
