@@ -44,10 +44,6 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         setupInfiniteScrolling()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-    }
-
     func setupInfiniteScrolling() {
         feedView.collectionView.infiniteScrollIndicatorStyle = .white
         feedView.collectionView.addInfiniteScroll { collectionView in
@@ -90,7 +86,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         }
     }
 
-    func loadFeed(type: FeedType, term: String, completionHandler: (() -> Void)? = nil) {
+    func loadFeed(type: FeedType, term: String, completionHandler: (() -> Void)? = nil ) {
 
         guard !requesting else { return }
 
@@ -175,17 +171,14 @@ extension FeedController: UISearchBarDelegate {
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-//        if isSearching() {
-            clearFeed()
-            loadFeed(type: .trending, term: "")
+        clearFeed()
+        loadFeed(type: .trending, term: "")
         searchBar.resignFirstResponder()
-//        }
         searchBar.text = ""
         searchBar.showsCancelButton = false
     }
 
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        //searchBar.searchBarStyle = .minimal
         searchBar.showsCancelButton = true
         return true
     }

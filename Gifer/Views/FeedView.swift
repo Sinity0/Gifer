@@ -46,7 +46,7 @@ class FeedView: UIView {
         NSLayoutConstraint.activate([
             searchBar.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             searchBar.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            searchBar.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+            searchBar.topAnchor.constraint(equalTo: self.topAnchor),
             searchBar.bottomAnchor.constraint(equalTo: collectionView.topAnchor)
             ])
     }
