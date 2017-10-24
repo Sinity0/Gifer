@@ -1,15 +1,12 @@
 import UIKit
 
-protocol RefreshFeedDelegate: class {
-    func refreshFeed(_ sender: UIRefreshControl)
-}
-
 class FeedController: UIViewController, UICollectionViewDelegate {
 
     public lazy var feedView: FeedView = {
         let layout = GiferLayout()
         layout.delegate = self
         let view = FeedView(frame: .zero, collectionViewLayout: layout)
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
         view.dataSource = self
         view.searchDelegate = self
@@ -18,19 +15,22 @@ class FeedController: UIViewController, UICollectionViewDelegate {
     }()
 
     private let networkManager = NetworkManager()
+    fileprivate var gifsDataSource = [GifModel]()
+    fileprivate var requesting = false
 
     private var currentOffset = 0
     private var previousOffset = 0
 
-    fileprivate var gifsDataSource = [GifModel]()
-    fileprivate var requesting = false
-
-    override func loadView() {
-        view = feedView
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.addSubview(feedView)
+        NSLayoutConstraint.activate([
+            feedView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
+            feedView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor),
+            feedView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            feedView.rightAnchor.constraint(equalTo: view.rightAnchor)
+            ])
 
         navigationController?.navigationBar.barTintColor = .darkGray
         navigationController?.navigationBar.tintColor = .white
@@ -38,6 +38,12 @@ class FeedController: UIViewController, UICollectionViewDelegate {
 
         loadFeed(type: .trending, term: "")
         setupInfiniteScrolling()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        feedView.collectionView.collectionViewLayout.invalidateLayout()
+        feedView.collectionView.layoutSubviews()
     }
 
     func setupInfiniteScrolling() {
@@ -56,8 +62,6 @@ class FeedController: UIViewController, UICollectionViewDelegate {
     }
 
     func processServerResponse(response: Result< [GifModel] >) {
-
-        requesting = false
 
         switch response {
         case .success(let value):
@@ -85,11 +89,9 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         }
     }
 
-    func loadFeed(type: FeedType, term: String?, completionHandler: (() -> ())? = nil ) {
+    func loadFeed(type: FeedType, term: String?, completionHandler: (() -> ())? = nil) {
 
-        if requesting {
-            return
-        }
+        guard !requesting else { return }
         requesting = true
 
         switch type {
@@ -98,6 +100,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
                                             completionHandler: {[weak self] result -> Void in
                                                 guard let `self` = self else { return }
                                                 self.processServerResponse(response: result)
+                                                self.requesting = false
                                                 completionHandler?()
             })
         case .search:
@@ -105,6 +108,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
                                       offset: currentOffset, completionHandler: {[weak self] result -> Void in
                                         guard let `self` = self else { return }
                                         self.processServerResponse(response: result)
+                                        self.requesting = false
                                         completionHandler?()
             })
         }
@@ -118,8 +122,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         gifsDataSource = []
         feedView.collectionView.reloadData()
         feedView.collectionView.setContentOffset(CGPoint(x:0, y:0), animated: false)
-        feedView.collectionView.collectionViewLayout.invalidateLayout()
-        feedView.collectionView.layoutSubviews()
+        viewDidLayoutSubviews()
         currentOffset = 0
         previousOffset = 0
     }

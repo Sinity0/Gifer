@@ -41,7 +41,6 @@ class GiferLayout: UICollectionViewLayout {
 
         var column = 0
         var yOffset: [CGFloat] = Array<CGFloat>(repeating: 0, count: numberOfColumns)
-
         let itemWidth: CGFloat = floor(contentWidth / 2.0)
         cache.removeAll()
 
@@ -58,10 +57,8 @@ class GiferLayout: UICollectionViewLayout {
             attributes.frame = insetFrame
 
             cache.append(attributes)
-
             contentHeight = max(contentHeight, frame.maxY)
             yOffset[column] = yOffset[column] + height
-
             column = column < (numberOfColumns - 1) ? (column + 1) : 0
         }
     }
@@ -75,7 +72,6 @@ class GiferLayout: UICollectionViewLayout {
         }
 
         visibleLayoutAttributes = cache.filter { $0.frame.intersects(rect) }
-
         return visibleLayoutAttributes
     }
 
