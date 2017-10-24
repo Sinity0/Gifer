@@ -36,7 +36,6 @@ class FeedView: UIView {
         super.init(frame: frame)
 
         setupCollectionView()
-        setupRefreshControl()
         setupSearchBar()
     }
 
@@ -62,12 +61,6 @@ class FeedView: UIView {
             collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             collectionView.heightAnchor.constraint(equalTo: self.heightAnchor,multiplier: 0.9)
             ])
-    }
-
-    func setupRefreshControl() {
-        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        refreshControl.addTarget(FeedController.self, action: #selector(FeedController.refreshFeed(_:)), for: .valueChanged)
-        collectionView.addSubview(refreshControl)
     }
 
     required init?(coder aDecoder: NSCoder) {

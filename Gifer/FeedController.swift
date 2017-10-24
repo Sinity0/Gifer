@@ -31,6 +31,10 @@ class FeedController: UIViewController, UICollectionViewDelegate {
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isHidden = true
 
+        feedView.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        feedView.refreshControl.addTarget(self, action: #selector(refreshFeed(_:)), for: .valueChanged)
+        feedView.collectionView.addSubview(feedView.refreshControl)
+
         loadFeed(type: .trending, term: "")
         setupInfiniteScrolling()
     }
@@ -164,10 +168,9 @@ extension FeedController: UISearchBarDelegate {
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        if isSearching() {
-            clearFeed()
-            loadFeed(type: .trending, term: "")
-        }
+        clearFeed()
+        loadFeed(type: .trending, term: "")
+        searchBar.resignFirstResponder()
         searchBar.text = ""
         searchBar.showsCancelButton = false
     }
