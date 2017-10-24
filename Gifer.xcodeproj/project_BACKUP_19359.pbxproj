@@ -140,6 +140,12 @@
 				835A99871F9F41F8004234BC /* Controller */,
 				D4C159421F9A2F4500C13D5A /* Constants.swift */,
 				D4C159451F9A2F4500C13D5A /* Gifer-Bridging-Header.h */,
+<<<<<<< HEAD
+=======
+				D4C159461F9A2F4500C13D5A /* GiferCell.swift */,
+				D4C159471F9A2F4500C13D5A /* GiferLayout.swift */,
+				D4C159491F9A2F4500C13D5A /* GifModel.swift */,
+>>>>>>> Repair
 				D4C1594A1F9A2F4500C13D5A /* Info.plist */,
 				D4C1594C1F9A2F4500C13D5A /* Utils.swift */,
 			);

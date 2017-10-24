@@ -56,44 +56,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		835A99871F9F41F8004234BC /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				D4C159431F9A2F4500C13D5A /* FeedController.swift */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		835A99881F9F4227004234BC /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				D4C1593F1F9A2F4500C13D5A /* Assets.xcassets */,
-				D4C1593E1F9A2F4500C13D5A /* AppDelegate.swift */,
-				D4C159401F9A2F4500C13D5A /* LaunchScreen.storyboard */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
-		835A99891F9F4230004234BC /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				D4C159491F9A2F4500C13D5A /* GifModel.swift */,
-				D4C1594B1F9A2F4500C13D5A /* NetworkManager.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		835A998B1F9F4249004234BC /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				D4C159481F9A2F4500C13D5A /* GiferLayoutAttributes.swift */,
-				D4C159441F9A2F4500C13D5A /* FeedView.swift */,
-				D4C159461F9A2F4500C13D5A /* GiferCell.swift */,
-				D4C159471F9A2F4500C13D5A /* GiferLayout.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		844B98021F914B0C005DA644 = {
 			isa = PBXGroup;
 			children = (
@@ -134,13 +96,18 @@
 		D4C1593D1F9A2F4500C13D5A /* Gifer */ = {
 			isa = PBXGroup;
 			children = (
-				835A998B1F9F4249004234BC /* Views */,
-				835A99891F9F4230004234BC /* Model */,
-				835A99881F9F4227004234BC /* Core */,
-				835A99871F9F41F8004234BC /* Controller */,
+				D4C1593E1F9A2F4500C13D5A /* AppDelegate.swift */,
+				D4C1593F1F9A2F4500C13D5A /* Assets.xcassets */,
+				D4C159401F9A2F4500C13D5A /* LaunchScreen.storyboard */,
 				D4C159421F9A2F4500C13D5A /* Constants.swift */,
+				D4C159431F9A2F4500C13D5A /* FeedController.swift */,
+				D4C159441F9A2F4500C13D5A /* FeedView.swift */,
 				D4C159451F9A2F4500C13D5A /* Gifer-Bridging-Header.h */,
+				D4C159461F9A2F4500C13D5A /* GiferCell.swift */,
+				D4C159471F9A2F4500C13D5A /* GiferLayout.swift */,
+				D4C159491F9A2F4500C13D5A /* GifModel.swift */,
 				D4C1594A1F9A2F4500C13D5A /* Info.plist */,
+				D4C1594B1F9A2F4500C13D5A /* NetworkManager.swift */,
 				D4C1594C1F9A2F4500C13D5A /* Utils.swift */,
 			);
 			path = Gifer;
