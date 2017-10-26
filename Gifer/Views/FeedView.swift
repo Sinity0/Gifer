@@ -49,6 +49,7 @@ class FeedView: UIView {
         self.addSubview(collectionView)
         self.addSubview(searchBar)
         setupRefreshControll()
+        createConstraints()
     }
 
     func setupRefreshControll() {
@@ -61,8 +62,7 @@ class FeedView: UIView {
         refreshFeedDelegate?.refreshFeed(sender)
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    func createConstraints() {
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             searchBar.leadingAnchor.constraint(equalTo: self.leadingAnchor),
