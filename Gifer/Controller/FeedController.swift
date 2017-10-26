@@ -15,7 +15,7 @@ class FeedController: UIViewController, UICollectionViewDelegate {
     }()
 
     private let networkManager = NetworkManager()
-    fileprivate var gifsDataSource = [GifModel]()
+    fileprivate var gifsDataSource: [GifModel] = []
     fileprivate var requesting = false
 
     private var currentOffset = 0
@@ -96,21 +96,21 @@ class FeedController: UIViewController, UICollectionViewDelegate {
 
         switch type {
         case .trending:
-            networkManager.fetchTrendedGifs(limit: Constants.gifsRequestLimit, offset: currentOffset,
-                                            completionHandler: {[weak self] result -> Void in
+            networkManager.fetchTrendedGifs(limit: Constants.gifsRequestLimit, offset: currentOffset)
+                                            {[weak self] result -> Void in
                                                 guard let `self` = self else { return }
                                                 self.processServerResponse(response: result)
                                                 self.requesting = false
                                                 completionHandler?()
-            })
+            }
         case .search:
             networkManager.searchGifs(searchTerm: term, rating: Constants.preferredSearchRating, limit: Constants.gifsRequestLimit,
-                                      offset: currentOffset, completionHandler: {[weak self] result -> Void in
+                                      offset: currentOffset) {[weak self] result -> Void in
                                         guard let `self` = self else { return }
                                         self.processServerResponse(response: result)
                                         self.requesting = false
                                         completionHandler?()
-            })
+            }
         }
     }
 
